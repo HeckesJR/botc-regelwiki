@@ -509,6 +509,25 @@
       showResult(result);
     }
 
+    /* Skriptblatt des gerade gewählten Skripts (Edition oder eigenes) */
+    $('#gen-sheet').addEventListener('click', function () {
+      var script = currentGenScript();
+      if (!script || !script.characters) return;
+      var btn = this;
+      btn.disabled = true;
+      var label = btn.textContent;
+      btn.textContent = 'Erzeuge PDF …';
+      BOTC.pdf.exportScriptSheet(script.characters, {
+        name: currentGenLabel().replace(/\s*\(\d+\)$/, ''),
+        subtitle: 'Blood on the Clocktower · Charakterblatt'
+      }).catch(function (e) {
+        console.error(e);
+      }).then(function () {
+        btn.disabled = false;
+        btn.textContent = label;
+      });
+    });
+
     $('#generator-form').addEventListener('submit', function (ev) { ev.preventDefault(); run('suggest'); });
     $('#gen-balanced').addEventListener('click', function () { run('balanced'); });
     $('#gen-random').addEventListener('click', function () { run('random'); });
@@ -739,6 +758,33 @@
         var el = box.querySelector('.script-saved');
         if (el) el.remove();
       }, 4000);
+    });
+
+    /* Skriptblatt zum Ausdrucken */
+    $('#script-sheet').addEventListener('click', function () {
+      var chars = [...builder.selected].map(BOTC.scripts.byId).filter(Boolean);
+      if (!chars.length) {
+        $('#script-status').insertAdjacentHTML('afterbegin',
+          '<p class="script-saved script-saved--warn">Wähle erst Charaktere aus, dann gibt es etwas zu drucken.</p>');
+        setTimeout(function () {
+          var el = $('#script-status').querySelector('.script-saved--warn');
+          if (el) el.remove();
+        }, 4000);
+        return;
+      }
+      var btn = this;
+      btn.disabled = true;
+      var label = btn.textContent;
+      btn.textContent = 'Erzeuge PDF …';
+      BOTC.pdf.exportScriptSheet(chars, {
+        name: ($('#script-name').value.trim() || 'Eigenes Skript'),
+        subtitle: chars.length + ' Charaktere · Blood on the Clocktower'
+      }).catch(function (e) {
+        console.error(e);
+      }).then(function () {
+        btn.disabled = false;
+        btn.textContent = label;
+      });
     });
 
     $('#script-new').addEventListener('click', function () { loadIntoBuilder(null); });

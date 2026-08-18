@@ -144,14 +144,35 @@ Trag den Link am besten gleich oben in die `README.md` ein, dann findest du ihn 
 
 ## Später etwas ändern
 
-Datei bearbeiten, dann im Projektordner:
+Datei bearbeiten, dann im Projektordner die drei Befehle **einzeln** ausführen:
 
 ```bash
-git add . && git commit -m "Kurz was geändert wurde" && git push
+git add .
 ```
+
+```bash
+git commit -m "Kurz was geändert wurde"
+```
+
+```bash
+git push
+```
+
+> **Nicht mit `&&` verketten.** In Windows PowerShell (Version 5.1, die sich über die
+> Adressleiste öffnet) ist `&&` kein gültiges Trennzeichen — der Befehl bricht mit einem
+> Parserfehler ab, und es passiert gar nichts. Erst PowerShell 7 kann das.
 
 Nach 1–2 Minuten ist die Änderung online. Wenn du die alte Version siehst: harter Reload mit
 `Strg`+`F5`.
+
+**Zur Kontrolle, ob der Push wirklich durch ist:**
+
+```bash
+git status
+```
+
+Steht dort „nothing to commit, working tree clean" und „Your branch is up to date with
+'origin/main'", ist alles oben.
 
 ---
 

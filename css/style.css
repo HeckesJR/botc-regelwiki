@@ -31,7 +31,7 @@
   --neutral:          #5d5342;
 
   /* Schrift */
-  --font-display: "Grenze Gothisch", "Palatino Linotype", Palatino, Georgia, serif;
+  --font-display: "Grenze Gotisch", "Palatino Linotype", Palatino, Georgia, serif;
   --font-body:    "EB Garamond", Georgia, "Times New Roman", Times, serif;
   --font-caps:    "IM Fell English SC", Georgia, serif;
 
@@ -910,6 +910,12 @@ input[type="text"]:focus { border-color: var(--bordeaux); outline: none; }
   border-left: 3px solid var(--good);
   color: var(--good);
 }
+.script-saved--warn {
+  background: rgba(168,137,76,.14);
+  border-left-color: var(--gold);
+  color: var(--ink-soft);
+}
+.btn[disabled] { opacity: .6; cursor: default; }
 
 .picker__group { margin-bottom: 1.6rem; }
 .picker__group-title {

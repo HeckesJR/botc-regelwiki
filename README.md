@@ -3,7 +3,7 @@
 Ein privates, deutschsprachiges Regelwiki für unsere Spielrunde. Statische Single-Page-Anwendung:
 HTML + CSS + Vanilla JS, alle Inhalte als JSON. **Kein Build-Schritt** — läuft direkt auf GitHub Pages.
 
-**🔗 Live:** _<!-- Nach dem ersten Deploy hier die Pages-Adresse eintragen, z. B. https://DEINNAME.github.io/botc-regelwiki/ -->_
+**🔗 Live:** https://heckesjr.github.io/botc-regelwiki/
 
 **📤 Veröffentlichen:** Schritt-für-Schritt-Anleitung in [VEROEFFENTLICHEN.md](VEROEFFENTLICHEN.md)
 
@@ -146,6 +146,7 @@ und exportiert alles als PDF. Drei Modi:
 | **Setups vorschlagen** | Kuratierte Vorlagen, nach Nähe zur Spieleranzahl sortiert. Gibt es zu wenige, wird mit ausgewogenen Runden aufgefüllt. |
 | **Ausgewogene Runde** | Zieht 300 Zufallsrunden, bewertet jede und zeigt die drei besten. Jeder Klick würfelt neu. |
 | **Rein zufällig** | Ein einzelner Zufallszug ohne Bewertung — für spontane Abende. |
+| **Skriptblatt als PDF** | Das Charakterblatt zum Ausdrucken für den Tisch — alle Charaktere des Skripts, im Aufbau des offiziellen Handouts. |
 
 **Eigene Skripte** — Baukasten für editionsübergreifende Skripte. Charaktere aus Trouble Brewing,
 Bad Moon Rising und Sects & Violets frei kombinieren; das Tool zeigt laufend die Typ-Verteilung
@@ -215,6 +216,27 @@ Die eingebauten jsPDF-Schriften können nur WinAnsi darstellen. Umlaute und ß f
 einige typografische Sonderzeichen werden vor dem Setzen auf sichere Entsprechungen abgebildet
 (siehe `PDF_REPLACEMENTS` in `pdf-export.js`).
 
+### Skriptblatt zum Ausdrucken
+
+Zusätzlich zum Setup-PDF gibt es das **Charakterblatt** im Aufbau des offiziellen Handouts:
+Kopfzeile mit Skriptnamen, zwei Spalten, Typ-Abschnitte mit senkrechtem Seitenlabel
+(BÜRGER · TOWNSFOLK), Icon und Kurzfähigkeit je Charakter, Sternchen-Fußnote unten. Zu finden
+im Generator und im Skript-Baukasten.
+
+Drei Dinge, die dabei technisch nötig waren:
+
+- **jsPDF kann kein WebP.** Die Icons werden über ein Canvas nach JPEG umgewandelt, mit der
+  Pergamentfarbe als Grund — sonst säßen sie als weiße Kästchen auf dem Blatt. PNG statt JPEG
+  bläht ein 25-Charakter-Blatt von 83 kB auf 1,7 MB auf.
+- **Der Titel steht in Grenze Gotisch.** jsPDF kennt nur seine eingebauten Schriften; eine TTF
+  einzubetten würde jedes PDF um rund 150 kB vergrößern und die Schrift mitverteilen.
+  Stattdessen wird der Titel im Browser auf ein Canvas gezeichnet — die Seite hat die Schrift
+  ohnehin geladen — und als Bild eingesetzt. Gleiche Optik, ein paar Kilobyte. Klappt das
+  Canvas nicht, fällt der Titel automatisch auf die eingebaute Serifenschrift zurück.
+- **Die Schriftgröße passt sich an.** Sie schrumpft von 8 pt bis 5,6 pt, damit möglichst alles
+  auf eine Seite passt. Reicht das nicht (etwa bei einem Skript aus allen 72 Charakteren),
+  bricht das Blatt sauber auf mehrere Seiten um — mit „(Fortsetzung)" im Kopf und Seitenzahlen.
+
 ---
 
 ## Design
@@ -223,7 +245,7 @@ einige typografische Sonderzeichen werden vor dem Setzen auf sichere Entsprechun
 - Bordeaux `#5c1f2e` für Überschriften, Rahmen und aktive Tabs; Gold `#a8894c` für Ornamente
 - Blau `#274a78` für Bürger/Außenseiter, Dunkelrot `#7c1c22` für Schergen/Dämon,
   Gold für Reisende/Fabled
-- Schriften: **Grenze Gothisch** (Titel), **EB Garamond** (Fließtext),
+- Schriften: **Grenze Gotisch** (Titel), **EB Garamond** (Fließtext),
   **IM Fell English SC** (Kapitälchen-Labels) — via Google Fonts, mit Serifen-Fallbacks
 - Initialen am Absatzanfang, Fleuron-Trenner, vertikale Seitenreiter und Eckornamente
   nach dem Vorbild des Regelwerks
