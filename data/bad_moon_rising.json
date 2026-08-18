@@ -1,0 +1,691 @@
+{
+  "edition": "bad_moon_rising",
+  "name_de": "Bad Moon Rising",
+  "name_en": "Bad Moon Rising",
+  "tagline": "Die Todes-Extravaganza — mehrfache Tode pro Nacht, tötende Schergen, kaum geschenkte Information.",
+  "difficulty": "Fortgeschritten",
+  "intro": "Bad Moon Rising ist eine „Death Extravaganza\": Dämonen töten mehrfach pro Nacht, und auch Schergen können töten. Gute Spieler erhalten kaum passiv Informationen — viele Fähigkeiten verlangen riskante, aktive Entscheidungen, um überhaupt etwas zu erfahren. Wer nicht genau verfolgt, wer wann und wie stirbt, verliert schnell den Überblick.",
+  "storyteller_notes": [
+    "Gute Spieler müssen aktiv werden, um Informationen zu bekommen: Teedame und Pazifist*in brauchen Exekutionen, Glücksspieler*in und Schwätzer*in brauchen Risikobereitschaft.",
+    "Böse Spieler müssen ihre Fähigkeiten mit Präzision timen. Der Dämon muss manchmal bewusst nicht töten, um sich zu tarnen.",
+    "Mehrere Todesfälle pro Nacht sind normal (Shabaloth, Po). Das gute Team muss genau mitverfolgen, wer wie gestorben ist, um auf die im Spiel befindlichen Schergen und Dämonen zu schließen.",
+    "Der/die Exorzist*in kann den Dämon eine ganze Nacht lang stilllegen — sehr stark gegen Einzeltöter wie Zombuul und Po.",
+    "Das Genie (Mastermind) kann das Spiel nach dem Tod des Dämons noch retten. Es ist die bekannteste Falle für unaufmerksame gute Teams."
+  ],
+  "night_meta": {
+    "first": [
+      { "order": 1, "key": "dusk", "label": "Abenddämmerung", "text": "Prüfe, dass alle Augen geschlossen sind." },
+      { "order": 2, "key": "minion_info", "label": "Schergen-Info", "text": "Ab 7 Spielern: Alle Schergen aufwecken und den Dämon zeigen." },
+      { "order": 4, "key": "demon_info", "label": "Dämon-Info", "text": "Ab 7 Spielern: Dämon aufwecken, seine Schergen zeigen und 3 nicht im Spiel befindliche gute Charaktere als Bluffs." },
+      { "order": 12, "key": "dawn", "label": "Morgendämmerung", "text": "Kurz warten, dann zum Augenöffnen aufrufen." }
+    ],
+    "other": [
+      { "order": 1, "key": "dusk", "label": "Abenddämmerung", "text": "Prüfe, dass alle Augen geschlossen sind." },
+      { "order": 21, "key": "dawn", "label": "Morgendämmerung", "text": "Kurz warten, Augen öffnen und sofort verkünden, wer gestorben ist." }
+    ]
+  },
+  "setups": [
+    {
+      "id": "bmr-erster-blutmond",
+      "name": "Erster Blutmond",
+      "players": 8,
+      "curated": false,
+      "difficulty": "Leicht (für diese Edition)",
+      "characters": ["grandmother", "sailor", "chambermaid", "exorcist", "innkeeper", "tinker", "devils_advocate", "zombuul"],
+      "reason": "Der sanfteste Einstieg in Bad Moon Rising. Vier der fünf Bürger drehen sich um Schutz und Beobachtung statt um komplizierte Verrechnung. Der Zombuul zwingt die Gruppe genau zu der Denkweise, die diese Edition verlangt: Wer ist heute gestorben — und wer nicht? Der/die Advocatus Diaboli liefert dazu die verwirrenden ausbleibenden Exekutionen."
+    },
+    {
+      "id": "bmr-todesspirale",
+      "name": "Todesspirale",
+      "players": 10,
+      "curated": false,
+      "difficulty": "Schwer",
+      "characters": ["tea_lady", "professor", "minstrel", "gambler", "courtier", "sailor", "exorcist", "assassin", "devils_advocate", "shabaloth"],
+      "reason": "Der Shabaloth tötet zwei pro Nacht und würgt gelegentlich einen wieder hoch — dazu kommt die Assassine, die jeden Schutz durchschlägt. Dagegen steht ungewöhnlich viel Gegenwehr: Teedame, Professor*in und Exorzist*in können Tode verhindern oder rückgängig machen. Ein lautes, schnelles Spiel mit hoher Leichenzahl."
+    },
+    {
+      "id": "bmr-wer-stirbt",
+      "name": "Wer stirbt hier eigentlich?",
+      "players": 9,
+      "curated": false,
+      "difficulty": "Schwer",
+      "characters": ["grandmother", "chambermaid", "gossip", "innkeeper", "fool", "lunatic", "moonchild", "mastermind", "po"],
+      "reason": "Das Chaos-Setup der Edition. Der/die Wahnsinnige hält sich für den Dämon und produziert nächtlich Aktionen, die nichts bewirken; das Zimmermädchen sieht diese Aktionen trotzdem. Der Po tötet mal keinen und mal drei. Das Genie sorgt dafür, dass ein gefundener Dämon noch lange nicht das Spielende bedeutet."
+    },
+    {
+      "id": "bmr-pate",
+      "name": "Pate-Variante",
+      "players": 8,
+      "curated": false,
+      "difficulty": "Mittel",
+      "characters": ["grandmother", "sailor", "exorcist", "pacifist", "goon", "tinker", "godfather", "pukka"],
+      "reason": "Der Pate bringt hier +1 Außenseiter mit: aus 5 Bürgern / 1 Außenseiter werden 4 / 2. Stirbt tagsüber ein Außenseiter, tötet der Pate zusätzlich — bei zwei Außenseitern im Spiel ist das eine reale Dauerdrohung. Der Pukka vergiftet einen Tag im Voraus, was zusammen mit dem/der Schwindler*in für dauerhaft unklare Fähigkeitslage sorgt."
+    }
+  ],
+  "characters": [
+    {
+      "id": "grandmother",
+      "edition": "bad_moon_rising",
+      "type": "townsfolk",
+      "name_de": "Großmutter",
+      "name_en": "Grandmother",
+      "ability_short": "Erfährt zu Beginn einen guten Spieler & seinen Charakter. Tötet der Dämon diesen Spieler, stirbt auch die Großmutter.",
+      "quote": "Setz dich, Kind. Iss etwas. Ich passe schon auf dich auf — von hier aus, wo ich immer sitze.",
+      "full_text": "Die Großmutter weiß, wer ihr Enkelkind ist — aber wenn es vom Dämon getötet wird, stirbt sie mit.\n\n• In der ersten Nacht erfährt die Großmutter ihr Enkelkind: einen guten Spieler, der entweder ein Bürger oder ein Außenseiter ist.\n• Das Enkelkind erfährt nicht, dass es eine Großmutter hat.\n• Tötet der Dämon das Enkelkind, stirbt auch die Großmutter.\n• Stirbt das Enkelkind auf andere Weise — etwa durch Exekution oder einen anderen nächtlichen Tod —, stirbt die Großmutter nicht mit.",
+      "examples": [
+        "In der ersten Nacht erfährt die Großmutter, dass Julian, ihr Enkelkind, der/die Professor*in ist. Drei Nächte später wird Julian vom Dämon getötet — und so stirbt auch die Großmutter.",
+        "Die Großmutter weiß, dass Lewis, ihr Enkelkind, der/die Glücksspieler*in ist. Lewis verrät sich und stirbt an der eigenen Fähigkeit. Die Großmutter bleibt am Leben.",
+        "Die Großmutter weiß, dass Sarah, ihr Enkelkind, der/die Bastler*in ist. Sarah wird vom Dämon getötet, aber die Großmutter ist wegen des/der Seefahrer*in betrunken — also bleibt sie am Leben."
+      ],
+      "how_to_run": "Wecke die Großmutter in der ersten Nacht. Zeige auf einen guten Spieler und dann dessen Charakter-Token. Markiere diesen Spieler mit ENKELKIND. Schicke die Großmutter wieder schlafen.\n\nWird das Enkelkind vom Dämon getötet, markiere die Großmutter ebenfalls mit TOT.",
+      "tips": [
+        "Wähle als Enkelkind einen Spieler mit auffälliger Fähigkeit — dann kann die Großmutter dessen Behauptungen bestätigen und wird selbst glaubwürdig.",
+        "Ein Doppeltod in einer Nacht ist ein starkes Signal für die Stadt. Bedenke das, wenn du dem Dämon Ziele nahelegst."
+      ],
+      "wakes_first_night": true,
+      "wakes_other_nights": true,
+      "night_order_first": 10,
+      "night_order_other": 19,
+      "icon": "assets/icons/bad_moon_rising/grandmother.webp"
+    },
+    {
+      "id": "sailor",
+      "edition": "bad_moon_rising",
+      "type": "townsfolk",
+      "name_de": "Seefahrer*in",
+      "name_en": "Sailor",
+      "ability_short": "Wählt jede Nacht einen lebenden Spieler: entweder der/die Seefahrer*in oder der gewählte Spieler ist bis zum Ende des nächsten Tages betrunken. Kann nicht sterben.",
+      "quote": "Ich habe drei Stürme und zwei Meutereien überlebt. Eine Kleinstadt schafft mich nicht.",
+      "full_text": "Der/die Seefahrer*in ist entweder selbst betrunken oder macht jemand anderen betrunken. Solange er/sie nüchtern ist, kann er/sie nicht sterben.\n\n• Jede Nacht wählt der/die Seefahrer*in einen lebenden Spieler, der sich wahrscheinlich betrinken wird.\n• Wählt er/sie sich selbst, verliert er/sie die Fähigkeit „nicht sterben zu können\", bis er/sie wieder nüchtern ist.\n• Wählt er/sie einen anderen Spieler, entscheidet der/die Geschichtenerzähler*in, wer von beiden betrunken wird. Bei einem Bürger wird meist der Bürger betrunken; bei Außenseiter, Scherge oder Dämon meist der/die Seefahrer*in selbst.\n• Im nüchternen Zustand kann der/die Seefahrer*in nicht sterben — auch dann nicht, wenn er/sie in dieser Nacht noch gar nicht aufgewacht ist.\n• Wählt er/sie versehentlich einen toten Spieler, fordere zu einer neuen Wahl auf.",
+      "examples": [
+        "Der/die Seefahrer*in wählt den/die Exorzist*in, und der/die Geschichtenerzähler*in entscheidet, dass der/die Exorzist*in betrunken ist. In dieser Nacht wird der/die Seefahrer*in vom Shabaloth gewählt und überlebt. Am nächsten Tag wird er/sie exekutiert und überlebt ebenfalls.",
+        "Tagsüber hat der/die Schwätzer*in eine öffentliche Aussage gemacht, die tatsächlich wahr war. In jener Nacht tötet die Schwätzer-Fähigkeit einen Spieler. Der/die Seefahrer*in hat sich selbst betrunken gemacht, und der/die Geschichtenerzähler*in beschließt, dass er/sie stirbt.",
+        "Der/die Seefahrer*in wählt das Genie, doch der/die Geschichtenerzähler*in beschließt, dass der/die Seefahrer*in betrunken ist. Am nächsten Tag bittet er/sie darum, exekutiert zu werden, um zu beweisen, dass er/sie der/die Seefahrer*in ist — und stirbt, weil er/sie betrunken ist."
+      ],
+      "how_to_run": "Wecke den/die Seefahrer*in jede Nacht. Er/sie zeigt auf einen lebenden Spieler. Entscheide, wer betrunken wird, und markiere ihn mit BETRUNKEN. Schicke ihn/sie wieder schlafen.\n\nDer Marker bleibt bis zum Ende des folgenden Tages liegen.",
+      "tips": [
+        "Ein/e unsterbliche(r) Seefahrer*in, der/die sich outet, ist ein enormes Problem für Böse. Mach ihn/sie hin und wieder selbst betrunken, um die Tür offenzuhalten."
+      ],
+      "wakes_first_night": true,
+      "wakes_other_nights": true,
+      "night_order_first": 5,
+      "night_order_other": 2,
+      "icon": "assets/icons/bad_moon_rising/sailor.webp"
+    },
+    {
+      "id": "chambermaid",
+      "edition": "bad_moon_rising",
+      "type": "townsfolk",
+      "name_de": "Zimmermädchen",
+      "name_en": "Chambermaid",
+      "ability_short": "Wählt jede Nacht 2 lebende Spieler (nicht sich selbst): erfährt, wie viele von beiden heute Nacht wegen ihrer Fähigkeit geweckt wurden.",
+      "quote": "Ich höre jede Tür in diesem Haus. Auch die, von denen niemand weiß.",
+      "full_text": "Das Zimmermädchen erfährt, wer nachts aufgewacht ist — aber nicht, wer von beiden.\n\n• Jede Nacht wählt es zwei lebende Spieler (nicht sich selbst) und erfährt eine Zahl von 0 bis 2.\n• Die Fähigkeit erkennt nur Spieler, die aufgewacht sind, um ihre **eigene** Fähigkeit einzusetzen.\n• Nicht erkannt wird, wer aus anderen Gründen geweckt wurde: Schergen-Info, Dämon-Info, das Wecken aufgrund der Fähigkeit eines anderen Charakters oder ein versehentliches Wecken.\n• Wer in einer früheren Nacht aufgewacht ist, aber nicht in dieser, zählt nicht.\n• Spieler, die aufgewacht sind, aber betrunken oder vergiftet waren, zählen trotzdem als aufgewacht.\n• Wählt es versehentlich einen toten Spieler, fordere zu einer neuen Wahl auf.",
+      "examples": [
+        "Das Zimmermädchen wählt den/die Exorzist*in und den/die Gastwirt*in und erhält eine „2\". In der folgenden Nacht wählt der/die Exorzist*in den Shabaloth, wodurch dieser erwacht. Später wählt das Zimmermädchen den Shabaloth und den Narren — da der Shabaloth nur aufgrund der Exorzisten-Fähigkeit erwacht ist, erhält es eine „0\".",
+        "Es ist die erste Nacht. Das Zimmermädchen wählt die Assassine und das Mondkind und erfährt eine „0\", da die Assassine in der ersten Nacht nicht aufwacht. In der nächsten Nacht wählt es die Assassine und den/die Schwätzer*in: Die Assassine ist aufgewacht, hat ihre Fähigkeit aber nicht eingesetzt; die Schwätzer-Fähigkeit wirkt, aber der/die Schwätzer*in wacht dafür nicht auf. Das Zimmermädchen erfährt eine „1\".",
+        "Es ist die zweite Nacht. Das Zimmermädchen wählt die Großmutter und den bösen Schwindler und erfährt eine „2\" — obwohl nur der Schwindler heute Nacht aufwacht. Das Zimmermädchen ist betrunken."
+      ],
+      "how_to_run": "Wecke das Zimmermädchen jede Nacht als einen der letzten Schritte. Es zeigt auf zwei lebende Spieler. Zeige mit den Fingern, wie viele davon in dieser Nacht wegen ihrer eigenen Fähigkeit aufgewacht sind. Schicke es wieder schlafen.",
+      "tips": [
+        "Das Zimmermädchen ist der beste Weg, den/die Wahnsinnige(n) zu enttarnen — oder ihn/sie noch verdächtiger zu machen.",
+        "Es steht bewusst weit hinten in der Nachtreihenfolge, damit es alle Aktionen der Nacht erfasst."
+      ],
+      "wakes_first_night": true,
+      "wakes_other_nights": true,
+      "night_order_first": 11,
+      "night_order_other": 20,
+      "icon": "assets/icons/bad_moon_rising/chambermaid.webp"
+    },
+    {
+      "id": "exorcist",
+      "edition": "bad_moon_rising",
+      "type": "townsfolk",
+      "name_de": "Exorzist*in",
+      "name_en": "Exorcist",
+      "ability_short": "Wählt jede Nacht* einen Spieler (nicht denselben wie letzte Nacht): wird der Dämon gewählt, erfährt dieser, wer der/die Exorzist*in ist, und wird in dieser Nacht nicht für seine Fähigkeit aufgeweckt.",
+      "quote": "Weiche. Ich sage es nur einmal, und ich sage es sehr deutlich.",
+      "full_text": "Der/die Exorzist*in verhindert, dass der Dämon aufwacht, um anzugreifen.\n\n• Jede Nacht außer der ersten wählt er/sie einen Spieler — nie denselben wie in der Nacht davor.\n• Ist der Gewählte nicht der Dämon, kann der Dämon ganz normal angreifen.\n• Ist er der Dämon, wacht dieser in dieser Nacht nicht auf und wählt daher niemanden aus. Der Dämon erfährt dabei, dass er nicht angreifen kann — und wer der/die Exorzist*in ist.\n• Alle anderen Fähigkeiten des Dämons wirken weiter: Der Zombuul bleibt beim ersten Tod am Leben, der Pukka tötet einen in einer früheren Nacht vergifteten Spieler, und der Shabaloth kann einen Spieler wieder hochwürgen.",
+      "examples": [
+        "Der/die Exorzist*in wählt den Shabaloth. Der Shabaloth tötet in dieser Nacht niemanden. Bei Tagesanbruch erklärt der/die Geschichtenerzähler*in, dass niemand gestorben ist.",
+        "Der/die Exorzist*in wählt den Pukka. Der Pukka erwacht nicht, um anzugreifen — doch ein Spieler stirbt dennoch am Angriff des Pukka aus der vergangenen Nacht.",
+        "Der Po hat sich entschieden, niemanden anzugreifen. In der nächsten Nacht wählt der/die Exorzist*in den Po, der daher nicht handelt. In der Nacht darauf wählt der/die Exorzist*in die Assassine — die Assassine kann angreifen, und der Po wählt drei Spieler, da seine letzte Wahl „niemand\" war."
+      ],
+      "how_to_run": "Wecke den/die Exorzist*in jede Nacht außer der ersten. Er/sie zeigt auf einen Spieler, der nicht der von gestern ist.\n\nIst es der Dämon: Wecke den Dämon, zeige das Infotoken und den/die Exorzist*in — und überspringe dann seinen Aktionsschritt vollständig.",
+      "tips": [
+        "Gegen Einzeltöter wie Zombuul und Po ist der/die Exorzist*in verheerend stark. Gegen Shabaloth und Pukka weniger.",
+        "Ein enttarnter Exorzist wird in der nächsten Nacht sterben — es sei denn, er trifft den Dämon wieder."
+      ],
+      "wakes_first_night": false,
+      "wakes_other_nights": true,
+      "night_order_first": null,
+      "night_order_other": 8,
+      "icon": "assets/icons/bad_moon_rising/exorcist.webp"
+    },
+    {
+      "id": "innkeeper",
+      "edition": "bad_moon_rising",
+      "type": "townsfolk",
+      "name_de": "Gastwirt*in",
+      "name_en": "Innkeeper",
+      "ability_short": "Wählt jede Nacht* 2 Spieler: beide können in dieser Nacht nicht sterben, aber einer von beiden ist bis zum Ende des nächsten Tages betrunken.",
+      "quote": "Solange ihr unter meinem Dach schlaft, passiert euch nichts. Für den Wein übernehme ich keine Haftung.",
+      "full_text": "Der/die Gastwirt*in schützt Spieler nachts vor dem Tod — dabei wird aber jemand betrunken.\n\n• Der Schutz gilt gegen jede Todesursache in dieser Nacht: Dämon, Außenseiter, Schergen, Bürger und Reisende.\n• Geschützt wird nur nachts, nicht tagsüber.\n• Einer der beiden gewählten Spieler ist für diese Nacht und den folgenden Tag betrunken. Dieser Spieler kann gut oder böse sein, wird aber meist gut sein.\n• Wählt der/die Gastwirt*in sich selbst und wird dabei betrunken gemacht, hat er/sie keine Fähigkeit: Dann ist auch der andere Spieler nicht sicher, und er/sie selbst kann in dieser Nacht sterben.",
+      "examples": [
+        "Der/die Gastwirt*in beschützt den Narren und das Zimmermädchen. Der/die Geschichtenerzähler*in entscheidet, dass der Narr betrunken wird. Am nächsten Tag wird der Narr exekutiert und stirbt, obwohl er seine Fähigkeit noch gar nicht eingesetzt hatte.",
+        "Der/die Gastwirt*in beschützt die Assassine und den Po. Der/die Geschichtenerzähler*in entscheidet, dass die Assassine betrunken wird. Später in dieser Nacht setzt sie ihre Fähigkeit ein — es passiert nichts.",
+        "Der/die Gastwirt*in schützt sich selbst und den/die Pazifist*in. Der/die Geschichtenerzähler*in entscheidet, dass der/die Gastwirt*in betrunken wird. Der/die Pazifist*in wird in dieser Nacht vom Dämon angegriffen und stirbt."
+      ],
+      "how_to_run": "Wecke den/die Gastwirt*in jede Nacht außer der ersten. Er/sie zeigt auf zwei Spieler. Markiere beide mit SICHER und einen der beiden zusätzlich mit BETRUNKEN. Schicke ihn/sie wieder schlafen.\n\nEntferne SICHER bei Morgendämmerung, BETRUNKEN erst am Ende des folgenden Tages.",
+      "tips": [
+        "Der/die Gastwirt*in ist die stärkste Schutzfähigkeit der Edition — und produziert nebenbei zuverlässig falsche Informationen im guten Team.",
+        "Die Assassine durchbricht den Schutz. Das ist der klassische Konter."
+      ],
+      "wakes_first_night": false,
+      "wakes_other_nights": true,
+      "night_order_first": null,
+      "night_order_other": 3,
+      "icon": "assets/icons/bad_moon_rising/innkeeper.webp"
+    },
+    {
+      "id": "gambler",
+      "edition": "bad_moon_rising",
+      "type": "townsfolk",
+      "name_de": "Glücksspieler*in",
+      "name_en": "Gambler",
+      "ability_short": "Wählt jede Nacht* einen Spieler und rät seinen Charakter: stirbt sobald er/sie falsch rät.",
+      "quote": "Alles auf eine Karte. Wenn ich verliere, verliere ich sowieso alles.",
+      "full_text": "Der/die Glücksspieler*in kann raten, wer wer ist — zahlt aber den höchsten Preis, wenn er/sie falsch liegt.\n\n• Jede Nacht außer der ersten wählt er/sie einen Spieler und rät dessen Charakter, indem er/sie auf das Symbol auf dem Charakterblatt zeigt.\n• Ist die Vermutung richtig, passiert nichts. Ist sie falsch, stirbt der/die Glücksspieler*in.\n• Der/die Geschichtenerzähler*in verrät nicht, ob die Vermutung richtig oder falsch war — das Überleben ist die Antwort.\n• Wählbar ist jeder beliebige Spieler, tot oder lebendig, sogar er/sie selbst.",
+      "examples": [
+        "Der/die Glücksspieler*in zeigt auf den Spieler, der der/die Minnesänger*in ist, und dann auf das Minnesänger-Symbol. Die Vermutung ist richtig, also bleibt er/sie am Leben — wird aber in dieser Nacht trotzdem vom Dämon getötet.",
+        "Der/die Advocatus Diaboli blufft als Pazifist*in. In dieser Nacht zeigt der/die Glücksspieler*in auf diesen Spieler und dann auf das Pazifist-Symbol. Die Vermutung ist falsch, also stirbt der/die Glücksspieler*in."
+      ],
+      "how_to_run": "Wecke den/die Glücksspieler*in jede Nacht außer der ersten. Er/sie zeigt auf einen Spieler und dann auf ein Charakter-Symbol. Liegt er/sie falsch, markiere ihn/sie mit TOT. Schicke ihn/sie wieder schlafen.",
+      "tips": [
+        "Die Fähigkeit belohnt Spieler, die tagsüber gut zugehört haben. Sie bestraft Raten ins Blaue sofort.",
+        "Verrate nie, ob die Vermutung stimmte — allein das Weiterleben ist die Information."
+      ],
+      "wakes_first_night": false,
+      "wakes_other_nights": true,
+      "night_order_first": null,
+      "night_order_other": 5,
+      "icon": "assets/icons/bad_moon_rising/gambler.webp"
+    },
+    {
+      "id": "gossip",
+      "edition": "bad_moon_rising",
+      "type": "townsfolk",
+      "name_de": "Schwätzer*in",
+      "name_en": "Gossip",
+      "ability_short": "Darf jeden Tag eine öffentliche Aussage machen. In der darauffolgenden Nacht stirbt ein Spieler, sofern diese wahr gewesen ist.",
+      "quote": "Ich sag ja nichts. Ich sag ja bloß.",
+      "full_text": "Der/die Schwätzer*in verbreitet bewusst Behauptungen, in der Hoffnung, dadurch die Wahrheit aufzudecken.\n\n• Jeden Tag darf er/sie eine öffentliche Aussage machen. Ist sie wahr, tötet der/die Geschichtenerzähler*in in dieser Nacht einen Spieler seiner/ihrer Wahl. Ist sie falsch, stirbt niemand.\n• Gemurmeltes, Geflüstertes, Aussagen ohne prüfbaren Wahrheitswert oder Aussagen, die niemand hören konnte, zählen nicht.\n• Wie beim/bei der Dämonenjäger*in müssen alle die Aussage hören und verstehen und wissen, dass die Fähigkeit gerade eingesetzt wird.\n• Hat der/die Schwätzer*in die Aussage betrunken oder vergiftet gemacht, ist aber nachts nüchtern und gesund, wenn die Fähigkeit auslöst, stirbt trotzdem ein Spieler.",
+      "examples": [
+        "Tagsüber sagt der/die Schwätzer*in: „Ich bin der/die Schwätzer*in. Meine öffentliche Aussage lautet: Der Dämon trägt einen Hut.\" Der Dämon trägt keinen Hut — in dieser Nacht stirbt niemand durch diese Fähigkeit.",
+        "Der/die Schwätzer*in sitzt neben einem guten Reisenden und einem/einer Pazifist*in. Tagsüber sagt der/die betrunkene Schwätzer*in: „Meine beiden Nachbarn sind gut.\" Bei Abenddämmerung wird er/sie wieder nüchtern. In dieser Nacht stirbt das Zimmermädchen.",
+        "Tagsüber gibt der/die Schwätzer*in eine wahre Aussage ab. In dieser Nacht wird er/sie selbst vom Dämon getötet. Da er/sie die Fähigkeit dadurch verliert, tötet die Aussage niemanden mehr."
+      ],
+      "how_to_run": "Macht der/die Schwätzer*in am Tag öffentlich eine Aussage, entscheide, ob sie wahr ist, und markiere ihn/sie gegebenenfalls mit AUSSAGE WAHR. Wähle in der Nacht an der passenden Stelle einen Spieler, der stirbt.",
+      "tips": [
+        "Bestehe darauf, dass die Aussage präzise und prüfbar formuliert wird — „irgendwas stimmt hier nicht\" ist keine Aussage.",
+        "Wähle das Opfer mit Bedacht: Der Tod ist die einzige Rückmeldung, die die Stadt bekommt.",
+        "Der/die Schwätzer*in ist eine der wenigen guten Fähigkeiten der Edition, die aktiv Tote produziert — und hilft damit Böse, wenn sie falsch eingesetzt wird."
+      ],
+      "wakes_first_night": false,
+      "wakes_other_nights": true,
+      "night_order_first": null,
+      "night_order_other": 16,
+      "icon": "assets/icons/bad_moon_rising/gossip.webp"
+    },
+    {
+      "id": "courtier",
+      "edition": "bad_moon_rising",
+      "type": "townsfolk",
+      "name_de": "Höfling/Hofdame",
+      "name_en": "Courtier",
+      "ability_short": "Wählt einmalig im Spiel in der Nacht einen Charakter: dieser ist für 3 Nächte und 3 Tage betrunken.",
+      "quote": "Noch ein Glas, Euer Gnaden? Ich bestehe darauf. Ich bestehe wirklich sehr darauf.",
+      "full_text": "Der Höfling macht einen Charakter betrunken, ohne zu wissen, um welchen Spieler es sich handelt.\n\n• Einmal pro Spiel wählt der Höfling einen **Charakter** — keinen Spieler. Dieser ist ab sofort drei Nächte und drei Tage lang betrunken.\n• Der Höfling erfährt nicht, ob er getroffen hat. Er wählt also möglicherweise einen Charakter, der gar nicht im Spiel ist.\n• Wählt ein betrunkener oder vergifteter Höfling einen Charakter, ist dieser nicht betrunken — auch dann nicht, wenn der Höfling später wieder nüchtern und gesund wird.\n• Wird der Höfling betrunken oder vergiftet, nachdem er jemanden betrunken gemacht hat, wird dieser Spieler wieder nüchtern. Wird der Höfling rechtzeitig wieder nüchtern, greift der Effekt für die restliche Zeit erneut.",
+      "examples": [
+        "Vier Nächte lang erwacht der Höfling, setzt seine Fähigkeit aber nicht ein. In der fünften Nacht macht er den Shabaloth betrunken. In den folgenden drei Nächten handelt der Shabaloth, kann aber niemanden töten.",
+        "Der Höfling setzt seine Fähigkeit ein, während er selbst betrunken ist. Es passiert nichts — aber er wird dafür auch nicht erneut geweckt.",
+        "Der Höfling macht das Genie betrunken. Der Po wird exekutiert, während das Genie noch lebt. Das Spiel endet, und Gut gewinnt."
+      ],
+      "how_to_run": "Wecke den Höfling jede Nacht, bis er die Fähigkeit nutzt. Er schüttelt den Kopf oder zeigt auf ein Charakter-Symbol. Ist dieser Charakter im Spiel, markiere den Spieler mit BETRUNKEN und zähle drei Tage ab. Markiere den Höfling danach mit KEINE FÄHIGKEIT.",
+      "tips": [
+        "Einen Dämon zu treffen kann das Spiel sofort kippen. Genau das macht die Fähigkeit so aufregend.",
+        "Erinnere den Spieler daran, dass er einen Charakter wählt und keinen Spieler — auch böse Spieler, die als Höfling bluffen, brauchen diesen Hinweis manchmal."
+      ],
+      "wakes_first_night": true,
+      "wakes_other_nights": true,
+      "night_order_first": 6,
+      "night_order_other": 4,
+      "icon": "assets/icons/bad_moon_rising/courtier.webp"
+    },
+    {
+      "id": "professor",
+      "edition": "bad_moon_rising",
+      "type": "townsfolk",
+      "name_de": "Professor*in",
+      "name_en": "Professor",
+      "ability_short": "Wählt einmalig im Spiel in der Nacht* einen toten Spieler: ist dieser ein Bürger, wird er zu neuem Leben erweckt.",
+      "quote": "Der Tod ist ein Zustand. Zustände lassen sich, mit hinreichender Sorgfalt, verändern.",
+      "full_text": "Der/die Professor*in kann jemanden von den Toten zurückholen.\n\n• Einmal pro Spiel wählt er/sie nachts (außer in der ersten Nacht) einen toten Spieler. Ist dieser ein Bürger, wird er wiederbelebt.\n• Wählt er/sie einen Außenseiter, einen Schergen oder einen Dämon, passiert nichts — die Fähigkeit ist trotzdem verbraucht.\n• Der wiederbelebte Spieler erhält seine Fähigkeit zurück, sogar bereits verbrauchte „einmal pro Spiel\"-Fähigkeiten.\n• Ob er in der Nacht seiner Wiederbelebung noch handelt, hängt davon ab, ob er vor oder nach dem/der Professor*in an der Reihe gewesen wäre. Hatte er eine „nur erste Nacht\"- oder „du beginnst wissend\"-Fähigkeit, wacht er sofort auf, um sie erneut einzusetzen.",
+      "examples": [
+        "Der/die Professor*in wählt einen toten Spieler, der behauptet hatte, die Teedame zu sein. In Wirklichkeit ist er der/die Wahnsinnige. Niemand wird wiederbelebt.",
+        "Der/die Professor*in erweckt die Großmutter wieder zum Leben, die daraufhin den Charakter eines guten Spielers kennenlernt. Im Morgengrauen erfahren alle, dass der Spieler wieder lebt — aber nicht, dass er die Großmutter ist.",
+        "Der/die betrunkene Professor*in will den/die Minnesänger*in wiederbeleben, der/die aber vom Shabaloth wieder hochgewürgt wurde und lebt. Der/die Geschichtenerzähler*in schüttelt den Kopf — es muss ein toter Spieler sein. Er/sie wählt stattdessen den toten Narren: Es passiert nichts, denn er/sie ist betrunken, und die Fähigkeit ist verbraucht."
+      ],
+      "how_to_run": "Wecke den/die Professor*in jede Nacht außer der ersten, bis er/sie die Fähigkeit nutzt. Er/sie schüttelt den Kopf oder zeigt auf einen toten Spieler. War es ein Bürger, entferne dessen TOT-Marker und gib ihm sein Lebens-Token zurück. Markiere den/die Professor*in mit KEINE FÄHIGKEIT.",
+      "tips": [
+        "Eine Wiederbelebung ist der spektakulärste Moment der Edition. Verkünde am Morgen nur, dass der Spieler wieder lebt — nie, warum.",
+        "Der wiederbelebte Spieler verliert sein Stimm-Token wieder und stimmt fortan normal ab."
+      ],
+      "wakes_first_night": false,
+      "wakes_other_nights": true,
+      "night_order_first": null,
+      "night_order_other": 15,
+      "icon": "assets/icons/bad_moon_rising/professor.webp"
+    },
+    {
+      "id": "minstrel",
+      "edition": "bad_moon_rising",
+      "type": "townsfolk",
+      "name_de": "Minnesänger*in",
+      "name_en": "Minstrel",
+      "ability_short": "Stirbt ein Scherge durch Exekution, sind alle anderen Spieler (außer Reisende) bis zum Ende des nächsten Tages betrunken.",
+      "quote": "Ein Lied für den Gehängten! Und noch eins! Und noch eins!",
+      "full_text": "Der/die Minnesänger*in macht alle betrunken, wenn ein Scherge stirbt.\n\n• Wird ein Scherge exekutiert und stirbt dabei, werden alle Spieler außer dem/der Minnesänger*in sofort betrunken und bleiben es die ganze Nacht und den gesamten folgenden Tag. Bürger, Außenseiter, Schergen und sogar Dämonen werden betrunken — Reisende nicht.\n• Stirbt ein Scherge nachts, löst die Fähigkeit nicht aus.\n• Wird ein bereits toter Scherge exekutiert, löst sie ebenfalls nicht aus — ein toter Charakter kann nicht noch einmal sterben.\n• Wird ein Scherge exekutiert, stirbt aber nicht, löst sie nicht aus.\n• Ist der/die Minnesänger*in betrunken oder vergiftet, wenn der Scherge stirbt, löst sie nicht aus.",
+      "examples": [
+        "Am ersten Tag stirbt der/die Pazifist*in — kein Scherge, also passiert nichts. Am zweiten Tag wird der Pate exekutiert: In dieser Nacht sind alle betrunken, einschließlich des Dämons, also stirbt niemand. Am dritten Tag wird ein Scherge exekutiert, der vom/von der Advocatus Diaboli geschützt war — da diese*r betrunken ist, stirbt der Scherge, und der/die Minnesänger*in macht wieder alle betrunken.",
+        "Die Assassine wird exekutiert, also macht der/die Minnesänger*in alle betrunken. Am nächsten Tag wird der Pate exekutiert — wieder sind alle betrunken, und der Dämon konnte in beiden Nächten nicht töten. Am Tag darauf wird ein böser Reisender verbannt: In dieser Nacht werden alle wieder nüchtern, denn eine Verbannung löst die Fähigkeit nicht aus.",
+        "Tagsüber stirbt die Assassine, also macht der/die Minnesänger*in alle betrunken. Am nächsten Tag wird der Zombuul exekutiert und stirbt zum ersten Mal. Gut gewinnt, denn der Zombuul ist betrunken und damit handlungsunfähig."
+      ],
+      "how_to_run": "Stirbt ein Scherge durch Exekution und ist der/die Minnesänger*in nüchtern und gesund, markiere alle anderen Spieler (außer Reisenden) mit BETRUNKEN. Führe die Nacht ganz normal durch, aber lass keine Fähigkeit wirken. Entferne die Marker am Ende des folgenden Tages.",
+      "tips": [
+        "Wecke in dieser Nacht trotzdem alle wie gewohnt und gib erfundene Informationen — sonst ist die Wirkung sofort öffentlich.",
+        "Der/die Minnesänger*in macht es für Böse sehr riskant, einen Schergen zu opfern."
+      ],
+      "wakes_first_night": false,
+      "wakes_other_nights": false,
+      "night_order_first": null,
+      "night_order_other": null,
+      "icon": "assets/icons/bad_moon_rising/minstrel.webp"
+    },
+    {
+      "id": "tea_lady",
+      "edition": "bad_moon_rising",
+      "type": "townsfolk",
+      "name_de": "Teedame",
+      "name_en": "Tea Lady",
+      "ability_short": "Wenn beide lebenden Nachbarn der Teedame gut sind, können sie nicht sterben.",
+      "quote": "Niemand verlässt dieses Zimmer, bevor er nicht ordentlich Tee getrunken hat.",
+      "full_text": "Die Teedame schützt ihre Nachbarn vor dem Tod — solange sie gut sind.\n\n• Sind beide lebenden Nachbarn der Teedame gut, können diese nicht sterben. Weder Dämon noch Pate noch Schwätzer*in können sie töten, und auch eine Exekution tötet sie nicht.\n• Die einzige Ausnahme ist die Assassine, die auch geschützte Spieler töten kann.\n• Die lebenden Nachbarn sind die beiden nächsten lebenden Spieler im und gegen den Uhrzeigersinn — tote Nachbarn werden übersprungen.\n• Ist auch nur einer der beiden Nachbarn böse, schützt die Teedame gar nicht. Stirbt ein böser Nachbar und sind danach beide Nachbarn gut, greift der Schutz wieder.",
+      "examples": [
+        "Die Teedame beginnt das Spiel neben dem Genie und dem guten Schwindler. Das Genie wird exekutiert und stirbt. Nun sind ihre lebenden Nachbarn der gute Schwindler und der Höfling. Der Dämon greift den Höfling an, doch dieser bleibt am Leben. Später wird der Schwindler böse, und der Dämon greift den Höfling erneut an — diesmal stirbt er.",
+        "Die Teedame sitzt zwischen zwei guten Spielern. Die Assassine beschließt, einen der beiden zu töten: Er stirbt, obwohl er von der Teedame geschützt war.",
+        "Die Teedame sitzt neben dem/der Bastler*in und einem anderen guten Spieler. Der/die Bastler*in kann deshalb nicht an der eigenen Fähigkeit sterben."
+      ],
+      "how_to_run": "Prüfe fortlaufend, ob beide lebenden Nachbarn der Teedame gut sind, und markiere sie gegebenenfalls mit SICHER. Aktualisiere das nach jedem Todesfall.",
+      "tips": [
+        "Böse Spieler setzen sich gern neben die Teedame, um sie stillzulegen — die Matrone kann Sitzplätze genau dafür tauschen.",
+        "Eine geoutete Teedame macht ihre Nachbarn zu den sichersten Spielern am Tisch. Rechne damit, dass die Stadt sich dort sammelt."
+      ],
+      "wakes_first_night": false,
+      "wakes_other_nights": false,
+      "night_order_first": null,
+      "night_order_other": null,
+      "icon": "assets/icons/bad_moon_rising/tea_lady.webp"
+    },
+    {
+      "id": "pacifist",
+      "edition": "bad_moon_rising",
+      "type": "townsfolk",
+      "name_de": "Pazifist*in",
+      "name_en": "Pacifist",
+      "ability_short": "Exekutierte, gute Spieler sterben möglicherweise nicht.",
+      "quote": "Wir sind besser als das. Ich hoffe es. Ich hoffe es sehr.",
+      "full_text": "Der/die Pazifist*in verhindert, dass gute Spieler durch Exekution sterben.\n\n• Wird ein guter Spieler exekutiert, entscheidet der/die Geschichtenerzähler*in, ob er stirbt oder weiterlebt.\n• Wie immer bei so offensichtlich wirkenden Fähigkeiten erfährt die Gruppe nur, **was** passiert ist, nicht **warum**: Die Exekution war erfolgreich, der Spieler ist aber nicht gestorben.\n• Überlebt ein Spieler die Exekution, zählt sie trotzdem als die Exekution des Tages. Weitere Nominierungen sind nicht mehr möglich.\n• Der Schutz gilt nur bei Exekution, nicht bei Verbannung eines Reisenden.",
+      "examples": [
+        "Der/die Gastwirt*in wird exekutiert, bleibt aber dank des/der Pazifist*in am Leben.",
+        "Der/die Pazifist*in ist im Spiel und Gut liegt vorn. Selbst nach sieben Tagen und der Exekution von fünf guten Spielern hat die Fähigkeit noch niemanden gerettet — das ist zulässig.",
+        "Der/die Wahnsinnige wird exekutiert und bleibt am Leben. Am nächsten Tag wird der/die Professor*in exekutiert und stirbt, weil der/die Pazifist*in betrunken ist. Am Tag darauf wird ein guter Bischof verbannt und stirbt — der Schutz gilt nicht bei Verbannung."
+      ],
+      "how_to_run": "Wird ein guter Spieler exekutiert und ist der/die Pazifist*in nüchtern und gesund, darfst du ihn überleben lassen. Entscheide nach Spielbalance — du bist zu nichts verpflichtet.",
+      "tips": [
+        "Rette nicht jedes Mal. Wenn die Stadt sich darauf verlässt, verliert die Fähigkeit ihre Spannung.",
+        "Ein Überlebender ist ein sehr starker Hinweis auf Gut. Setze das gezielt ein, wenn Gut hinten liegt."
+      ],
+      "wakes_first_night": false,
+      "wakes_other_nights": false,
+      "night_order_first": null,
+      "night_order_other": null,
+      "icon": "assets/icons/bad_moon_rising/pacifist.webp"
+    },
+    {
+      "id": "fool",
+      "edition": "bad_moon_rising",
+      "type": "townsfolk",
+      "name_de": "Narr/Närrin",
+      "name_en": "Fool",
+      "ability_short": "Stirbt das erste Mal nicht.",
+      "quote": "Ich falle immer. Ich stehe nur meistens wieder auf.",
+      "full_text": "Der Narr entgeht dem Tod — genau einmal.\n\n• Würde der Narr zum ersten Mal aus irgendeinem Grund sterben, bleibt er am Leben. Er erfährt nicht, dass ihn seine Fähigkeit gerettet hat.\n• Rettet ihn die Fähigkeit eines anderen Charakters vor dem Tod, verbraucht der Narr seine eigene Fähigkeit **nicht**. Sie löst erst in dem Moment aus, in dem er tatsächlich sterben würde.",
+      "examples": [
+        "Am ersten Tag wird der Narr exekutiert, bleibt aber am Leben. Am vierten Tag wird er erneut exekutiert — diesmal stirbt er.",
+        "Der Dämon greift den Narren an, der am Leben bleibt. In dieser Nacht stirbt niemand. Am nächsten Tag wird der Narr vom/von der Richter*in exekutiert und stirbt.",
+        "Der Dämon greift den Narren an, der von der Teedame beschützt wird: Er bleibt am Leben und behält seine Fähigkeit. Nach dem Tod der Teedame greift der Dämon erneut an — nun schützt ihn der/die Gastwirt*in, und die Fähigkeit bleibt weiter erhalten. Erst beim dritten Angriff, ohne fremden Schutz, setzt er seine eigene Fähigkeit ein."
+      ],
+      "how_to_run": "Würde der Narr zum ersten Mal sterben, passiert nichts. Markiere ihn danach mit KEINE FÄHIGKEIT.\n\nBei einer überlebten Exekution erkläre öffentlich nur, dass er nicht gestorben ist — nie, warum.",
+      "tips": [
+        "Ein überlebender Narr sieht für die Stadt genauso aus wie ein/e nüchterne(r) Seefahrer*in, ein/e gerettete(r) Pazifist*in oder ein Schützling des/der Advocatus Diaboli. Das ist beabsichtigt.",
+        "Der Narr ist ein hervorragender Bluff für Böse, weil er nie geweckt wird."
+      ],
+      "wakes_first_night": false,
+      "wakes_other_nights": false,
+      "night_order_first": null,
+      "night_order_other": null,
+      "icon": "assets/icons/bad_moon_rising/fool.webp"
+    },
+    {
+      "id": "goon",
+      "edition": "bad_moon_rising",
+      "type": "outsider",
+      "name_de": "Schwindler*in",
+      "name_en": "Goon",
+      "ability_short": "Jede Nacht wird der erste Spieler, der den/die Schwindler*in mit seiner Fähigkeit auswählt, bis zum Ende des nächsten Tages betrunken. Der/die Schwindler*in übernimmt seine Gesinnung.",
+      "quote": "Ich bin auf der Seite von... na, sagen wir mal: auf der Seite, die gerade fragt.",
+      "full_text": "Der/die Schwindler*in ist nachts immun gegen andere Charaktere — wechselt dafür aber ständig die Seiten.\n\n• Wacht in einer Nacht der erste Spieler auf, um seine Fähigkeit einzusetzen, und wählt dabei den/die Schwindler*in, wird dieser Spieler sofort betrunken. Seine Fähigkeit wirkt weder in dieser Nacht noch am folgenden Tag.\n• Wählt später in derselben Nacht ein weiterer Spieler den/die Schwindler*in, funktioniert dessen Fähigkeit ganz normal.\n• Nur ein Spieler, der den/die Schwindler*in aktiv **wählt**, löst das aus. Wählt der/die Geschichtenerzähler*in den/die Schwindler*in aufgrund einer Fähigkeit — etwa bei der Großmutter —, zählt das nicht.\n• Sobald der/die Schwindler*in jemanden betrunken macht, übernimmt er/sie dessen Gesinnung. Das geschieht auch dann, wenn der wählende Spieler bereits betrunken oder vergiftet war.",
+      "examples": [
+        "Der Höfling wählt den/die Schwindler*in: Der/die Schwindler*in wird gut, und der Höfling wird betrunken.",
+        "Der Shabaloth greift zuerst den/die Schwindler*in an, dann den/die Schwätzer*in. Da der Shabaloth mit der Wahl des/der Schwindler*in betrunken wurde, stirbt in dieser Nacht niemand — und der/die Schwindler*in wird böse. In der nächsten Nacht greift der Shabaloth zuerst den/die Glücksspieler*in an, dann den/die Schwindler*in: Der/die Glücksspieler*in stirbt, danach wird der Shabaloth wieder betrunken.",
+        "Wird der/die Schwindler*in von der Assassine gewählt, stirbt er/sie — wird aber dennoch böse."
+      ],
+      "how_to_run": "Wählt in einer Nacht der erste Spieler den/die Schwindler*in mit seiner Fähigkeit, markiere den Wählenden mit BETRUNKEN und drehe das Gesinnungs-Token des/der Schwindler*in auf dessen Gesinnung. Nur der erste Wählende pro Nacht zählt.\n\nWecke den/die Schwindler*in bei einem Gesinnungswechsel und zeige Daumen hoch oder runter.",
+      "tips": [
+        "Ein/e böse gewordene(r) Schwindler*in gewinnt mit dem bösen Team, kennt aber seine Mitspieler nicht. Erkläre das dem Spieler klar.",
+        "Der/die Schwindler*in bestraft aktive Nachtfähigkeiten auf beiden Seiten — er/sie ist chaotisch, nicht einseitig."
+      ],
+      "wakes_first_night": false,
+      "wakes_other_nights": false,
+      "night_order_first": null,
+      "night_order_other": null,
+      "icon": "assets/icons/bad_moon_rising/goon.webp"
+    },
+    {
+      "id": "lunatic",
+      "edition": "bad_moon_rising",
+      "type": "outsider",
+      "name_de": "Wahnsinnige*r",
+      "name_en": "Lunatic",
+      "ability_short": "Denkt, er/sie ist der Dämon, ist es aber nicht. Der Dämon kennt die/den Wahnsinnige*n und erfährt, wen diese*r in der Nacht auswählt.",
+      "quote": "Ich habe sie alle getötet. Alle. Warum sind sie dann noch da?",
+      "full_text": "Der/die Wahnsinnige glaubt, der Dämon zu sein.\n\n• Ähnlich wie der Trunkenbold kennt er/sie weder die eigene wahre Rolle noch die eigene Gesinnung. Er/sie wird jede Nacht geweckt, um anzugreifen, als wäre er/sie der Dämon — die Entscheidungen haben aber keine Wirkung.\n• In der ersten Nacht erfährt er/sie drei Bluffs und die entsprechende Anzahl Schergen. Diese Informationen dürfen falsch sein.\n• Der echte Dämon erfährt, wer der/die Wahnsinnige ist und wen dieser jede Nacht zum Angriff auswählt.",
+      "examples": [
+        "Der/die Wahnsinnige glaubt, der Shabaloth zu sein, und wacht jede Nacht auf, um zwei Spieler auszuwählen. Die Gewählten sterben nicht.",
+        "Der/die Wahnsinnige glaubt, der Zombuul zu sein, und wacht deshalb selten auf. Der echte Zombuul gibt vor, ein Scherge des/der Wahnsinnigen zu sein, und greift oft dieselben Spieler an — um die Illusion aufrechtzuerhalten.",
+        "Das Zimmermädchen wählt den/die Wahnsinnige(n): Es erfährt, dass er/sie aufgewacht ist."
+      ],
+      "how_to_run": "Behandle den/die Wahnsinnige(n) in der ersten Nacht wie einen Dämon: Zeige Bluffs und die Anzahl der Schergen. Wecke ihn/sie jede Nacht zur Dämon-Zeit und lass ihn/sie wählen — ohne Wirkung.\n\nZeige dem echten Dämon in der ersten Nacht, wer der/die Wahnsinnige ist, und danach jede Nacht dessen Wahl.",
+      "tips": [
+        "Lass den echten Dämon möglichst oft dieselben Ziele töten wie der/die Wahnsinnige. Das ist der ganze Reiz der Rolle.",
+        "Der/die Wahnsinnige zählt als Außenseiter und ist gut — er/sie gewinnt mit dem guten Team."
+      ],
+      "wakes_first_night": true,
+      "wakes_other_nights": true,
+      "night_order_first": 3,
+      "night_order_other": 7,
+      "icon": "assets/icons/bad_moon_rising/lunatic.webp"
+    },
+    {
+      "id": "tinker",
+      "edition": "bad_moon_rising",
+      "type": "outsider",
+      "name_de": "Bastler*in",
+      "name_en": "Tinker",
+      "ability_short": "Kann jederzeit sterben.",
+      "quote": "Das hält. Vermutlich. Meistens. Zurücktreten, bitte.",
+      "full_text": "Der/die Bastler*in kann jederzeit und ohne Grund sterben.\n\n• Der/die Geschichtenerzähler*in darf ihn/sie zu jedem beliebigen Zeitpunkt töten — am Tag, in der Nacht, mitten in einer Abstimmung.\n• Wie üblich kann er/sie nicht durch die eigene Fähigkeit sterben, solange er/sie vor dem Tod geschützt ist.",
+      "examples": [
+        "In der Nacht stirbt der/die Bastler*in, obwohl der Dämon einen anderen Spieler angegriffen hat.",
+        "Die Teedame sitzt neben dem/der Bastler*in und einem anderen guten Spieler und schützt ihn/sie vor dem Tod. Der/die Bastler*in kann deshalb nicht an der eigenen Fähigkeit sterben.",
+        "Der/die Bastler*in wird vom Dämon angegriffen, stirbt aber nicht, weil er/sie vom/von der Gastwirt*in beschützt wird. Später in dieser Nacht stirbt der/die Gastwirt*in — woraufhin der/die Geschichtenerzähler*in beschließt, auch den/die Bastler*in zu töten."
+      ],
+      "how_to_run": "Lass den/die Bastler*in sterben, wann immer es das Spiel verbessert. Erkläre den Tod öffentlich, aber nie die Ursache.",
+      "tips": [
+        "Der beste Zeitpunkt ist der, an dem der Tod maximal irreführend ist — etwa in einer Nacht, in der der Dämon ohnehin tötet.",
+        "Kündige die Fähigkeit dem Spieler klar an, sonst fühlt sich der Tod willkürlich statt witzig an."
+      ],
+      "wakes_first_night": false,
+      "wakes_other_nights": true,
+      "night_order_first": null,
+      "night_order_other": 17,
+      "icon": "assets/icons/bad_moon_rising/tinker.webp"
+    },
+    {
+      "id": "moonchild",
+      "edition": "bad_moon_rising",
+      "type": "outsider",
+      "name_de": "Mondkind",
+      "name_en": "Moonchild",
+      "ability_short": "Erfährt das Mondkind von seinem Tod, wählt es öffentlich einen lebenden Spieler. War dieser gut, stirbt er in der darauffolgenden Nacht.",
+      "quote": "Der Mond hat mir gesagt, wer schuld ist. Der Mond irrt sich selten.",
+      "full_text": "Das Mondkind verflucht bei seinem Tod jemanden und tötet diesen ebenfalls.\n\n• Es muss sich innerhalb von ein oder zwei Minuten entscheiden, nachdem es von seinem Tod erfahren hat — sei es durch Exekution oder bei Tagesanbruch.\n• Es darf sich vorher von der Gruppe beraten lassen, entscheidet aber selbst.\n• Wählt es einen guten Spieler, stirbt dieser in dieser Nacht. Wählt es einen bösen Spieler, passiert nichts.\n• Es liegt nicht am/an der Geschichtenerzähler*in, das Mondkind zur Wahl aufzufordern. Die Wahl bewusst zu unterlassen, gilt als Betrug.\n• Ist das Mondkind nachts nüchtern und gesund, war aber bei der Wahl betrunken oder vergiftet, stirbt der Gewählte trotzdem. Umgekehrt stirbt er nicht.",
+      "examples": [
+        "Der Pukka tötet das Mondkind. Am nächsten Morgen wählt es einen Spieler, der der/die Exorzist*in ist. In dieser Nacht stirbt der/die Exorzist*in.",
+        "Der/die Pazifist*in ist im Spiel. Das Mondkind wird exekutiert, bleibt aber am Leben — es wählt niemanden, denn es ist nicht gestorben.",
+        "Der Shabaloth frisst das Mondkind. Es wählt die Assassine, die am Leben bleibt. Der Shabaloth würgt das Mondkind wieder hoch. Einige Nächte später frisst er es erneut — diesmal wählt es den/die Schwätzer*in, der/die stirbt."
+      ],
+      "how_to_run": "Erfährt das Mondkind von seinem Tod, lass es öffentlich einen lebenden Spieler wählen. War dieser gut, markiere ihn mit MONDKIND-ZIEL und lass ihn in der folgenden Nacht an der passenden Stelle sterben.",
+      "tips": [
+        "Das gute Team wird versuchen, dem Mondkind ein böses Ziel zu nennen. Lass ihm die Zeit für diese Beratung — die Entscheidung bleibt aber beim Mondkind.",
+        "Ein Mondkind, das sich früh outet, wird zum Schutzschild: Niemand will es töten."
+      ],
+      "wakes_first_night": false,
+      "wakes_other_nights": true,
+      "night_order_first": null,
+      "night_order_other": 18,
+      "icon": "assets/icons/bad_moon_rising/moonchild.webp"
+    },
+    {
+      "id": "godfather",
+      "edition": "bad_moon_rising",
+      "type": "minion",
+      "name_de": "Pate/Patin",
+      "name_en": "Godfather",
+      "ability_short": "Weiß zu Beginn, welche Außenseiter im Spiel sind. Ist heute ein Außenseiter gestorben, wählt der Pate/die Patin in der Nacht einen Spieler: dieser stirbt. [−1 oder +1 Außenseiter]",
+      "quote": "Ich bitte selten. Ich erinnere nur daran, dass ich einmal gebeten habe.",
+      "full_text": "Der Pate rächt sich, wenn die Stadt Außenseiter tötet.\n\n• Zu Beginn erfährt der Pate, welche Außenseiter-Charaktere im Spiel sind — nicht, welche Spieler es sind.\n• Stirbt **tagsüber** ein Außenseiter, wählt der Pate in der folgenden Nacht einen Spieler, der stirbt. Außenseiter, die nachts sterben, zählen nicht.\n• Sind an einem Tag zwei Außenseiter gestorben, tötet der Pate trotzdem nur einen Spieler.\n• Ist der Pate im Spiel, wird ein Außenseiter hinzugefügt oder entfernt.",
+      "examples": [
+        "Der Pate erfährt, dass der/die Wahnsinnige und das Mondkind im Spiel sind, und blufft deshalb als Bastler*in. Am dritten Tag stirbt der/die Wahnsinnige durch Exekution. In dieser Nacht tötet der Dämon den/die Minnesänger*in und der Pate den/die Pazifist*in.",
+        "Der/die Bastler*in wird exekutiert, bleibt aber dank des/der Advocatus Diaboli am Leben. Der Pate handelt in dieser Nacht nicht. Am nächsten Tag stirbt der/die Bastler*in an der eigenen Fähigkeit: In dieser Nacht tötet der Dämon einen Spieler, und der Pate tötet sich selbst, um wie ein guter Spieler zu wirken."
+      ],
+      "how_to_run": "Wecke den Paten in der ersten Nacht und zeige alle Außenseiter-Charakter-Token, die im Spiel sind. Beim Setup: Füge einen Außenseiter hinzu oder entferne einen — deine Wahl.\n\nStirbt tagsüber ein Außenseiter, wecke den Paten in der folgenden Nacht an seiner Stelle. Er zeigt auf einen Spieler; markiere diesen mit TOT.",
+      "tips": [
+        "Die Startinformation macht den Paten zum besten Bluff-Berater seines Teams: Er weiß, welche Außenseiter niemand vorgeben sollte.",
+        "Ein Doppeltod in einer Nacht ist für die Stadt ein deutlicher Hinweis auf den Paten. Timing ist alles."
+      ],
+      "wakes_first_night": true,
+      "wakes_other_nights": true,
+      "night_order_first": 7,
+      "night_order_other": 14,
+      "setup_modifier": { "outsider_choice": [-1, 1] },
+      "icon": "assets/icons/bad_moon_rising/godfather.webp"
+    },
+    {
+      "id": "assassin",
+      "edition": "bad_moon_rising",
+      "type": "minion",
+      "name_de": "Assassine/Assassinin",
+      "name_en": "Assassin",
+      "ability_short": "Wählt einmalig im Spiel in der Nacht* einen Spieler: dieser stirbt, ohne dass es verhindert werden kann.",
+      "quote": "Türen, Wachen, Gebete. Ich habe für all das eine Lösung dabei.",
+      "full_text": "Die Assassine tötet, wen der Dämon nicht töten kann.\n\n• Einmal pro Spiel, nachts außer in der ersten Nacht, kann sie einen Spieler töten. Dieser stirbt, auch wenn er auf irgendeine Weise vor dem Tod geschützt ist.\n• Die Fähigkeit wird wie üblich durch Trunkenheit und Vergiftung außer Kraft gesetzt.\n• Greift sie den/die Schwindler*in an, stirbt diese*r und wird trotzdem böse.",
+      "examples": [
+        "In den ersten drei Nächten erwacht die Assassine, beschließt aber, nicht zu handeln. In der vierten Nacht tötet sie den Narren: Obwohl dieser seine Fähigkeit noch besitzt, stirbt er und bleibt tot.",
+        "Die Teedame sitzt zwischen zwei guten Spielern. Die Assassine tötet einen der Nachbarn — er stirbt, obwohl die Teedame ihn schützt.",
+        "Der/die Minnesänger*in ist im Spiel, und das Genie stirbt durch Exekution. In dieser Nacht will die Assassine das Mondkind töten, doch es stirbt nicht: Die Assassine ist durch den/die Minnesänger*in betrunken."
+      ],
+      "how_to_run": "Wecke die Assassine jede Nacht außer der ersten, bis sie die Fähigkeit nutzt. Sie schüttelt den Kopf oder zeigt auf einen Spieler. Markiere diesen mit TOT — unabhängig von allen Schutzmarkern. Markiere die Assassine danach mit KEINE FÄHIGKEIT.",
+      "tips": [
+        "Hebe die Assassine für den Moment auf, in dem die Stadt sich auf einen scheinbar unsterblichen Spieler verlässt.",
+        "Wecke sie auch nach dem Verbrauch weiter, sonst ist der Zeitpunkt für aufmerksame Spieler ablesbar."
+      ],
+      "wakes_first_night": false,
+      "wakes_other_nights": true,
+      "night_order_first": null,
+      "night_order_other": 13,
+      "icon": "assets/icons/bad_moon_rising/assassin.webp"
+    },
+    {
+      "id": "devils_advocate",
+      "edition": "bad_moon_rising",
+      "type": "minion",
+      "name_de": "Advocatus/-a Diaboli",
+      "name_en": "Devil's Advocate",
+      "ability_short": "Wählt jede Nacht einen lebenden Spieler (nicht denselben wie letzte Nacht): wird dieser am nächsten Tag exekutiert, stirbt er nicht.",
+      "quote": "Jeder verdient eine Verteidigung. Besonders die, die keine verdienen.",
+      "full_text": "Der/die Advocatus Diaboli bewahrt Spieler vor der Exekution.\n\n• Jede Nacht — auch in der ersten — wählt er/sie einen lebenden Spieler. Wird dieser am folgenden Tag exekutiert, findet die Exekution zwar statt, der Spieler bleibt aber am Leben.\n• Derselbe Spieler darf nicht zwei Nächte hintereinander gewählt werden — unabhängig davon, ob er heute tatsächlich gerettet wurde.\n• Ein Zombuul, der bereits als tot geführt wird, ist nicht wählbar.",
+      "examples": [
+        "Nachts schützt sich der/die Advocatus Diaboli selbst. Am nächsten Tag wird er/sie exekutiert und bleibt am Leben.",
+        "Er/sie schützt den Zombuul. Der Zombuul wird exekutiert, bleibt aber am Leben, sodass sein Lebensmarker nicht umgedreht wird. Am nächsten Tag wird er erneut exekutiert und gilt dann als tot.",
+        "Er/sie schützt die Großmutter, die exekutiert wird und am Leben bleibt. Später schützt er/sie den/die Bastler*in: Diese*r wird exekutiert, doch der/die Geschichtenerzähler*in tötet ihn/sie trotzdem über die eigene Bastler-Fähigkeit."
+      ],
+      "how_to_run": "Wecke den/die Advocatus Diaboli jede Nacht. Er/sie zeigt auf einen lebenden Spieler, der nicht der von gestern ist. Markiere diesen mit ÜBERLEBT EXEKUTION. Schicke ihn/sie wieder schlafen.\n\nWird der Markierte exekutiert, erkläre nur, dass er nicht gestorben ist — nie warum.",
+      "tips": [
+        "Diese Fähigkeit erzeugt genau die Verwirrung, die Bad Moon Rising braucht: überlebte Exekutionen ohne erkennbaren Grund.",
+        "Den Dämon zu schützen ist die stärkste, aber auch die durchschaubarste Nutzung. Streue."
+      ],
+      "wakes_first_night": true,
+      "wakes_other_nights": true,
+      "night_order_first": 8,
+      "night_order_other": 6,
+      "icon": "assets/icons/bad_moon_rising/devils_advocate.webp"
+    },
+    {
+      "id": "mastermind",
+      "edition": "bad_moon_rising",
+      "type": "minion",
+      "name_de": "Genie",
+      "name_en": "Mastermind",
+      "ability_short": "Stirbt der Dämon durch Exekution (sodass das Spiel endet), geht das Spiel noch einen Tag weiter. Wird an diesem Tag ein Spieler exekutiert, verliert sein Team.",
+      "quote": "Ihr habt die Hand gefunden. Ich bin der Arm.",
+      "full_text": "Das Genie kann auch nach dem Tod des Dämons noch gewinnen.\n\n• Stirbt der Dämon durch Exekution, geht das Spiel weiter. Die Spieler erfahren nicht, dass der Dämon gestorben ist.\n• Wird am zusätzlichen Tag ein **guter** Spieler exekutiert — unabhängig davon, ob er daran stirbt —, gewinnt Böse. Wird ein böser Spieler exekutiert oder niemand, gewinnt Gut.\n• Der tote Dämon kann nicht mehr angreifen und verliert seine Fähigkeit wie gewohnt. Alle anderen Fähigkeiten wirken in dieser Nacht und an diesem Tag normal.\n• Stirbt der Dämon und leben nur noch zwei Spieler, geht das Spiel trotzdem einen weiteren Tag weiter: Fähigkeiten haben Vorrang vor den Standardregeln.",
+      "examples": [
+        "Der Shabaloth stirbt. Am nächsten Tag wird der/die Professor*in exekutiert und stirbt: Böse gewinnt.",
+        "Der Po stirbt. Am nächsten Tag wird der Pate exekutiert, bleibt aber dank des/der Advocatus Diaboli am Leben. Da trotzdem ein böser Spieler exekutiert wurde, gewinnt Gut.",
+        "Der Zombuul wird exekutiert und scheint zu sterben. Die Genie-Fähigkeit löst noch nicht aus, denn diese Exekution beendet das Spiel nicht. Erst als der Zombuul ein zweites Mal exekutiert wird und wirklich stirbt, löst sie aus.",
+        "Es leben noch drei Spieler, dann stirbt der Dämon. Am nächsten Tag, bei nur noch zwei Lebenden, verzichtet Gut auf eine Exekution. Bei Einbruch der Nacht leben zwei Spieler, aber der Dämon ist tot — Gut gewinnt."
+      ],
+      "how_to_run": "Wird der Dämon exekutiert und ist das Genie nüchtern und gesund, erkläre nicht, dass das Spiel vorbei ist, und spiele einen weiteren Tag. Wird an diesem Tag ein guter Spieler exekutiert, gewinnt Böse. Sonst gewinnt Gut.",
+      "tips": [
+        "Die Spieler dürfen nicht erfahren, dass der Dämon bereits tot ist — genau daraus entsteht die Falle.",
+        "Das Genie ist die Antwort auf gute Teams, die den Dämon zuverlässig früh finden."
+      ],
+      "wakes_first_night": false,
+      "wakes_other_nights": false,
+      "night_order_first": null,
+      "night_order_other": null,
+      "icon": "assets/icons/bad_moon_rising/mastermind.webp"
+    },
+    {
+      "id": "zombuul",
+      "edition": "bad_moon_rising",
+      "type": "demon",
+      "name_de": "Zombuul",
+      "name_en": "Zombuul",
+      "ability_short": "Wählt, sofern am Tag niemand gestorben ist, jede Nacht* einen Spieler: dieser stirbt. Stirbt Zombuul das erste Mal, bleibt er/sie lebendig, erscheint aber als tot.",
+      "quote": "Ihr habt mich begraben. Ihr habt mich nicht gefragt, ob ich einverstanden bin.",
+      "full_text": "Der Zombuul bleibt im Grab heimlich am Leben.\n\n• Würde der Zombuul aus irgendeinem Grund sterben, stirbt er beim ersten Mal nicht — der/die Geschichtenerzähler*in tut aber so, als wäre er gestorben. Beim zweiten Mal stirbt er wirklich, und Gut gewinnt.\n• Der scheinbar tote Zombuul gilt in fast jeder Hinsicht als toter Spieler: Sein Lebensmarker wird umgedreht, er verliert bei der nächsten Abstimmung sein Stimm-Token, er kann nicht nominieren und ist für die Teedame kein lebender Nachbar. Nur: Er greift weiter an, und das Spiel geht weiter, auch wenn nur noch zwei andere Spieler leben.\n• Der Zombuul erwacht nachts nur, wenn an diesem Tag niemand gestorben ist. Wird ein bereits toter Spieler exekutiert, kann dieser nicht erneut sterben — der Zombuul erwacht also trotzdem.\n• Stirbt ein betrunkener oder vergifteter Zombuul, gewinnt Gut.",
+      "examples": [
+        "Der Zombuul wird exekutiert und scheint zu sterben. Er kann in dieser Nacht nicht angreifen. Einige Tage später leben nur noch zwei Spieler auf dem Stadtplatz. Das gute Team ist sich ziemlich sicher, dass einer der Toten der Zombuul ist — und das Spiel geht weiter, bis ein weiterer Spieler stirbt.",
+        "Heute ist niemand gestorben, also greift der Zombuul in dieser Nacht an. Am nächsten Tag stirbt der/die Bastler*in — in dieser Nacht erwacht der Zombuul nicht."
+      ],
+      "how_to_run": "Wecke den Zombuul jede Nacht außer der ersten, aber nur, wenn heute niemand gestorben ist. Er zeigt auf einen Spieler; markiere diesen mit TOT.\n\nWürde der Zombuul sterben, markiere ihn mit GILT ALS TOT statt mit TOT: Gib ihm ein Stimm-Token und behandle ihn öffentlich als Leiche. Wird ein „toter\" Zombuul betrunken oder vergiftet, verkünde nicht, dass er noch lebt.",
+      "tips": [
+        "Ein „toter\" Zombuul, der weiter tötet, ist der große Aha-Moment der Edition. Bereite dich auf Diskussionen vor.",
+        "Gegen den Zombuul ist tägliches Exekutieren die beste Verteidigung — das gute Team muss das erst begreifen."
+      ],
+      "wakes_first_night": false,
+      "wakes_other_nights": true,
+      "night_order_first": null,
+      "night_order_other": 9,
+      "icon": "assets/icons/bad_moon_rising/zombuul.webp"
+    },
+    {
+      "id": "pukka",
+      "edition": "bad_moon_rising",
+      "type": "demon",
+      "name_de": "Pukka",
+      "name_en": "Pukka",
+      "ability_short": "Wählt jede Nacht einen Spieler: dieser ist vergiftet. Der zuvor vergiftete Spieler stirbt und wird dann wieder gesund.",
+      "quote": "Es tut nicht weh. Es dauert nur eine Nacht länger, als du hoffst.",
+      "full_text": "Der Pukka vergiftet seine Opfer, die erst später sterben.\n\n• Greift der Pukka an, wird sein Opfer sofort vergiftet. In der nächsten Nacht, unmittelbar nachdem der Pukka erneut angreift, stirbt dieser Spieler.\n• Anders als die übrigen Dämonen handelt der Pukka bereits in der ersten Nacht.\n• Der/die Exorzist*in verhindert, dass der Pukka aufwacht und jemanden vergiftet. Der/die Gastwirt*in verhindert, dass ein vergifteter Spieler stirbt — dieser ist danach nicht mehr vergiftet.\n• Ist der Pukka betrunken, wenn er wählt, wird der Spieler nicht vergiftet und stirbt in der folgenden Nacht nicht.\n• War der Pukka bei der Wahl nüchtern, ist aber in der Folgenacht betrunken, stirbt der Spieler nicht — sobald der Pukka wieder nüchtern ist, wirkt das Gift jedoch erneut.",
+      "examples": [
+        "Der Pukka vergiftet das Zimmermädchen, das daraufhin falsche Informationen erhält. In der folgenden Nacht stirbt es.",
+        "Der Pukka vergiftet den Narren. Am nächsten Tag wird der Narr exekutiert und stirbt, weil er keine Fähigkeit hat. In der nächsten Nacht stirbt niemand, und der Pukka vergiftet den/die Schwätzer*in. In der Nacht darauf ist der Pukka betrunken und vergiftet niemanden. Erst danach stirbt der/die Schwätzer*in, weil der Pukka wieder nüchtern ist.",
+        "Der Pukka vergiftet den/die Pazifist*in. In der nächsten Nacht wählt der/die Exorzist*in den Pukka, der deshalb nicht aufwacht. Der/die Pazifist*in stirbt trotzdem."
+      ],
+      "how_to_run": "Wecke den Pukka jede Nacht, auch in der ersten. Er zeigt auf einen Spieler; markiere diesen mit VERGIFTET.\n\nLass zuerst den zuvor Vergifteten sterben (TOT markieren, VERGIFTET entfernen) und markiere dann das neue Ziel. Die Reihenfolge ist wichtig.",
+      "tips": [
+        "Vergiftet der Pukka jemanden, der ohnehin stirbt, verpufft die Wirkung — plane eine Nacht voraus.",
+        "Die einen Tag lang vergifteten Spieler produzieren falsche Informationen. Das ist oft wertvoller als der Tod selbst."
+      ],
+      "wakes_first_night": true,
+      "wakes_other_nights": true,
+      "night_order_first": 9,
+      "night_order_other": 10,
+      "icon": "assets/icons/bad_moon_rising/pukka.webp"
+    },
+    {
+      "id": "shabaloth",
+      "edition": "bad_moon_rising",
+      "type": "demon",
+      "name_de": "Shabaloth",
+      "name_en": "Shabaloth",
+      "ability_short": "Wählt jede Nacht* 2 Spieler: diese sterben. Ein toter Spieler, der so in der letzten Nacht gefressen wurde, wird möglicherweise wieder hochgewürgt.",
+      "quote": "Ich schlinge. Gelegentlich bereue ich es. Dann gebe ich zurück, was mir nicht schmeckte.",
+      "full_text": "Der Shabaloth verschlingt jede Nacht zwei Spieler — kann aber in der folgenden Nacht einen davon wieder hochwürgen.\n\n• Anders als die meisten Dämonen greift er zweimal pro Nacht an.\n• In der Nacht nach dem Angriff darf der/die Geschichtenerzähler*in entscheiden, dass einer der angegriffenen Spieler wieder zum Leben erwacht. Das kann ein Spieler sein, der dabei getötet wurde, oder ein bereits toter Spieler, der angegriffen wurde.\n• Der wiederbelebte Spieler erhält seine Fähigkeit zurück, sogar eine bereits genutzte „einmal pro Spiel\"-Fähigkeit. Hatte er eine „nur erste Nacht\"- oder „du beginnst wissend\"-Fähigkeit, darf er sie erneut nutzen.",
+      "examples": [
+        "Der Shabaloth greift zuerst den/die Schwätzer*in an, dann einen weiteren Spieler. Der/die Schwätzer*in stirbt, der andere Spieler bleibt am Leben, weil er vom/von der Gastwirt*in beschützt wurde.",
+        "Der Shabaloth greift den lebenden Höfling und den toten Exorzisten an. Der Höfling stirbt. In der folgenden Nacht beschließt der/die Geschichtenerzähler*in, dass der/die Exorzist*in wieder lebt — handelt in dieser Nacht aber nicht, da er/sie normalerweise vor dem Shabaloth an der Reihe wäre.",
+        "Der Shabaloth greift die Nachbarin der Teedame an, dann die Teedame selbst. Die Nachbarin stirbt nicht, weil die Teedame sie schützt — danach stirbt die Teedame."
+      ],
+      "how_to_run": "Wecke den Shabaloth jede Nacht außer der ersten. Entscheide zuerst, ob du einen in der Vornacht angegriffenen Spieler wiederbelebst (TOT-Marker entfernen). Dann zeigt der Shabaloth auf zwei Spieler; markiere sie mit TOT.",
+      "tips": [
+        "Zwei Tote pro Nacht leeren den Tisch schnell. Nutze das Hochwürgen, um das Spiel am Laufen zu halten.",
+        "Eine Wiederbelebung ist ein starkes Signal für den Shabaloth. Setze sie ein, wenn Gut einen Hinweis verdient hat."
+      ],
+      "wakes_first_night": false,
+      "wakes_other_nights": true,
+      "night_order_first": null,
+      "night_order_other": 11,
+      "icon": "assets/icons/bad_moon_rising/shabaloth.webp"
+    },
+    {
+      "id": "po",
+      "edition": "bad_moon_rising",
+      "type": "demon",
+      "name_de": "Po",
+      "name_en": "Po",
+      "ability_short": "Darf jede Nacht* einen Spieler wählen: dieser stirbt. Wurde so in der letzten Nacht niemand ausgewählt, darf Po in dieser Nacht 3 Spieler auswählen.",
+      "quote": "Geduld. Ich zähle nur bis eins. Manchmal aber sehr langsam.",
+      "full_text": "Der Po kann sich entscheiden, nachts niemanden anzugreifen — geht dafür in der folgenden Nacht auf Amoklauf.\n\n• Wählt der Po niemanden, darf er in der folgenden Nacht drei Spieler angreifen. Er **muss** dann drei wählen und kann nicht erneut auf „niemand\" verzichten.\n• War der Po betrunken oder vergiftet, als er niemanden ausgewählt hat, wählt er in der folgenden Nacht trotzdem drei Spieler.\n• Der Po erhält keine drei Angriffe, wenn er in der Vornacht jemanden angegriffen hat, dieser Spieler aber nicht gestorben ist.\n• Die erste Nacht zählt nicht als Nacht, in der der Po „niemanden ausgewählt hat\". Auch eine vom/von der Exorzist*in erzwungene Ruhenacht zählt nicht als solche.",
+      "examples": [
+        "In der zweiten Nacht greift der Po einen Spieler an. In der dritten Nacht greift er niemanden an. In der vierten Nacht greift er drei Spieler an.",
+        "Der Po beschließt, niemanden anzugreifen, ist aber betrunken. In der nächsten Nacht ist er vergiftet: Er wählt drei Spieler, doch keiner stirbt. In der Nacht darauf ist er nüchtern und gesund und greift einen Spieler an, der stirbt.",
+        "Der Po greift das Mondkind an, dann den/die Schwindler*in, dann die Großmutter. Nur das Mondkind stirbt, weil der Po betrunken war, als er den/die Schwindler*in angriff."
+      ],
+      "how_to_run": "Wecke den Po jede Nacht außer der ersten. Er zeigt auf einen Spieler oder schüttelt den Kopf. Bei Verzicht markiere ihn mit LETZTE NACHT: KEIN ANGRIFF.\n\nLiegt dieser Marker, zeigt er in dieser Nacht auf drei Spieler; markiere alle drei mit TOT.",
+      "tips": [
+        "Eine todesfreie Nacht ist für die Stadt ein Alarmsignal. Ein guter Po nutzt sie trotzdem, weil drei Tote das Spiel sofort entscheiden können.",
+        "Der/die Exorzist*in ist der natürliche Gegner des Po — eine erzwungene Ruhenacht setzt den Dreifachschlag aber nicht in Gang."
+      ],
+      "wakes_first_night": false,
+      "wakes_other_nights": true,
+      "night_order_first": null,
+      "night_order_other": 12,
+      "icon": "assets/icons/bad_moon_rising/po.webp"
+    }
+  ]
+}

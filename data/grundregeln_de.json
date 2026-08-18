@@ -1,0 +1,260 @@
+{
+  "title": "Grundregeln",
+  "subtitle": "Blood on the Clocktower — Regelwerk für die Runde",
+  "intro": "Ein soziales Deduktionsspiel für 5–20 Spieler. Ein Dämon und seine Schergen versuchen, die Stadt zu vernichten, während Bürger und Außenseiter versuchen, den Dämon zu identifizieren und per Abstimmung hinzurichten. Jeder Spieler erhält einen geheimen Charakter mit einer Fähigkeit. Das Spiel wechselt zwischen Tag- und Nachtphasen.",
+  "sections": [
+    {
+      "id": "was-ist",
+      "heading": "Was ist Blood on the Clocktower?",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "Blood on the Clocktower ist ein soziales Deduktionsspiel für 5 bis 20 Spieler. Das böse Team — ein Dämon und seine Schergen — versucht, die Stadt Ravenswood Bluff zu vernichten. Das gute Team — Bürger und Außenseiter — versucht, den Dämon zu identifizieren und ihn per Abstimmung hinzurichten."
+        },
+        {
+          "type": "p",
+          "text": "Jeder Spieler zieht zu Beginn verdeckt einen geheimen Charakter mit einer eigenen Fähigkeit. Anders als in vergleichbaren Spielen scheidet niemand wirklich aus: Auch tote Spieler reden weiter mit, haben aber nur noch eine einzige Stimme für den Rest der Partie."
+        },
+        {
+          "type": "p",
+          "text": "Geleitet wird das Spiel von dem/der Geschichtenerzähler*in (Storyteller). Diese Rolle spielt nicht mit, sondern führt das Grimoire, weckt die Charaktere nachts, verteilt Informationen und entscheidet in allen Grauzonen. Der/die Geschichtenerzähler*in darf Spieler in die Irre führen, muss aber über die Regeln selbst immer die Wahrheit sagen."
+        },
+        {
+          "type": "note",
+          "text": "Merksatz: Spieler dürfen lügen, so viel sie wollen. Der/die Geschichtenerzähler*in lügt nie über Regeln — nur über Informationen, und auch das nur, wenn eine Fähigkeit es erlaubt (z. B. bei Betrunkenheit oder Vergiftung)."
+        }
+      ]
+    },
+    {
+      "id": "charaktertypen",
+      "heading": "Die Charaktertypen",
+      "blocks": [
+        {
+          "type": "dl",
+          "items": [
+            { "term": "Bürger (Townsfolk)", "def": "Gut. Ihre Fähigkeiten helfen dem guten Team — meist durch Informationen oder Schutz.", "tone": "good" },
+            { "term": "Außenseiter (Outsider)", "def": "Gut, aber ihre Fähigkeit schadet dem eigenen Team in irgendeiner Form. Sie sind trotzdem echte Verbündete.", "tone": "good" },
+            { "term": "Schergen (Minion)", "def": "Böse. Sie unterstützen den Dämon, kennen ihn (ab 7 Spielern) und stören das gute Team.", "tone": "evil" },
+            { "term": "Dämon (Demon)", "def": "Böse. Tötet nachts. Stirbt der Dämon, gewinnt in der Regel das gute Team.", "tone": "evil" },
+            { "term": "Reisende (Traveller)", "def": "Kommen für Nachzügler, früh Gehende oder Runden über 15 Spieler dazu. Alle wissen, wer welcher Reisende ist — aber nicht dessen Gesinnung. Reisende werden verbannt, nicht hingerichtet.", "tone": "neutral" },
+            { "term": "Fabled", "def": "Werkzeuge des/der Geschichtenerzähler*in, keine spielbaren Charaktere. Sie können nicht sterben und ihre Fähigkeit nicht verlieren.", "tone": "neutral" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "spieleranzahl",
+      "heading": "Spieleranzahl-Tabelle",
+      "blocks": [
+        { "type": "p", "text": "Diese Verteilung ist editionsunabhängig und gilt für alle Grundspiel-Editionen. Der Generator im Storyteller-Tab wendet sie automatisch an." },
+        {
+          "type": "table",
+          "head": ["Spieler", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15+"],
+          "rows": [
+            ["Bürger", "3", "3", "5", "5", "5", "7", "7", "7", "9", "9", "9"],
+            ["Außenseiter", "0", "1", "0", "1", "2", "0", "1", "2", "0", "1", "2"],
+            ["Schergen", "1", "1", "1", "1", "1", "2", "2", "2", "3", "3", "3"],
+            ["Dämon", "1", "1", "1", "1", "1", "1", "1", "1", "1", "1", "1"]
+          ],
+          "rowTones": ["good", "good", "evil", "evil"]
+        },
+        { "type": "note", "text": "Ab 16 Spielern wird jeder zusätzliche Spieler zum Reisenden. Die Grundverteilung bleibt dabei wie bei 15 Spielern." },
+        { "type": "p", "text": "Einige Charaktere verändern diese Verteilung selbst — der Baron bringt +2 Außenseiter mit, der Fang Gu +1, der Vigormortis −1. Diese Anpassung nimmt der/die Geschichtenerzähler*in vor dem Ziehen der Charaktere vor, indem Bürger-Token gegen Außenseiter-Token getauscht werden (oder umgekehrt)." }
+      ]
+    },
+    {
+      "id": "setup",
+      "heading": "Setup-Ablauf",
+      "blocks": [
+        {
+          "type": "ol",
+          "items": [
+            "Spieler in einem Kreis platzieren — der/die Geschichtenerzähler*in braucht Zugang zur Mitte.",
+            "Grimoire vorbereiten. Es enthält alle Charaktere und Infos und ist nur für den/die Geschichtenerzähler*in sichtbar.",
+            "Edition wählen (Trouble Brewing, Bad Moon Rising oder Sects & Violets).",
+            "Stadtplatz (Town Square) mit einem Lebens-Token pro Spieler vorbereiten.",
+            "Regeln für neue Spieler vorlesen.",
+            "Charaktere heimlich anhand der Spieleranzahl-Tabelle auswählen.",
+            "Charaktere anpassen, falls nötig — z. B. Baron: +2 Außenseiter, Fang Gu: +1, Vigormortis: −1.",
+            "Erinnerungs-Token (Reminder Tokens) für die passenden Charaktere bereitlegen.",
+            "Charaktere verdeckt aus dem Beutel ziehen lassen.",
+            "Charakter-Token entsprechend der Sitzordnung ins Grimoire einsortieren."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "nachtphase",
+      "heading": "Die Nachtphase",
+      "blocks": [
+        { "type": "p", "text": "Der/die Geschichtenerzähler*in lässt alle Augen schließen („Alle Augen zu\")." },
+        { "type": "p", "text": "Ab 7 Spielern wachen zuerst die Schergen auf und lernen den Dämon kennen. Danach wacht der Dämon auf, lernt seine Schergen und erhält 3 nicht im Spiel befindliche gute Charaktere zum Bluffen." },
+        { "type": "p", "text": "Anschließend werden die Charaktere in fester Reihenfolge geweckt (siehe Tab „Nachtreihenfolge\"), handeln, und werden wieder schlafen gelegt. Jede Edition hat ihre eigene Reihenfolge für die erste Nacht und für alle weiteren Nächte." },
+        { "type": "p", "text": "Bei Morgendämmerung kurz warten, dann „Alle Augen auf\" ansagen und sofort verkünden, wer gestorben ist — aber niemals, wie oder als was." }
+      ]
+    },
+    {
+      "id": "handzeichen",
+      "heading": "Handzeichen in der Nacht",
+      "blocks": [
+        { "type": "p", "text": "In der Nacht wird nicht gesprochen. Der/die Geschichtenerzähler*in kommuniziert ausschließlich über Gesten und Token." },
+        {
+          "type": "dl",
+          "items": [
+            { "term": "Augen auf", "def": "Zweimal auf Schulter oder Knie tippen." },
+            { "term": "Augen zu", "def": "Hand über die eigenen Augen halten." },
+            { "term": "Ja", "def": "Nicken." },
+            { "term": "Nein", "def": "Kopfschütteln." },
+            { "term": "Gut", "def": "Daumen hoch." },
+            { "term": "Böse", "def": "Daumen runter." },
+            { "term": "Eine Zahl", "def": "Entsprechend viele Finger zeigen. Null = Fingerspitzen zum Kreis geformt." },
+            { "term": "Ein bestimmter Spieler", "def": "Auf ihn zeigen." },
+            { "term": "Ein bestimmter Charakter", "def": "Den Charakter-Token zeigen." }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "tagphase",
+      "heading": "Tagphase, Nominierung & Exekution",
+      "blocks": [
+        { "type": "p", "text": "Am Tag wird frei diskutiert. Spieler dürfen nach Belieben lügen — auch das gute Team. Private Gespräche abseits des Kreises sind ausdrücklich erlaubt und erwünscht." },
+        {
+          "type": "ul",
+          "items": [
+            "**Nominierung:** Jeder Spieler darf pro Tag nur einmal nominieren, und jeder Spieler kann pro Tag nur einmal nominiert werden. Nur lebende Spieler dürfen nominieren.",
+            "**Abstimmung:** Lebende Spieler dürfen pro Tag beliebig oft abstimmen. Tote Spieler haben nur noch eine einzige Stimme für den Rest des Spiels (Stimm-Token) — ist sie verbraucht, ist sie weg.",
+            "**Exekution:** Sie erfolgt, wenn der Nominierte mehr Stimmen als jeder andere an diesem Tag hat UND die Stimmenzahl mindestens der Hälfte der lebenden Spieler entspricht.",
+            "Es gibt maximal eine Exekution pro Tag, und nach ihr ist die Tagphase praktisch vorbei. Eine Exekution ist nicht zwingend — außer der Vortox ist im Spiel."
+          ]
+        },
+        { "type": "p", "text": "Gezählt wird im Uhrzeigersinn, endend beim nominierten Spieler. Der/die Geschichtenerzähler*in zählt dabei laut mit, während die Hand durch den Kreis wandert." },
+        { "type": "p", "text": "Es kommt zu keiner Exekution, wenn niemand nominiert wurde, wenn kein Nominierter genug Stimmen bekam, oder wenn die Abstimmung zwischen zwei Nominierten unentschieden endete." },
+        { "type": "p", "text": "Wenn genug nominiert und abgestimmt wurde, gib einen letzten Aufruf: In den Kreis treten und „Letzter Aufruf für Nominierungen! Drei… zwei… eins…\" sagen — das lässt Raum für überstürzte Entscheidungen in letzter Sekunde. Kommt nichts mehr, erkläre die Nominierungen für heute als geschlossen." },
+        { "type": "note", "text": "Verbannung (Exile) ist etwas anderes als Hinrichtung: Nur Reisende werden verbannt. Eine Verbannung zählt nicht als Hinrichtung, wird von Fähigkeiten nie beeinflusst, und jeder — auch Tote — darf sie per Handheben unterstützen." }
+      ]
+    },
+    {
+      "id": "tod",
+      "heading": "Tod & was danach passiert",
+      "blocks": [
+        {
+          "type": "ul",
+          "items": [
+            "Der Spieler dreht sein Lebens-Token auf dem Stadtplatz um und legt ein Stimm-Token darauf. Im Grimoire kommt ein Leichentuch auf sein Charakter-Token.",
+            "Er verliert **sofort** seine Fähigkeit. Sie beeinflusst das Spiel in keiner Weise mehr, und er wird nachts nicht mehr geweckt — entferne seine Erinnerungs- und Nacht-Token. Auch anhaltende Effekte seiner Fähigkeit enden sofort. (Ausnahmen bestätigen die Regel: Tollpatsch, Vigormortis-Schergen, Knochensammler*in.)",
+            "Er darf nicht mehr nominieren und für den Rest des Spiels nur noch einmal abstimmen. Dazu gibt er sein Stimm-Token ab; ohne Stimm-Token kann er nicht abstimmen.",
+            "Er schließt nachts weiterhin die Augen und darf tagsüber so viel reden, wie er will. Weil die Toten eine Stimme und ein Wort haben, entscheiden meist gerade sie über das endgültige Schicksal der Stadt.",
+            "Tote gewinnen, wenn ihr Team gewinnt, und verlieren, wenn ihr Team verliert — genau wie lebende Spieler.",
+            "Die Identität eines toten Spielers wird niemals verraten. Anders als in vergleichbaren Spielen bleibt sie ein Rätsel — tote böse Spieler können weiter Chaos stiften, solange man sie für gut hält."
+          ]
+        },
+        { "type": "p", "text": "Nach der Exekutionsphase nimm dir ruhig eine halbe Minute, um die Nacht vorzubereiten: Erinnerungs- und Nacht-Token ergänzen oder entfernen. Dann erkläre den Tag für beendet und bitte alle, die Augen zu schließen." }
+      ]
+    },
+    {
+      "id": "spielende",
+      "heading": "Sieg & Niederlage",
+      "blocks": [
+        {
+          "type": "dl",
+          "items": [
+            { "term": "Gut gewinnt", "def": "Wenn der Dämon stirbt und kein neuer Dämon entsteht.", "tone": "good" },
+            { "term": "Böse gewinnt", "def": "Wenn nur noch zwei Spieler leben (Reisende zählen dabei nicht mit).", "tone": "evil" },
+            { "term": "Gleichzeitiger Sieg", "def": "Gewinnen beide Teams im selben Moment, gewinnt Gut.", "tone": "neutral" }
+          ]
+        },
+        { "type": "p", "text": "Einzelne Charaktere verändern diese Bedingungen: Der/die Bürgermeister*in kann bei 3 Lebenden ohne Hinrichtung gewinnen. Der/die Heilige lässt das gute Team verlieren, wenn er/sie hingerichtet wird. Der Böse Zwilling verhindert einen Sieg von Gut, solange beide Zwillinge leben. Der Vortox lässt Böse gewinnen, wenn an einem Tag niemand hingerichtet wird. Das Genie (Mastermind) spielt nach dem Tod des Dämons noch einen Tag weiter." }
+      ]
+    },
+    {
+      "id": "betrunken-vergiftet",
+      "heading": "Betrunken & vergiftet",
+      "blocks": [
+        { "type": "p", "text": "Betrunken und vergiftet funktionieren mechanisch identisch: Der Spieler hat keine Fähigkeit, glaubt aber weiterhin, sie zu haben. Der/die Geschichtenerzähler*in tut so, als würde alles normal laufen — weckt ihn zur gewohnten Zeit und darf falsche Informationen geben." },
+        {
+          "type": "ul",
+          "items": [
+            "Der betroffene Spieler erfährt nie, dass er betrunken oder vergiftet ist.",
+            "Über die **Regeln** musst du auch betrunkenen und vergifteten Spielern immer die Wahrheit sagen. So weit müssen sie dir vertrauen können.",
+            "Falsche Informationen sind erlaubt, aber nicht Pflicht — auch eine zufällig korrekte Info ist zulässig.",
+            "Der Unterschied liegt nur in der Quelle: Betrunkenheit kommt meist von guten Charakteren oder dem Trunkenbold, Vergiftung von bösen."
+          ]
+        },
+        { "type": "note", "text": "Betrunken oder vergiftet ist immer der **Spieler**, nicht der Charakter — auch wenn man umgangssprachlich anders redet. Wird ein betrunkener Spieler zu einem neuen Charakter, ist er weiterhin betrunken. Tauscht ein vergifteter Spieler den Charakter mit jemandem, bleibt er vergiftet." },
+        { "type": "p", "text": "**Zum Timing:** Ist eine Fähigkeit dauerhaft oder wirkt bereits ins Spiel hinein, verliert der Spieler sie, sobald er betrunken oder vergiftet wird — und sie kehrt zurück, sobald er wieder nüchtern und gesund ist. Die vergiftete Teedame schützt ihre Nachbarn nicht; wird sie wieder gesund, schützt sie erneut. Wird die Hexe betrunken, nachdem sie jemanden verflucht hat, ist dieser Spieler nicht mehr verflucht; wird sie wieder nüchtern, ist er es erneut." },
+        {
+          "type": "ul",
+          "items": [
+            "Wird eine Fähigkeit ausgelöst oder genutzt, **während** der Spieler betrunken oder vergiftet ist, ist sie verschwendet: Sie wirkt weder jetzt noch später, selbst wenn er danach wieder nüchtern und gesund wird. Ein vergiftetes Schatzi, das stirbt, macht niemanden betrunken. Ein/e betrunkene(r) Gastwirt*in schützt niemanden.",
+            "Wird eine Fähigkeit ausgelöst, **während** der Spieler nüchtern und gesund ist, wirkt sie normal — auch dann, wenn sie sich auf etwas bezieht, das in der Vergangenheit geschah, als er betrunken oder vergiftet war. Ein/e nüchterne(r) Jongleur*in erhält nachts korrekte Informationen, selbst wenn er/sie beim Raten betrunken war.",
+            "Solche Zeitfragen sind selten. Im Zweifel gilt der Eintrag des Charakters im Almanach."
+          ]
+        },
+        { "type": "note", "text": "Tipp: Höre auf die Bluffs der bösen Spieler und stütze sie, wo es geht. Wählt der/die betrunkene Rabenhüter*in ausgerechnet den Baron, der sich als Bürgermeister*in ausgibt, hilfst du dem bösen Team, indem du das Bürgermeister-Token zeigst. Grundsätzlich gilt: Mach Betrunkenheit und Vergiftung für den Betroffenen so schädlich wie möglich." }
+      ]
+    },
+    {
+      "id": "wahnsinn",
+      "heading": "Wahnsinn („mad\" / madness)",
+      "blocks": [
+        { "type": "p", "text": "Wahnsinn wird in Sects & Violets eingeführt und ist selten — über alle Editionen hinweg lösen ihn nur rund ein Dutzend Charaktere aus. Er ist eher ein realer Zustand am Tisch als ein Spielzustand: Du kannst nicht im Grimoire nachsehen, wer wahnsinnig ist. Du musst zuschauen und zuhören." },
+        { "type": "p", "text": "Ist ein Spieler über etwas „mad\", versucht er, die Gruppe davon zu überzeugen, dass es wahr ist. Manche Charaktere werden angewiesen, über etwas wahnsinnig zu sein — manche ausdrücklich, es **nicht** zu sein." },
+        {
+          "type": "ul",
+          "items": [
+            "Wird ein Spieler angewiesen, über etwas wahnsinnig zu sein, und ist er es nicht, darf der/die Geschichtenerzähler*in eine Strafe verhängen. Ist er es, darf es umgekehrt einen Vorteil geben.",
+            "Die genauen Anweisungen, Vorteile und Strafen stehen auf dem Charakter-Token oder dem Charakterblatt.",
+            "Beim **Cerenovus** muss das Opfer die Gruppe glaubhaft überzeugen, ein bestimmter guter Charakter zu sein.",
+            "Beim **Mutanten** ist es umgekehrt: Er ist „mad\" darüber, ein Außenseiter zu sein — deutet er das an, kann er exekutiert werden.",
+            "Diese Sonder-Exekutionen dürfen jederzeit erfolgen, auch nachts, und zählen als die eine erlaubte Exekution des Tages.",
+            "„Könnte exekutiert werden\" bedeutet: Es liegt in deinem Ermessen. Das verhindert, dass Böse allein durch diese Taktik automatisch gewinnt."
+          ]
+        },
+        { "type": "p", "text": "Wie deutlich muss es sein? Ein offenes „Ich bin der Mutant!\" reicht offensichtlich. Es zählt aber auch subtiler: „Ich sage euch nicht, wer ich bin, aber der Mutant bin ich ganz sicher nicht\" mit einem breiten Grinsen — oder schlicht zu schweigen, während die anderen einen der Mutantschaft bezichtigen, in der Hoffnung, sie kommen selbst darauf. Selbst wenn du es nicht mitbekommst und stattdessen ein böser Spieler dir privat zuträgt „Er hat mir gesagt, er sei der Mutant\", ist das Beleg genug." }
+      ]
+    },
+    {
+      "id": "gesinnung",
+      "heading": "Gesinnung",
+      "blocks": [
+        { "type": "p", "text": "Jeder Spieler ist entweder gut oder böse. Die Gesinnung folgt normalerweise dem Charaktertyp: Bürger und Außenseiter sind gut, Schergen und Dämonen sind böse. Reisende können beides sein." },
+        {
+          "type": "ul",
+          "items": [
+            "Die Gesinnung wird beim Tod nie bekanntgegeben.",
+            "Einige Charaktere wechseln die Gesinnung im Spiel (Schlangenbeschwörer*in, Schwindler*in). Wechselt ein Spieler den Charakter, wechselt seine Gesinnung dagegen normalerweise **nicht** mit.",
+            "Manche Charaktere registrieren falsch: Der Einsiedler kann als böse und als Scherge oder Dämon erscheinen, der Spion als gut und als Bürger oder Außenseiter — beide sogar im Tod.",
+            "Böse Reisende sind böse, zählen aber nicht als Schergen. Das ist z. B. für den/die Uhrmacher*in relevant."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "reisende-fabled",
+      "heading": "Reisende & Fabled",
+      "blocks": [
+        { "type": "p", "text": "**Reisende** kommen ins Spiel, wenn jemand verspätet dazustößt, früher gehen muss, oder wenn mehr als 15 Spieler mitspielen. Alle wissen, welcher Spieler welcher Reisende ist — aber niemand kennt dessen Gesinnung. Reisende haben auffällig mächtige, offensichtlich wirkende Fähigkeiten und müssen sich deshalb das Vertrauen der Stadt verdienen, sonst werden sie verbannt." },
+        { "type": "p", "text": "Jede Edition arbeitet mit ihren eigenen fünf Reisenden — sie sind nicht beliebig austauschbar." },
+        { "type": "p", "text": "**Fabled** sind keine spielbaren Charaktere, sondern Werkzeuge für den/die Geschichtenerzähler*in. Sie können nicht getötet werden und ihre Fähigkeit nicht verlieren. Sie sind nicht dazu da, das Spiel um eines Twists willen zu verändern, sondern lösen echte Probleme am Tisch: Neulinge in Veteranenrunden, Spiele die zu lang oder zu kurz laufen, Sprachbarrieren, oder ein Tisch, der dem/der Geschichtenerzähler*in nicht zuhört." }
+      ]
+    },
+    {
+      "id": "nitty-gritty",
+      "heading": "Wichtige Zusatzregeln (Nitty-Gritty)",
+      "blocks": [
+        {
+          "type": "ul",
+          "items": [
+            "**Fähigkeiten wirken sofort.** Wenn eine Fähigkeit eine andere „überholt\" (z. B. der Dämon tötet, bevor der Mönch-Schutz greift), gilt die zuerst ausgeführte Aktion.",
+            "**Nur die eigene Fähigkeit wird mitgeteilt.** Kein Spieler erfährt vom/von der Geschichtenerzähler*in, was ein anderer Charakter herausgefunden hat.",
+            "**Reisende werden verbannt, nicht hingerichtet.** Eine Verbannung ist keine Hinrichtung und zählt nicht als solche.",
+            "**Fabled können nicht sterben** und ihre Fähigkeit nicht verlieren.",
+            "**Tote Spieler behalten ihre Stimme genau einmal.** Danach dürfen sie nur noch Verbannungen unterstützen.",
+            "**Im Zweifel entscheidet der/die Geschichtenerzähler*in** — zugunsten eines spannenden, ausgewogenen Spiels."
+          ]
+        }
+      ]
+    }
+  ]
+}

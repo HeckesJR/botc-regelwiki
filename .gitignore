@@ -1,0 +1,16 @@
+# Betriebssystem
+Thumbs.db
+Desktop.ini
+.DS_Store
+
+# Editoren & Werkzeuge
+.claude/
+.vscode/
+.idea/
+*.swp
+*~
+
+# lokale Dateien, die niemanden sonst interessieren
+*.local
+scratch/
+tmp/

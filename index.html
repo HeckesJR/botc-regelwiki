@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Blood on the Clocktower — Regelwiki</title>
+<meta name="description" content="Deutschsprachiges Regelwiki für Blood on the Clocktower: Grundregeln, Charaktere, Nachtreihenfolge und Setup-Generator.">
+<meta name="color-scheme" content="light">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='32' r='28' fill='%235c1f2e'/%3E%3Cg fill='none' stroke='%23efe4cc' stroke-width='3' stroke-linecap='round'%3E%3Ccircle cx='32' cy='32' r='17'/%3E%3Cpath d='M32 21v11l8 5'/%3E%3C/g%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Grenze+Gothisch:wght@400;600;700&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=IM+Fell+English+SC&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<a class="skip-link" href="#main">Zum Inhalt springen</a>
+
+<header class="site-header">
+  <div class="site-header__inner">
+    <p class="site-header__eyebrow">Ravenswood Bluff</p>
+    <h1 class="site-title">Blood on the Clocktower</h1>
+    <p class="site-subtitle">Regelwiki für unsere Runde</p>
+    <img class="fleuron" src="assets/textures/fleuron.svg" alt="" aria-hidden="true">
+  </div>
+</header>
+
+<nav class="tabs" aria-label="Hauptbereiche">
+  <div class="tabs__inner" role="tablist">
+    <button class="tab is-active" role="tab" id="tab-regeln"      aria-selected="true"  aria-controls="panel-regeln"      data-tab="regeln">Grundregeln</button>
+    <button class="tab"           role="tab" id="tab-charaktere"  aria-selected="false" aria-controls="panel-charaktere"  data-tab="charaktere">Charaktere</button>
+    <button class="tab"           role="tab" id="tab-nacht"       aria-selected="false" aria-controls="panel-nacht"       data-tab="nacht">Nachtreihenfolge</button>
+    <button class="tab"           role="tab" id="tab-generator"   aria-selected="false" aria-controls="panel-generator"   data-tab="generator">Generator</button>
+    <button class="tab"           role="tab" id="tab-skripte"     aria-selected="false" aria-controls="panel-skripte"     data-tab="skripte">Eigene Skripte</button>
+  </div>
+</nav>
+
+<main id="main">
+
+  <!-- ============================================ GRUNDREGELN -->
+  <section class="panel is-active" id="panel-regeln" role="tabpanel" aria-labelledby="tab-regeln" data-panel="regeln">
+    <div class="sheet">
+      <span class="sheet__tab">Die Basics</span>
+      <div id="rules-root" class="rules" aria-live="polite">
+        <p class="loading">Regeln werden geladen …</p>
+      </div>
+
+      <h2 class="section-heading" id="glossar">Glossar</h2>
+      <img class="fleuron fleuron--sm" src="assets/textures/fleuron.svg" alt="" aria-hidden="true">
+      <div class="glossary-tools">
+        <label class="field">
+          <span class="field__label">Begriff suchen</span>
+          <input type="search" id="glossary-search" placeholder="z. B. vergiftet, Verbannung, Red Herring …" autocomplete="off">
+        </label>
+      </div>
+      <div id="glossary-root" class="glossary" aria-live="polite"></div>
+    </div>
+  </section>
+
+  <!-- ============================================ CHARAKTERE -->
+  <section class="panel" id="panel-charaktere" role="tabpanel" aria-labelledby="tab-charaktere" data-panel="charaktere" hidden>
+    <div class="sheet">
+      <span class="sheet__tab">Charaktere</span>
+
+      <div class="controls">
+        <div class="control-row">
+          <span class="control-row__label">Edition</span>
+          <div class="chipset" id="edition-switch" role="group" aria-label="Edition wählen"></div>
+        </div>
+
+        <div class="control-row">
+          <span class="control-row__label">Typ</span>
+          <div class="chipset" id="type-filter" role="group" aria-label="Charaktertyp filtern"></div>
+        </div>
+
+        <div class="control-row control-row--search">
+          <label class="field field--grow">
+            <span class="field__label">Suche</span>
+            <input type="search" id="char-search" placeholder="Name oder Fähigkeit …" autocomplete="off">
+          </label>
+          <button type="button" class="btn btn--ghost" id="char-reset">Zurücksetzen</button>
+        </div>
+      </div>
+
+      <p class="result-count" id="char-count" aria-live="polite"></p>
+      <div class="card-grid" id="char-grid"></div>
+      <p class="empty-state" id="char-empty" hidden>Keine Charaktere gefunden. Andere Filter probieren?</p>
+    </div>
+  </section>
+
+  <!-- ============================================ NACHTREIHENFOLGE -->
+  <section class="panel" id="panel-nacht" role="tabpanel" aria-labelledby="tab-nacht" data-panel="nacht" hidden>
+    <div class="sheet">
+      <span class="sheet__tab">Die Nacht</span>
+      <h2 class="section-heading">Nachtreihenfolge</h2>
+      <img class="fleuron fleuron--sm" src="assets/textures/fleuron.svg" alt="" aria-hidden="true">
+      <p class="lede">Automatisch aus den Charakterdaten erzeugt — es gibt keine zweite Liste, die veralten könnte. Nur Charaktere, die tatsächlich aufwachen, erscheinen hier.</p>
+
+      <div class="controls">
+        <div class="control-row">
+          <span class="control-row__label">Edition</span>
+          <div class="chipset" id="night-edition-switch" role="group" aria-label="Edition wählen"></div>
+        </div>
+        <div class="control-row">
+          <span class="control-row__label">Nacht</span>
+          <div class="chipset" id="night-phase-switch" role="group" aria-label="Nachtphase wählen">
+            <button type="button" class="chip is-active" data-phase="first">Erste Nacht</button>
+            <button type="button" class="chip" data-phase="other">Andere Nächte</button>
+          </div>
+        </div>
+      </div>
+
+      <ol class="night-list" id="night-list"></ol>
+    </div>
+  </section>
+
+  <!-- ============================================ GENERATOR -->
+  <section class="panel" id="panel-generator" role="tabpanel" aria-labelledby="tab-generator" data-panel="generator" hidden>
+    <div class="sheet">
+      <span class="sheet__tab">Storyteller</span>
+      <h2 class="section-heading">Setup-Generator</h2>
+      <img class="fleuron fleuron--sm" src="assets/textures/fleuron.svg" alt="" aria-hidden="true">
+      <p class="lede">Wähle Spieleranzahl und Edition. Das Tool wendet die offizielle Grundverteilung an, berücksichtigt Charaktere, die diese Verteilung verändern, und schlägt passende Setups vor.</p>
+
+      <form class="generator-form" id="generator-form">
+        <label class="field">
+          <span class="field__label">Spieleranzahl</span>
+          <input type="number" id="gen-players" min="5" max="20" value="8" inputmode="numeric">
+        </label>
+
+        <label class="field">
+          <span class="field__label">Skript</span>
+          <select id="gen-edition"></select>
+        </label>
+
+        <div class="generator-form__actions">
+          <button type="submit" class="btn btn--primary">Setups vorschlagen</button>
+          <button type="button" class="btn" id="gen-balanced">Ausgewogene Runde</button>
+          <button type="button" class="btn" id="gen-random">Rein zufällig</button>
+        </div>
+      </form>
+
+      <p class="gen-hint" id="gen-hint" hidden></p>
+      <div id="gen-distribution" class="distribution" aria-live="polite"></div>
+      <div id="gen-results" class="setup-results"></div>
+    </div>
+  </section>
+
+  <!-- ============================================ EIGENE SKRIPTE -->
+  <section class="panel" id="panel-skripte" role="tabpanel" aria-labelledby="tab-skripte" data-panel="skripte" hidden>
+    <div class="sheet">
+      <span class="sheet__tab">Skripte</span>
+      <h2 class="section-heading">Eigene Skripte</h2>
+      <img class="fleuron fleuron--sm" src="assets/textures/fleuron.svg" alt="" aria-hidden="true">
+      <p class="lede">Stell dir aus den Charakteren aller drei Editionen ein eigenes Skript zusammen. Es wird in diesem Browser gespeichert und steht dann im Generator zur Auswahl.</p>
+
+      <div class="script-bar">
+        <label class="field field--grow">
+          <span class="field__label">Name des Skripts</span>
+          <input type="text" id="script-name" placeholder="z. B. Unser Hausskript" autocomplete="off">
+        </label>
+        <label class="field">
+          <span class="field__label">Gespeicherte Skripte</span>
+          <select id="script-select"></select>
+        </label>
+        <div class="script-bar__actions">
+          <button type="button" class="btn btn--primary" id="script-save">Speichern</button>
+          <button type="button" class="btn" id="script-new">Neu</button>
+          <button type="button" class="btn btn--ghost" id="script-delete">Löschen</button>
+        </div>
+      </div>
+
+      <div class="script-status" id="script-status" aria-live="polite"></div>
+
+      <div class="controls">
+        <div class="control-row">
+          <span class="control-row__label">Herkunft</span>
+          <div class="chipset" id="script-edition-filter" role="group" aria-label="Edition filtern"></div>
+        </div>
+        <div class="control-row">
+          <span class="control-row__label">Typ</span>
+          <div class="chipset" id="script-type-filter" role="group" aria-label="Typ filtern"></div>
+        </div>
+        <div class="control-row control-row--search">
+          <label class="field field--grow">
+            <span class="field__label">Suche</span>
+            <input type="search" id="script-search" placeholder="Name oder Fähigkeit …" autocomplete="off">
+          </label>
+          <button type="button" class="btn btn--ghost" id="script-clear">Auswahl leeren</button>
+        </div>
+      </div>
+
+      <div class="picker" id="script-picker"></div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="site-footer">
+  <img class="fleuron fleuron--sm" src="assets/textures/fleuron.svg" alt="" aria-hidden="true">
+  <p>Blood on the Clocktower — Regelwiki · privat für unsere Spielrunde</p>
+  <p class="site-footer__fineprint">Blood on the Clocktower ist ein Spiel von Steven Medway, veröffentlicht von The Pandemonium Institute. Dieses Wiki ist eine inoffizielle, nicht-kommerzielle Zusammenfassung für den privaten Gebrauch.</p>
+</footer>
+
+<script src="vendor/jspdf.umd.min.js"></script>
+<script src="js/render.js"></script>
+<script src="js/search.js"></script>
+<script src="js/generator.js"></script>
+<script src="js/scripts.js"></script>
+<script src="js/pdf-export.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,664 @@
+{
+  "edition": "sects_violets",
+  "name_de": "Sects & Violets",
+  "name_en": "Sects & Violets",
+  "tagline": "Die verrückteste Edition — großartige Informationen, und fast nichts davon ist verlässlich.",
+  "difficulty": "Mittelschwer",
+  "intro": "Der lebendige Frühling weicht einem warmen Sommer. Blumen blühen, Vögel singen, Philosophen sinnieren in einer belebten Taverne — und am Stadtrand schlägt ein Zirkus sein liebenswert zerschlissenes Zelt auf. Während sich die Stadtbewohner in Ausschweifung und Unfug ergehen, sammeln sich dunkle und heimliche Mächte: Hexen und Kulte lauern in majestätischen Ruinen und schmieden Pläne für den Untergang von Ravenswood Bluff.",
+  "storyteller_notes": [
+    "Die guten Charaktere bekommen jede Nacht großartige Informationen. Das böse Team ist dafür extrem vielfältig und kann für massive Verwirrung sorgen — Charaktere wechseln die Gesinnung, Spieler wechseln Charaktere, und selbst Böse verliert manchmal den Überblick.",
+    "Gute Spieler haben fast immer mehr Informationen, als sie verarbeiten können. Sie müssen erst herausfinden, welcher Dämon im Spiel ist, um zu verstehen, was vor sich geht: Fang Gu springt auf Außenseiter über, No Dashii vergiftet zwei Bürger, Vigormortis vergiftet über tote Schergen, und beim Vortox ist schlicht jede Information falsch.",
+    "Sobald das gute Team merkt, welche Information richtig und welche falsch ist, kann es zurückrechnen und sein bisheriges Wissen umkehren — das ist der große Moment dieser Edition.",
+    "Außenseiter wollen die meiste Zeit lügen, wer sie sind. Ein sterbender Außenseiter kann dem guten Team gewaltige Nachteile bringen, weshalb kluge Dämonen sie früh töten.",
+    "Dies ist das erste Auftreten von Wahnsinn („madness\"). Kenne den Unterschied zwischen Cerenovus und Mutant*in genau, bevor du diese Edition leitest."
+  ],
+  "night_meta": {
+    "first": [
+      { "order": 1, "key": "dusk", "label": "Abenddämmerung", "text": "Prüfe, ob alle Augen geschlossen sind. Manche Reisende & Fabled handeln." },
+      { "order": 2, "key": "minion_info", "label": "Schergen-Info", "text": "Ab 7 Spielern: Alle Schergen wecken, Token DIES IST DER DÄMON zeigen, auf den Dämon zeigen." },
+      { "order": 3, "key": "demon_info", "label": "Dämon-Info", "text": "Ab 7 Spielern: Dämon wecken, Token DIES SIND DEINE SCHERGEN zeigen und auf sie zeigen, dann Token DIESE CHARAKTERE SIND NICHT IM SPIEL und 3 gute Charakter-Token zeigen." },
+      { "order": 13, "key": "dawn", "label": "Morgendämmerung", "text": "Kurz warten, zum Augenöffnen aufrufen." }
+    ],
+    "other": [
+      { "order": 1, "key": "dusk", "label": "Abenddämmerung", "text": "Prüfe, ob alle Augen geschlossen sind. Manche Reisende & Fabled handeln." },
+      { "order": 21, "key": "dawn", "label": "Morgendämmerung", "text": "Kurz warten, zum Augenöffnen aufrufen und sofort sagen, wer gestorben ist." }
+    ]
+  },
+  "setups": [
+    {
+      "id": "sv-erster-abend",
+      "name": "Für deinen ersten Sects & Violets-Abend",
+      "players": 8,
+      "curated": true,
+      "difficulty": "Einfach",
+      "characters": ["clockmaker", "oracle", "seamstress", "artist", "juggler", "klutz", "witch", "no_dashii"],
+      "reason": "Einfache, gut verständliche Charaktere. Die Informationen für Uhrmacher*in, Orakel und Jongleur*in sind leicht zu berechnen. Die Spieler entscheiden selbst über Näherin-, Künstler-, Jongleur- und Tollpatsch-Fähigkeiten. Merke dir, wer von der Hexe verflucht und wer vom No Dashii vergiftet ist — dann läuft's rund."
+    },
+    {
+      "id": "sv-abenteuerlich",
+      "name": "Etwas abenteuerlicher",
+      "players": 8,
+      "curated": true,
+      "difficulty": "Mittel",
+      "characters": ["snake_charmer", "dreamer", "flowergirl", "savant", "barber", "klutz", "pit_hag", "fang_gu"],
+      "reason": "Charaktertausch-Fokus. Schlangenbeschwörer*in und Fang Gu können den Dämon zu einem neuen Spieler machen. Die Alte Grubenhexe erschafft neue Charaktere, der/die Friseur*in verkompliziert das Wissen über „wer ist wer\" zusätzlich durch Tausch. Der arme, verwirrte Tollpatsch muss bei all dem Chaos einen guten Spieler herauspicken!"
+    },
+    {
+      "id": "sv-zwillinge",
+      "name": "Zwillings-Fokus",
+      "players": 8,
+      "curated": true,
+      "difficulty": "Mittel",
+      "characters": ["town_crier", "seamstress", "philosopher", "artist", "juggler", "sage", "evil_twin", "vigormortis"],
+      "reason": "Dreht sich um Guten und Bösen Zwilling. Das gute Team hat starke Ressourcen, aber der Vigormortis kann jederzeit einen der beiden Zwillinge töten, wenn's brenzlig wird. Steckt Gut alle Kraft in die Zwillingssuche, findet es den Dämon womöglich nicht rechtzeitig. Balance ist entscheidend."
+    },
+    {
+      "id": "sv-vorsichtig",
+      "name": "Für vorsichtige, überlegte Spieler",
+      "players": 8,
+      "curated": true,
+      "difficulty": "Mittel",
+      "characters": ["clockmaker", "mathematician", "town_crier", "savant", "artist", "sweetheart", "witch", "no_dashii"],
+      "reason": "Ähnlich dem ersten Beispiel, ergänzt um Mathematiker*in, Stadtschreier*in, Gelehrte*r und Schatzi. Der No Dashii hat viel zu vergiften, aber Gelehrte*r und Mathematiker*in können ihn recht schnell finden. Die Hexe ist gefährlich (besonders mit Schatzi), aber Uhrmacher*in und Künstler*in können den zweiten bösen Spieler koordiniert aufspüren."
+    },
+    {
+      "id": "sv-wahnsinn",
+      "name": "Wildes, chaotisches Spiel",
+      "players": 8,
+      "curated": true,
+      "difficulty": "Schwer",
+      "characters": ["clockmaker", "philosopher", "flowergirl", "mathematician", "sage", "mutant", "cerenovus", "vortox"],
+      "reason": "Wahnsinn-Fokus. Der Vortox verfälscht entscheidende Informationen, Cerenovus und Mutant*in sorgen für Chaos und Misstrauen. Du solltest den Unterschied im Wahnsinn-Mechanismus der beiden Charaktere gut kennen. Verstehen es die Spieler auch, wird's herrlich albern — viel Bluffen, verwirrende Anschuldigungen, dynamisches Spielgefühl."
+    }
+  ],
+  "characters": [
+    {
+      "id": "clockmaker",
+      "edition": "sects_violets",
+      "type": "townsfolk",
+      "name_de": "Uhrmacher*in",
+      "name_en": "Clockmaker",
+      "ability_short": "Du beginnst wissend, wie viele Schritte es vom Dämon zu seinem nächsten Schergen sind.",
+      "quote": "Stört mich nicht. Das Ticken muss weitergehen, denn der Kreis des Lebens enthält alle Dinge – alle Antworten – in seiner göttlichen Maschinerie. Ich muss arbeiten.",
+      "full_text": "Der/die Uhrmacher*in erfährt die Entfernung vom Dämon zu seinem nächsten Schergen.\n\n• Der/die Uhrmacher*in erfährt dies nur in der ersten Nacht.\n• Die Entfernung ist die Anzahl der sitzenden Spieler, beginnend beim Spieler neben dem Dämon bis zum nächsten Schergen, entweder im Uhrzeigersinn oder gegen den Uhrzeigersinn.",
+      "examples": [
+        "Der Fang Gu sitzt neben der Alten Grubenhexe. Der/die Uhrmacher*in erfährt eine „1\".",
+        "Im Uhrzeigersinn vom No Dashii sitzen die Träumerin, der Schlangenbeschwörer und dann der Böse Zwilling. Gegen den Uhrzeigersinn sitzen der Mutant, das Schatzi, der Philosoph, der Weise und dann die Hexe. Da die Hexe fünf Schritte entfernt ist und der Böse Zwilling drei, erfährt der/die Uhrmacher*in eine „3\".",
+        "Der Fang Gu hat zwei Reisende als Nachbarn, einen guten und einen bösen. Neben einem dieser Reisenden sitzt ein Cerenovus. In der ersten Nacht erfährt der/die Uhrmacher*in eine „2\", weil böse Reisende keine Schergen sind."
+      ],
+      "how_to_run": "Wecke den/die Uhrmacher*in in der ersten Nacht. Zeige mit den Fingern (0, 1, 2, usw.) die Entfernung vom Dämon zum nächsten Schergen, beginnend mit dem Spieler neben dem Dämon, der näher an diesem Schergen sitzt. Schicke den/die Uhrmacher*in wieder schlafen.",
+      "tips": [],
+      "wakes_first_night": true,
+      "wakes_other_nights": false,
+      "night_order_first": 9,
+      "night_order_other": null,
+      "icon": "assets/icons/sects_violets/clockmaker.webp"
+    },
+    {
+      "id": "dreamer",
+      "edition": "sects_violets",
+      "type": "townsfolk",
+      "name_de": "Träumer*in",
+      "name_en": "Dreamer",
+      "ability_short": "Jede Nacht wählst du einen Spieler (nicht dich selbst oder Reisende); du erfährst 1 guten & 1 bösen Charakter, von denen einer korrekt ist.",
+      "quote": "Ich erinnere mich an den Uhrmacher. Der Himmel war rot, und es regnete fraktale Dreiecke. Es roch nach Veilchen, und es gab ein blubberndes Geräusch. Eine Frau mit glühenden Augen und struppigem Bart zischte den Himmel an. Dann erwachte ich.",
+      "full_text": "Der/die Träumer*in erfährt, welcher Spieler welcher Charakter ist – ist sich aber nie sicher.\n\n• Jede Nacht wählt der/die Träumer*in einen Spieler und erfährt zwei Charaktere – einen, der der Spieler ist, und einen, der er nicht ist.\n• Der falsche Charakter-Token hängt vom wahren Charaktertyp des gewählten Spielers ab. Ist der gewählte Spieler Bürger oder Außenseiter, ist der falsche Token ein beliebiger Scherge oder Dämon. Ist er Scherge oder Dämon, ist der falsche Token ein Bürger oder Außenseiter.\n• Der/die Träumer*in darf sich nicht selbst wählen und keine Reisenden wählen.",
+      "examples": [
+        "Der/die Träumer*in wählt den Mutanten. Er/sie erfährt, dass dieser Spieler entweder der Mutant oder der Cerenovus ist.",
+        "Der/die Träumer*in wählt den Philosophen, der die Fähigkeit des Blumenmädchens erhalten hat. Er/sie erfährt, dass dieser Spieler entweder der Philosoph oder der Vigormortis ist.",
+        "Heute haben sich sowohl der Böse Zwilling als auch der Künstler als Künstler ausgegeben. Der/die Träumer*in wählt den Spieler mit dem Bösen Zwilling. Will der/die Geschichtenerzähler*in dem guten Team helfen, zeigt er die Token von Bösem Zwilling und Schatzi. Entscheidet er sich für Böse, zeigt er die Token von Bösem Zwilling und Künstler.",
+        "Der/die Träumer*in wählt den Vortox. Die Information muss falsch sein, da der Vortox im Spiel ist – er/sie erfährt, dass dieser Spieler entweder das Orakel oder der No Dashii ist."
+      ],
+      "how_to_run": "Wecke jede Nacht den/die Träumer*in. Er/sie zeigt auf einen beliebigen Spieler. Ist dessen Charakter Bürger oder Außenseiter, zeige seinen Charakter-Token und einen beliebigen Schergen- oder Dämon-Token. Ist er Scherge oder Dämon, zeige seinen Token und einen beliebigen Bürger- oder Außenseiter-Token. Schicke den/die Träumer*in wieder schlafen.",
+      "tips": [
+        "Wählt der/die Träumer*in einen bösen Spieler, kannst du dem bösen Team helfen, indem du den guten Charakter zeigst, als den dieser böse Spieler sich ausgibt, oder einen unauffälligeren Charakter wie Schlangenbeschwörer*in, Weise*r, Mutant*in oder Tollpatsch."
+      ],
+      "wakes_first_night": true,
+      "wakes_other_nights": true,
+      "night_order_first": 10,
+      "night_order_other": 14,
+      "icon": "assets/icons/sects_violets/dreamer.webp"
+    },
+    {
+      "id": "snake_charmer",
+      "edition": "sects_violets",
+      "type": "townsfolk",
+      "name_de": "Schlangenbeschwörer*in",
+      "name_en": "Snake Charmer",
+      "ability_short": "Jede Nacht wählst du einen lebenden Spieler: Ein gewählter Dämon tauscht Charaktere & Gesinnungen mit dir und ist danach vergiftet.",
+      "quote": "Effendi... ich bin nur ein einfacher Mann, aber meine Pfeife ist golden, und eine einzige Melodie wird den wildesten Dschinn zähmen, Inshallah. Man sagt, Gier hat mehr Männer an den Galgen gebracht als der Strick selbst. Aber nicht ich, Effendi... nicht ich.",
+      "full_text": "Der/die Schlangenbeschwörer*in erfährt, welche Spieler nicht der Dämon sind... wird aber selbst zum Dämon, wenn er/sie zu gierig oder waghalsig wird.\n\n• Jede Nacht wählt er/sie einen Spieler. Ist dieser Spieler nicht der Dämon, passiert nichts.\n• Ist er der Dämon, wird der/die Schlangenbeschwörer*in zu diesem Dämon und wird böse, der alte Dämon wird gut und dauerhaft vergiftet.\n• Hat der Philosoph die Fähigkeit des Schlangenbeschwörers und wird zum Dämon, wird der Dämon zu einem vergifteten Philosophen.",
+      "examples": [
+        "Der/die Schlangenbeschwörer*in wählt die Alte Grubenhexe – nichts passiert.",
+        "In der nächsten Nacht wählt er/sie sich selbst – nichts passiert.",
+        "Er/sie wählt den Vigormortis. Er/sie wird sofort zum bösen Vigormortis, der Vigormortis wird zum guten, vergifteten Schlangenbeschwörer.",
+        "Die Alte Grubenhexe verwandelt sich selbst in den Schlangenbeschwörer. Danach wählt der Schlangenbeschwörer (ehemals die Alte Grubenhexe) den Fang Gu. Er wird zum Fang Gu, der Fang Gu wird zum vergifteten Schlangenbeschwörer. Beide bleiben böse."
+      ],
+      "how_to_run": "Wecke jede Nacht den/die Schlangenbeschwörer*in. Er/sie zeigt auf einen beliebigen Spieler.\n\n• Ist dieser Spieler nicht der Dämon, passiert nichts. Schlafen schicken.\n• Ist er der Dämon: Der/die alte Schlangenbeschwörer*in verwandelt sich in den neuen (bösen) Dämon, der alte Dämon in den neuen (guten) Schlangenbeschwörer – tausche die Token. Wecke den neuen Dämon, zeige DU BIST, Daumen runter, dann den Dämon-Token. Schlafen schicken. Wecke den/die neue(n) Schlangenbeschwörer*in, zeige DU BIST, Daumen hoch, dann den Schlangenbeschwörer-Token. Schlafen schicken.",
+      "tips": [
+        "Ist der/die Schlangenbeschwörer*in ausnahmsweise böse oder der Dämon gut, tausche die Gesinnungen entsprechend."
+      ],
+      "wakes_first_night": true,
+      "wakes_other_nights": true,
+      "night_order_first": 5,
+      "night_order_other": 3,
+      "icon": "assets/icons/sects_violets/snake_charmer.webp"
+    },
+    {
+      "id": "mathematician",
+      "edition": "sects_violets",
+      "type": "townsfolk",
+      "name_de": "Mathematiker*in",
+      "name_en": "Mathematician",
+      "ability_short": "Jede Nacht erfährst du, wie viele Fähigkeiten von Spielern seit der Morgendämmerung durch die Fähigkeit eines anderen Charakters ungewöhnlich funktioniert haben.",
+      "quote": "Jedes widerspruchsfreie formale System x, in dem eine gewisse Menge elementarer Arithmetik durchgeführt werden kann, ist unvollständig; das heißt, es gibt Aussagen in der Sprache von x, die innerhalb von x weder bewiesen noch widerlegt werden können. Ergo bist du betrunken.",
+      "full_text": "Der/die Mathematiker*in weiß, wie viele Dinge seit der Morgendämmerung „schiefgegangen\" sind.\n\n• Funktioniert eine Fähigkeit durch Einmischung eines anderen Charakters nicht wie beabsichtigt, erfährt er/sie das.\n• Er/sie erfährt nicht, bei wem, nur wie oft.\n• Er/sie erkennt nicht, wenn die eigene Fähigkeit versagt.\n• Er/sie erkennt weder Betrunkenheit noch Vergiftung selbst, aber wenn Fähigkeiten dadurch nicht wie beabsichtigt funktionierten.",
+      "examples": [
+        "Das vergiftete Orakel erfährt „zwei tote Spieler böse\", tatsächlich sind es drei. Alles andere lief normal. Der/die Mathematiker*in erfährt „1\".",
+        "Vergifteter Schlangenbeschwörer wählt, nichts passiert; betrunkener Jongleur bekommt korrekte Info; vergifteter Gelehrter bekommt zwei wahre Infos. Der/die Mathematiker*in erfährt „1\" (weil eine der Aussagen des Gelehrten wahr war, obwohl sie falsch sein sollte).",
+        "Vortox im Spiel. Fünf gute Spieler erhielten falsche Infos, die betrunkene Hexe verfluchte ohne Wirkung. Trotz sechs ungewöhnlicher Wirkungen durch den Vortox erfährt der/die Mathematiker*in „3\"."
+      ],
+      "how_to_run": "Markiere jeden Charakter, dessen Fähigkeit durch einen anderen Charakter ungewöhnlich funktioniert, mit UNGEWÖHNLICH. Wecke jede Nacht den/die Mathematiker*in, zeige die Anzahl mit den Fingern, schicke ihn/sie schlafen und entferne alle UNGEWÖHNLICH-Marker.",
+      "tips": [],
+      "wakes_first_night": true,
+      "wakes_other_nights": true,
+      "night_order_first": 12,
+      "night_order_other": 20,
+      "icon": "assets/icons/sects_violets/mathematician.webp"
+    },
+    {
+      "id": "flowergirl",
+      "edition": "sects_violets",
+      "type": "townsfolk",
+      "name_de": "Blumenmädchen",
+      "name_en": "Flowergirl",
+      "ability_short": "Jede Nacht* erfährst du, ob heute ein Dämon abgestimmt hat.",
+      "quote": "Die Veilchen von gestern sind verwelkt und gestorben, aber heute blühen meine Mohnblumen.",
+      "full_text": "Das Blumenmädchen weiß, ob der Dämon abgestimmt hat.\n\n• Die Stimme eines Dämonen zählt, egal ob der Nominierte exekutiert wurde.\n• Kein Erkennen, wenn der Dämon aus anderen Gründen die Hand hebt (z. B. Abendessen-„Abstimmung\" oder Verbannungs-Unterstützung).\n• Wechselt der Dämon nach seiner Abstimmung, erkennt das Blumenmädchen den ursprünglichen.\n• Bei zwei oder mehr Dämonen (auch toten) reicht eine Stimme für „ja\".",
+      "examples": [
+        "Eine Nominierung, Exekution, aber der Dämon stimmte nicht mit → „nein\".",
+        "Drei Nominierungen, der Dämon stimmte bei der zweiten mit, niemand exekutiert → „ja\".",
+        "Keine Nominierung, Reisende verbannt, alle unterstützten per Handheben → „nein\" (Unterstützung ist keine Abstimmung)."
+      ],
+      "how_to_run": "Markiere bei jeder Morgendämmerung DÄMON HAT NICHT ABGESTIMMT (entferne ggf. DÄMON HAT ABGESTIMMT). Stimmt der Dämon für eine Exekution mit, tausche den Marker. Wecke das Blumenmädchen (außer in der ersten Nacht), nicke oder schüttle entsprechend den Kopf, schicke es schlafen.",
+      "tips": [
+        "Vergisst du, ob der Dämon abgestimmt hat, wecke ihn nachts und frage mit dem Infotoken HAST DU HEUTE ABGESTIMMT? Er muss ehrlich antworten."
+      ],
+      "wakes_first_night": false,
+      "wakes_other_nights": true,
+      "night_order_first": null,
+      "night_order_other": 15,
+      "icon": "assets/icons/sects_violets/flowergirl.webp"
+    },
+    {
+      "id": "town_crier",
+      "edition": "sects_violets",
+      "type": "townsfolk",
+      "name_de": "Stadtschreier*in",
+      "name_en": "Town Crier",
+      "ability_short": "Jede Nacht* erfährst du, ob heute ein Scherge nominiert hat.",
+      "quote": "Hört, hört! Hexenwerk im Labyrinth! Ein genialer Gelehrter enthüllt alles! Die Stadt in Gefahr! Hört, hört!",
+      "full_text": "Der/die Stadtschreier*in weiß, wann Schergen nominieren.\n\n• Jede Nacht: „ja\" oder „nein\".\n• Nicht, wer oder wie viele – nur, ob überhaupt.",
+      "examples": [
+        "Ein Bürger nominiert → „nein\".",
+        "Vier nominieren, zwei davon Schergen, keine Exekution → „ja\".",
+        "Ein Scherge verbannt einen Reisenden → „nein\" (Verbannung zählt nicht als Nominierung)."
+      ],
+      "how_to_run": "Markiere bei jeder Morgendämmerung SCHERGEN HABEN NICHT NOMINIERT. Nominiert ein Scherge, tausche zu SCHERGE HAT NOMINIERT. Wecke ihn/sie (außer in der ersten Nacht), nicke oder schüttle entsprechend den Kopf, schicke ihn/sie schlafen und entferne den Marker.",
+      "tips": [
+        "Bei Unsicherheit wecke nachts jeden Schergen und frage mit HAST DU HEUTE NOMINIERT?"
+      ],
+      "wakes_first_night": false,
+      "wakes_other_nights": true,
+      "night_order_first": null,
+      "night_order_other": 16,
+      "icon": "assets/icons/sects_violets/town_crier.webp"
+    },
+    {
+      "id": "oracle",
+      "edition": "sects_violets",
+      "type": "townsfolk",
+      "name_de": "Orakel",
+      "name_en": "Oracle",
+      "ability_short": "Jede Nacht* erfährst du, wie viele tote Spieler böse sind.",
+      "quote": "Nur die Erwählten dürfen hinter den Schleier blicken. Die Toten sind unruhig, und sie zeigen schweigend nach Norden ins Eis.",
+      "full_text": "Das Orakel weiß, wie viele tote Spieler böse sind.\n\n• Wirkt nach dem nächtlichen Dämon-Angriff – bezieht sich auf den Stand bei Tagesanbruch.\n• Erkennt tote Schergen und Dämonen und auch andere böse Spieler (böse Reisende, verwandelte Bürger und Außenseiter).\n• Umgedrehte Token (Gesinnung invertiert) zählen mit.",
+      "examples": [
+        "Blumenmädchen exekutiert, Jongleur vom Dämon getötet → alle Toten gut → „0\".",
+        "7 Tote, 5 gut / 2 böse, dazu ein böser Reisender verbannt und ein Scherge vom Dämon getötet → „4\"."
+      ],
+      "how_to_run": "Wecke das Orakel (außer in der ersten Nacht), zeige die Anzahl toter böser Spieler mit den Fingern und schicke es schlafen.",
+      "tips": [],
+      "wakes_first_night": false,
+      "wakes_other_nights": true,
+      "night_order_first": null,
+      "night_order_other": 17,
+      "icon": "assets/icons/sects_violets/oracle.webp"
+    },
+    {
+      "id": "savant",
+      "edition": "sects_violets",
+      "type": "townsfolk",
+      "name_de": "Gelehrte*r",
+      "name_en": "Savant",
+      "ability_short": "Jeden Tag darfst du den/die Geschichtenerzähler*in privat aufsuchen, um 2 Informationen zu erhalten: Eine davon ist wahr, die andere falsch.",
+      "quote": "Zweiundsiebzig Streichhölzer auf dem Boden... die Sonne geht früh unter, aber der Mond bleibt unverändert... ein zerrissenes Stück Stoff... Böses im Herrenhaus... drei mal drei... der, dem wir vertrauten, ist nicht, was er scheint... grünes Licht bedeutet Magnesium... Rückstände, aber das Muster stimmt nicht... zweiundsiebzig Streichhölzer auf dem Boden...",
+      "full_text": "Der/die Gelehrte erhält großartige Informationen, die sich jeden Tag und in jedem Spiel unterscheiden — aber die Hälfte davon ist falsch.\n\n• Jeden Tag wählt der/die Geschichtenerzähler*in zwei Informationen für den/die Gelehrte(n) aus. Eine muss wahr sein, eine muss falsch sein, und der/die Gelehrte erfährt nicht, welche welche ist.\n• Es liegt am/an der Gelehrten, das Gespräch zu suchen — nicht umgekehrt. Es ist kein öffentliches Gespräch, die Gruppe darf nicht mithören.\n• Der/die Gelehrte darf auch darauf verzichten, den/die Geschichtenerzähler*in aufzusuchen.\n• Ein/e betrunkene(r) oder vergiftete(r) Gelehrte kann zwei wahre oder zwei falsche Informationen erhalten.",
+      "examples": [
+        "Der/die Gelehrte erfährt: „Alle Spieler mit Brille sind gut\" und „Ein Spieler auf dem schwarzen Sofa ist ein Scherge\".",
+        "Der/die Gelehrte erfährt: „Ein/e Schlangenbeschwörer*in ist im Spiel\" und „Alle haben letzte Nacht wahre Informationen erhalten\".",
+        "Der/die Gelehrte erfährt: „Der Dämon ist eine Frau\" und „Ben ist böse\".",
+        "Der/die Gelehrte erfährt: „Evin und Amy haben dieselbe Gesinnung\" und „Es ist ein Außenseiter im Spiel\"."
+      ],
+      "how_to_run": "Einmal pro Tag, wenn der/die Gelehrte ein privates Gespräch mit dir wünscht, nimm ihn/sie so weit vom Kreis weg, dass niemand mithören kann. Flüstere ihm/ihr zwei Informationen zu — eine wahre und eine falsche.\n\n(Fällt dir nicht sofort etwas ein, nimm dir Zeit oder bitte ihn/sie, in ein paar Minuten wiederzukommen.)",
+      "tips": [
+        "Halte die Informationen nützlich und spielbezogen. Sag möglichst nicht, wer genau der Dämon ist — sonst wird das Spiel sehr kurz.",
+        "Wenn du unsicher bist, was du sagen sollst: Gib Informationen, wie sie auch Bürger-Fähigkeiten liefern würden.",
+        "Wie beim Künstler können bluffende böse Spieler ebenfalls ein privates Gespräch simulieren — unterstütze den Bluff mit Nicken oder Kopfschütteln."
+      ],
+      "wakes_first_night": false,
+      "wakes_other_nights": false,
+      "night_order_first": null,
+      "night_order_other": null,
+      "icon": "assets/icons/sects_violets/savant.webp"
+    },
+    {
+      "id": "seamstress",
+      "edition": "sects_violets",
+      "type": "townsfolk",
+      "name_de": "Näherin",
+      "name_en": "Seamstress",
+      "ability_short": "Einmal pro Spiel wählst du nachts 2 Spieler (nicht dich selbst): Du erfährst, ob sie dieselbe Gesinnung haben.",
+      "quote": "Habt ihr gehört, dass der Fremde im Kaschmirmantel unserer jungen Belle einen Antrag gemacht hat? Und sie hat ja gesagt? Nun, das ist nichts gegen das, was Harry und dieser Jongleur auf dem Jahrmarkt getrieben haben! Was ich alles erzählen könnte, wäre ich eine Klatschbase... ach ja.",
+      "full_text": "Die Näherin erfährt, ob zwei Spieler im selben Team sind.\n\n• Nur einmal pro Spiel – gut überlegen, wann und wen.\n• Lebende Spieler, tote Spieler oder Reisende sind wählbar.",
+      "examples": [
+        "Friseur*in & Uhrmacher*in (beide gut) → „ja\".",
+        "Fang Gu & Schatzi (unterschiedlich) → „nein\".",
+        "Hexe & Stadtschreier*in (beide gut, nach Verwandlung durch die Alte Grubenhexe) → „ja\"."
+      ],
+      "how_to_run": "Wecke sie jede Nacht. Kopfschütteln = keine Wahl, schlafen schicken. Zeigt sie auf zwei Spieler: nicken (gleiche Gesinnung) oder schütteln (unterschiedlich), schlafen schicken, danach KEINE FÄHIGKEIT markieren und Nacht-Token entfernen.",
+      "tips": [],
+      "wakes_first_night": true,
+      "wakes_other_nights": true,
+      "night_order_first": 11,
+      "night_order_other": 18,
+      "icon": "assets/icons/sects_violets/seamstress.webp"
+    },
+    {
+      "id": "philosopher",
+      "edition": "sects_violets",
+      "type": "townsfolk",
+      "name_de": "Philosoph*in",
+      "name_en": "Philosopher",
+      "ability_short": "Einmal pro Spiel wählst du nachts einen guten Charakter: Du erhältst diese Fähigkeit. Ist dieser Charakter im Spiel, ist er/sie betrunken.",
+      "quote": "Wenn irgendetwas real ist, dann ist Bier real. Trink, denn morgen könnten wir tot sein.",
+      "full_text": "Der/die Philosoph*in entscheidet über die eigene Fähigkeit.\n\n• Einmal pro Spiel: erhält die Fähigkeit des gewählten Charakters (wird aber nicht selbst dieser Charakter).\n• Ist der Charakter schon im Spiel, wird dessen Spieler betrunken (bis der/die Philosoph*in stirbt, betrunken oder vergiftet wird – dann wieder nüchtern).\n• War der Charakter zum Wahlzeitpunkt nicht im Spiel, ist er betrunken, sobald er auftaucht.\n• Nachtfähigkeiten wirken zur passenden Nachtzeit; einmalige Fähigkeiten nur in dieser einen Nacht.\n• Bei einer über Knochensammler*in oder Barista wiedererlangten bzw. zweiten Nutzung ist eine neue oder dieselbe Fähigkeit wählbar.\n• Wirkt die Fähigkeit auch im Tod (z. B. Tollpatsch), funktioniert sie auch tot.",
+      "examples": [
+        "Wählt die Träumer*in-Fähigkeit → handelt ab jetzt wie diese.",
+        "Wählt in Nacht 3 die Uhrmacher-Fähigkeit → erfährt die Distanz zwischen Dämon und Schergen.",
+        "Wählt die Künstler-Fähigkeit, es gibt schon einen Künstler → dessen Spieler wird betrunken; stirbt der/die Philosoph*in, wird er wieder nüchtern."
+      ],
+      "how_to_run": "Wecke ihn/sie jede Nacht. Kopfschütteln oder Zeigen auf ein Bürger- oder Außenseiter-Symbol. Schlafen schicken.\n\n• Charakter nicht im Spiel: Token tauschen, mit IST DER/DIE PHILOSOPH(IN) markieren.\n• Charakter im Spiel: dessen Spieler mit BETRUNKEN markieren (Marker gelten jetzt doppelt für den Philosophen). Stirbt der/die Philosoph*in, Marker entfernen.",
+      "tips": [],
+      "wakes_first_night": true,
+      "wakes_other_nights": true,
+      "night_order_first": 4,
+      "night_order_other": 2,
+      "icon": "assets/icons/sects_violets/philosopher.webp"
+    },
+    {
+      "id": "artist",
+      "edition": "sects_violets",
+      "type": "townsfolk",
+      "name_de": "Künstler*in",
+      "name_en": "Artist",
+      "ability_short": "Einmal pro Spiel darfst du tagsüber dem/der Geschichtenerzähler*in privat eine Ja/Nein-Frage stellen.",
+      "quote": "Mon Dieu! C'est lumineux! Mein Werk ist... wie sagt man... magnifique! Dieu est révélé. Oui.",
+      "full_text": "Der/die Künstler*in darf eine einzige Frage stellen.\n\n• Beliebig formuliert. Der/die Geschichtenerzähler*in antwortet ehrlich mit „ja\", „nein\" oder „ich weiß nicht\".\n• Privates Gespräch – der/die Künstler*in muss den/die Geschichtenerzähler*in aufsuchen.",
+      "examples": [
+        "„Sitzt der Dämon auf einem braunen Stuhl?\" → „Nein\" (schwarzer Stuhl).",
+        "„Ist David der Böse Zwilling?\" → „Ja\".",
+        "„Wie viele Schergen leben noch?\" → „Bitte anders formulieren.\"",
+        "„Gewinnen wir?\" → „Ich weiß nicht.\""
+      ],
+      "how_to_run": "Bei Gesprächswunsch: beiseite nehmen, flüstern. Danach KEINE FÄHIGKEIT markieren.",
+      "tips": [
+        "Wie beim Gelehrten können bluffende böse Spieler ebenfalls ein privates Gespräch simulieren – unterstütze den Bluff mit Nicken oder Kopfschütteln."
+      ],
+      "wakes_first_night": false,
+      "wakes_other_nights": false,
+      "night_order_first": null,
+      "night_order_other": null,
+      "icon": "assets/icons/sects_violets/artist.webp"
+    },
+    {
+      "id": "juggler",
+      "edition": "sects_violets",
+      "type": "townsfolk",
+      "name_de": "Jongleur*in",
+      "name_en": "Juggler",
+      "ability_short": "An deinem 1. Tag darfst du öffentlich bis zu 5 Charaktere von Spielern raten. In dieser Nacht erfährst du, wie viele davon richtig waren.",
+      "quote": "Für meinen nächsten Trick brauche ich, wie gewünscht, eine Blume, einen Sack Bohnen, eine Spielzeugschlange, einen Pinsel und einen motorbetriebenen Heckenschneider. Ich warne euch, dieser Trick könnte mein letzter sein. Oh nein.",
+      "full_text": "• Nur am ersten Tag, öffentlich, 0–5 Vermutungen (Spieler + Charakter, Wiederholungen erlaubt).\n• Die Information kommt nachts, sofern der/die Jongleur*in nicht vorher stirbt.\n• War er/sie beim Raten betrunken oder vergiftet, nachts aber nüchtern und gesund → trotzdem korrekte Info.",
+      "examples": [
+        "Rät 3 Spieler, 2 korrekt → „2\" in der Nacht.",
+        "Nach Verwandlung (z. B. durch die Alte Grubenhexe) am nächsten Tag: 2 Vermutungen, 1 korrekt → „1\"."
+      ],
+      "how_to_run": "Am ersten Tag, wenn er/sie die Fähigkeit nutzt, betritt der/die Geschichtenerzähler*in mit dem Grimoire den Kreis. Bis zu 5 Vermutungen; für jede korrekte einen KORREKT-Marker setzen (verdeckt). Nachts die Anzahl zeigen, schlafen schicken, Marker entfernen.",
+      "tips": [
+        "Rät er/sie zu schnell, bitte um Verlangsamung.",
+        "Bluffende böse Spieler: Tokens im Grimoire scheinbar verschieben, um den Bluff zu stützen."
+      ],
+      "wakes_first_night": false,
+      "wakes_other_nights": true,
+      "night_order_first": null,
+      "night_order_other": 19,
+      "icon": "assets/icons/sects_violets/juggler.webp"
+    },
+    {
+      "id": "sage",
+      "edition": "sects_violets",
+      "type": "townsfolk",
+      "name_de": "Weise*r",
+      "name_en": "Sage",
+      "ability_short": "Tötet dich der Dämon, erfährst du, dass er einer von 2 Spielern ist.",
+      "quote": "Diese gewaltigen Folianten hüten das Geheimnis, dessen bin ich mir sicher! Zwischen Wort und Wort lauert es. Mehr Kerzen, Junge! Mehr Tinte! Diese Notizen mögen okkult wirken, aber das teuflische Rätsel offenbart sich langsam.",
+      "full_text": "• Nur bei Tod durch Dämon-Angriff (nicht bei Exekution).",
+      "examples": [
+        "Der Dämon tötet den/die Weise(n) → der/die Geschichtenerzähler*in zeigt 2 Spieler, einer davon ist der Dämon.",
+        "Ein/e betrunkene(r) Weise*r stirbt → falsche Information.",
+        "Die Alte Grubenhexe erschafft einen neuen Dämon, der alte Dämon und der/die Weise sterben „willkürlich\" → keine Info, da nicht durch einen Dämon-Angriff gestorben."
+      ],
+      "how_to_run": "Bei Tod durch den Dämon: wecken, auf 2 Spieler zeigen (einer davon der Dämon), schlafen schicken.",
+      "tips": [
+        "Bei frühem Tod: zwei lebende Spieler zeigen (fairere Chance für Böse). In der letzten Nacht: gerne einen lebenden und einen toten."
+      ],
+      "wakes_first_night": false,
+      "wakes_other_nights": true,
+      "night_order_first": null,
+      "night_order_other": 13,
+      "icon": "assets/icons/sects_violets/sage.webp"
+    },
+    {
+      "id": "mutant",
+      "edition": "sects_violets",
+      "type": "outsider",
+      "name_de": "Mutant*in",
+      "name_en": "Mutant",
+      "ability_short": "Bist du „mad\" (wahnsinnig) darüber, ein Außenseiter zu sein, könntest du exekutiert werden.",
+      "quote": "Ich bin kein Freak! Ich bin ein Mensch! Habt Gnade!",
+      "full_text": "• „Wahnsinn\" (madness) = Versuch, die Gruppe von etwas zu überzeugen. Ist der/die Mutant*in „mad\", ein Außenseiter zu sein, versucht er/sie, dies der Gruppe glaubhaft zu machen.\n• Kann durch Andeutungen oder auffälliges Schweigen erfolgen. Der/die Geschichtenerzähler*in entscheidet, ob das zutrifft, und darf jederzeit (auch nachts, außerhalb der Nominierung) exekutieren. Maximal eine Exekution pro Tag insgesamt.\n• Deutet er/sie es nachts an, kann die Exekution sofort erfolgen, auch wenn am Tag schon exekutiert wurde.",
+      "examples": [
+        "Verrät sich sofort am ersten Tag → sofortige Exekution, keine normale Nominierung mehr an diesem Tag.",
+        "Die Hexe informiert privat den/die Geschichtenerzähler*in über ein Geständnis → sofortige Exekution.",
+        "Bleibt bei Verdacht stumm → nach kurzer Zeit Exekution.",
+        "Gibt sich als Orakel aus, zwinkert dabei über den Mutant-Status → Exekution."
+      ],
+      "how_to_run": "Bei begründetem Verdacht (auch nachts) exekutieren, der Gruppe erklären, mit Leichentuch markieren. Bei einer Exekution am Tag vor der regulären: direkt zur Nachtphase (max. 1 Exekution pro Tag).",
+      "tips": [],
+      "wakes_first_night": false,
+      "wakes_other_nights": false,
+      "night_order_first": null,
+      "night_order_other": null,
+      "icon": "assets/icons/sects_violets/mutant.webp"
+    },
+    {
+      "id": "barber",
+      "edition": "sects_violets",
+      "type": "outsider",
+      "name_de": "Friseur*in",
+      "name_en": "Barber",
+      "ability_short": "Stirbst du heute oder in der Nacht, darf der Dämon 2 Spieler (nicht einen anderen Dämon) wählen, um Charaktere zu tauschen.",
+      "quote": "Wusstest du, dass Friseurhandwerk und Chirurgie einst dasselbe Handwerk waren? Nein? Nun, jetzt weißt du es.",
+      "full_text": "• Die Gesinnung bleibt beim Tausch gleich; jeder erfährt seinen neuen Charakter.\n• Der Dämon kann den Tausch verweigern; er darf sich selbst wählen, aber keinen anderen Dämon.\n• Neue Charaktere erhalten auch „einmal pro Spiel\"- und Startinfo-Fähigkeiten erneut.\n• Bei mehreren lebenden Dämonen entscheidet der/die Geschichtenerzähler*in, wer tauscht.\n• Stirbt jemand und wird dann selbst zur/zum Friseur*in: kein Tausch in dieser Nacht.",
+      "examples": [
+        "Der Dämon erwägt einen Tausch, macht aber nichts.",
+        "Lebendes Orakel ↔ tote(r) Friseur*in.",
+        "Der Vortox tauscht sich selbst mit der lebenden Hexe.",
+        "Der Vigormortis tauscht sich mit dem toten Schatzi; wird durch eine Alte-Grubenhexe-Verwandlung zum guten Schatzi – das Spiel geht weiter."
+      ],
+      "how_to_run": "Bei Tod: HAARSCHNITT HEUTE NACHT markieren. Dämon wecken, Auswahlmöglichkeit zeigen, ggf. Token tauschen und Spieler informieren (DU BIST + neuer Token). Gesinnungsfarbe ggf. anpassen (umdrehen).",
+      "tips": [
+        "Wechselt jemand die Seite (gut ↔ böse), erinnere ihn diskret daran, dass sich seine Gesinnung nicht geändert hat."
+      ],
+      "wakes_first_night": false,
+      "wakes_other_nights": true,
+      "night_order_first": null,
+      "night_order_other": 11,
+      "icon": "assets/icons/sects_violets/barber.webp"
+    },
+    {
+      "id": "sweetheart",
+      "edition": "sects_violets",
+      "type": "outsider",
+      "name_de": "Schatzi",
+      "name_en": "Sweetheart",
+      "ability_short": "Wenn du stirbst, ist ab sofort 1 Spieler betrunken.",
+      "quote": "Ich werde sie nie vergessen. Niemals.",
+      "full_text": "• Der/die Geschichtenerzähler*in wählt, wer betrunken wird. Der Effekt wirkt auch nach dem Tod des Schatzis weiter.",
+      "examples": [
+        "Der/die Mathematiker*in wird betrunken → könnte falsche Infos erhalten.",
+        "Der/die Mutant*in wird betrunken → darf sich gefahrlos verraten, weiß es aber nicht.",
+        "Der Dämon wird betrunken → sein Angriff tötet niemanden."
+      ],
+      "how_to_run": "Bei Tod: einen Spieler wählen und mit BETRUNKEN markieren.",
+      "tips": [
+        "Wähle meist einen Bürger (das schadet Gut). Führt Böse schon deutlich, auch mal Außenseiter, Schergen oder Dämon wählen."
+      ],
+      "wakes_first_night": false,
+      "wakes_other_nights": true,
+      "night_order_first": null,
+      "night_order_other": 12,
+      "icon": "assets/icons/sects_violets/sweetheart.webp"
+    },
+    {
+      "id": "klutz",
+      "edition": "sects_violets",
+      "type": "outsider",
+      "name_de": "Tollpatsch",
+      "name_en": "Klutz",
+      "ability_short": "Erfährst du, dass du gestorben bist, wählst du öffentlich 1 lebenden Spieler: Ist er böse, verliert dein Team.",
+      "quote": "Ups.",
+      "full_text": "• Bei Tod muss er/sie sich erklären und einen Spieler nennen (mit etwas Zeit, Beratung erlaubt, die Entscheidung liegt aber allein beim Tollpatsch). Ein böser Spieler gewählt → sofortiges Ende, Gut verliert. Ein guter Spieler → das Spiel geht weiter.\n• Bewusstes Unterlassen gilt als Betrug.",
+      "examples": [
+        "Nach Exekution, Diskussion, Wahl eines guten Spielers → das Spiel geht weiter.",
+        "Nach Tötung durch den Dämon, öffentliche Wahl des Dämonen → sofortiger Sieg für Böse."
+      ],
+      "how_to_run": "Bei Tod: erklären lassen und die Wahl abwarten. Böse gewählt → Böse gewinnt. Gut gewählt → weiter. (Seltener Sonderfall: ein böser Tollpatsch wählt böse → Gut gewinnt.)",
+      "tips": [
+        "Versteht der Spieler die Regel nicht, erinnere ihn privat."
+      ],
+      "wakes_first_night": false,
+      "wakes_other_nights": false,
+      "night_order_first": null,
+      "night_order_other": null,
+      "icon": "assets/icons/sects_violets/klutz.webp"
+    },
+    {
+      "id": "witch",
+      "edition": "sects_violets",
+      "type": "minion",
+      "name_de": "Hexe",
+      "name_en": "Witch",
+      "ability_short": "Jede Nacht wählst du einen Spieler: Nominiert er morgen, stirbt er. Leben nur noch 3 Spieler, verlierst du diese Fähigkeit.",
+      "quote": "Drei Tropfen Ziegenblut. Eine Locke Haar, wütend ausgerissen. Der Name wird gesprochen, der Schatten fällt. Geh mit dem linken Fuß zuerst den Dornenpfad entlang und schau nicht zurück.",
+      "full_text": "• Der Fluch gilt nur für den nächsten Tag, kann aber jede Nacht neu gelegt werden.\n• Bei nur noch 3 lebenden Spielern: Der Fluch verfällt sofort, die Hexe wirkt nicht mehr.",
+      "examples": [
+        "Der Verfluchte nominiert trotzdem → er stirbt, die Exekution läuft normal weiter.",
+        "Die Hexe verflucht sich selbst, nominiert den Dämon und stirbt dadurch.",
+        "Ein verfluchter Tollpatsch wird durch einen Fang-Gu-Angriff zum neuen Fang Gu, der weiterhin verflucht ist und stirbt, wenn er nominiert.",
+        "Der Fluch verfällt durch Absinken auf 3 Spieler.",
+        "Die Verbannung eines Reisenden zählt nicht als Nominierung."
+      ],
+      "how_to_run": "Jede Nacht wecken, auf einen Spieler zeigen lassen, schlafen schicken, VERFLUCHT markieren. Nominiert der Markierte am nächsten Tag: sofort den Tod erklären.",
+      "tips": [],
+      "wakes_first_night": true,
+      "wakes_other_nights": true,
+      "night_order_first": 7,
+      "night_order_other": 4,
+      "icon": "assets/icons/sects_violets/witch.webp"
+    },
+    {
+      "id": "cerenovus",
+      "edition": "sects_violets",
+      "type": "minion",
+      "name_de": "Cerenovus",
+      "name_en": "Cerenovus",
+      "ability_short": "Jede Nacht wählst du einen Spieler & einen guten Charakter: Er ist morgen „mad\" darüber, dieser Charakter zu sein, oder könnte exekutiert werden.",
+      "quote": "Realität ist nur eine Meinung. Genauer gesagt: meine Meinung.",
+      "full_text": "• Der Betroffene muss versuchen, die Gruppe glaubhaft zu überzeugen, dieser Charakter zu sein – reines Andeuten reicht nicht.\n• „Könnte\" exekutiert werden = Ermessen des/der Geschichtenerzähler*in (verhindert einen automatischen Bösen-Sieg durch diese Taktik).\n• Zählt wie beim Mutanten als die eine erlaubte Exekution pro Tag.",
+      "examples": [
+        "Wird glaubhaft überzeugt (erfindet Fakten, verneint die „mad\"-Frage) → keine Exekution.",
+        "Sagt nichts dazu → Exekution.",
+        "Deutet es nur privat an → der/die Geschichtenerzähler*in hört mit → Exekution."
+      ],
+      "how_to_run": "Wecke ihn, er zeigt auf einen Spieler und ein Charaktersymbol, schlafen schicken. Markiere das Ziel mit MAD, wecke es, zeige das Infotoken und den Charakter, schlafen schicken. Bei unzureichender Überzeugung: jederzeit exekutieren möglich (max. 1 pro Tag).",
+      "tips": [],
+      "wakes_first_night": true,
+      "wakes_other_nights": true,
+      "night_order_first": 8,
+      "night_order_other": 5,
+      "icon": "assets/icons/sects_violets/cerenovus.webp"
+    },
+    {
+      "id": "pit_hag",
+      "edition": "sects_violets",
+      "type": "minion",
+      "name_de": "Alte Grubenhexe",
+      "name_en": "Pit-Hag",
+      "ability_short": "Jede Nacht* wählst du einen Spieler & einen Charakter, zu dem er wird (falls dieser nicht im Spiel ist). Wird ein Dämon erschaffen, sind Tode heute Nacht willkürlich.",
+      "quote": "Rundherum den Kessel geht's; in den Giftsud werft nun schnell: Kröte, die im kalten Stein einunddreißig Tag' und Nächt' ihr Gift im Schlaf geschwitzt – kocht als Erste im verzauberten Topf.",
+      "full_text": "• Kann keine Duplikate erschaffen (ist der Charakter schon im Spiel, passiert nichts).",
+      "examples": [
+        "Der Versuch, den Gelehrten in den Weisen zu verwandeln, scheitert (der Weise existiert bereits).",
+        "Blumenmädchen → guter Böser Zwilling; das Zwillingspaar erwacht.",
+        "Letzte Nacht: Orakel → No Dashii, der alte böse Dämon wird getötet, damit nur ein Dämon übrig bleibt."
+      ],
+      "how_to_run": "Wecke sie (außer in der ersten Nacht), sie zeigt auf einen Spieler und ein Charaktersymbol, schlafen schicken. Ist der Charakter schon im Spiel → nichts. Sonst: Zielspieler wecken, DU BIST und den neuen Token zeigen, den alten Token ersetzen (Gesinnungsfarbe ggf. anpassen). Wird ein Dämon erschaffen: freie Wahl bei Toden und Schutz zur Balance – zusätzliche Tode gelten als Angriffe der Alten Grubenhexe.",
+      "tips": [
+        "Verwandelt sie einen Dämon in einen neuen: am besten kein Tod in dieser Nacht (Hinweis für Gut).",
+        "Neuer böser Dämon: alten Dämon und einen weiteren töten als Signal. Neuer guter Dämon: einen der beiden töten (letzte Nacht) oder beide laufen lassen – aber Vorsicht, da alle Dämonen sterben müssen, damit Gut gewinnt."
+      ],
+      "wakes_first_night": false,
+      "wakes_other_nights": true,
+      "night_order_first": null,
+      "night_order_other": 6,
+      "icon": "assets/icons/sects_violets/pit_hag.webp"
+    },
+    {
+      "id": "evil_twin",
+      "edition": "sects_violets",
+      "type": "minion",
+      "name_de": "Böser Zwilling",
+      "name_en": "Evil Twin",
+      "ability_short": "Du & ein gegnerischer Spieler kennt euch. Wird der gute Spieler exekutiert, gewinnt das Böse. Gut kann nicht gewinnen, solange ihr beide lebt.",
+      "quote": "Ich bin nicht Sara! Ich bin Clara! SIE ist Sara! Die Böse! Nicht ich!",
+      "full_text": "• Der/die Geschichtenerzähler*in wählt einen guten Spieler als „Guten Zwilling\". Beide erwachen in der ersten Nacht, nehmen Blickkontakt auf und erfahren sich gegenseitig.\n• Wird der Gute Zwilling exekutiert → Böse gewinnt sofort. Ein toter Böser Zwilling hat keine Wirkung mehr (ein späterer Tod des Guten Zwillings ändert nichts).\n• Solange beide leben, kann Gut nicht gewinnen – selbst nach dem Tod des Dämons.\n• Verwandelt sich ein Guter in den Bösen Zwilling: Er bleibt gut, ein Böser wird sein Zwilling. Entscheidend ist die Gesinnung, nicht wer welchen Namen trägt.\n• Gleiche Gesinnung bei beiden → der/die Geschichtenerzähler*in wählt einen neuen Zwilling.",
+      "examples": [
+        "Beide behaupten, das Orakel zu sein; der Böse Zwilling wird exekutiert → das Spiel geht weiter.",
+        "Der Dämon stirbt, das Spiel geht weiter (keine Nachttode mehr), später stirbt der Böse Zwilling → Gut gewinnt.",
+        "Die Alte Grubenhexe verwandelt den guten Weisen in den Bösen Zwilling, der Partner ist die böse Hexe; der gute Böse Zwilling wird exekutiert → Böse gewinnt."
+      ],
+      "how_to_run": "Bei der Vorbereitung: guten Charakter mit ZWILLING markieren. Erste Nacht: beide wecken, Blickkontakt erlauben, Charaktere gegenseitig zeigen, schlafen schicken. Solange beide leben: Gut kann nicht gewinnen. Guter Zwilling exekutiert → Böse gewinnt.",
+      "tips": [
+        "Erschafft eine Alte Grubenhexe in der letzten Nacht einen Bösen Zwilling, mache den Dämon-Spieler oder einen Toten zum Zwilling, damit Gut noch gewinnen kann.",
+        "Reisende als Zwilling: eher vermeiden."
+      ],
+      "wakes_first_night": true,
+      "wakes_other_nights": false,
+      "night_order_first": 6,
+      "night_order_other": null,
+      "icon": "assets/icons/sects_violets/evil_twin.webp"
+    },
+    {
+      "id": "fang_gu",
+      "edition": "sects_violets",
+      "type": "demon",
+      "name_de": "Fang Gu",
+      "name_en": "Fang Gu",
+      "ability_short": "Jede Nacht* wählst du einen Spieler: Er stirbt. Der 1. Außenseiter, den dies tötet, wird zum bösen Fang Gu, & du stirbst stattdessen. [+1 Außenseiter]",
+      "quote": "Eure Mauern und eure Waffen sind nur Rauch in Träumen.",
+      "full_text": "• Passiert nur einmal pro Spiel. Danach tötet ein Außenseiter-Treffer wie gewöhnlich.\n• Der neue Fang Gu zählt als Dämon (Gut gewinnt bei dessen Tod), erfährt aber nicht, wer die Schergen sind.\n• Ein zusätzlicher Außenseiter ist im Spiel.\n• Überlebt der angegriffene Außenseiter (z. B. durch Schutz), passiert der Wechsel nicht.",
+      "examples": [
+        "Der Künstler stirbt normal; danach wird das Schatzi zum neuen Fang Gu (der alte Fang Gu stirbt); kein Betrunken-Effekt, da das Schatzi nicht im eigentlichen Sinn „gestorben\" ist; danach Angriff auf den Tollpatsch.",
+        "Angriff auf einen bereits toten Tollpatsch → kein erneuter Tod, der Fang Gu stirbt nicht, keine Tode in dieser Nacht."
+      ],
+      "how_to_run": "Vor Spielbeginn: einen Außenseiter-Token hinzufügen, einen Bürger-Token entfernen. Wecke ihn (außer in der ersten Nacht), er zeigt auf einen Spieler, schlafen schicken.\n\n• Kein Außenseiter: Ziel stirbt (TOT markieren).\n• Außenseiter, EINMAL-Marker liegt schon in der Mitte: Ziel stirbt normal.\n• Außenseiter, EINMAL-Marker noch nicht gesetzt: Fang Gu stirbt (TOT markieren), Ziel wecken, DU BIST + Fang-Gu-Token + Daumen runter zeigen, Charakter tauschen, EINMAL-Marker in die Mitte legen (bleibt dauerhaft dort).",
+      "tips": [],
+      "wakes_first_night": false,
+      "wakes_other_nights": true,
+      "night_order_first": null,
+      "night_order_other": 7,
+      "setup_modifier": { "outsider": 1 },
+      "icon": "assets/icons/sects_violets/fang_gu.webp"
+    },
+    {
+      "id": "vigormortis",
+      "edition": "sects_violets",
+      "type": "demon",
+      "name_de": "Vigormortis",
+      "name_en": "Vigormortis",
+      "ability_short": "Jede Nacht* wählst du einen Spieler: Er stirbt. Von dir getötete Schergen behalten ihre Fähigkeit & vergiften 1 benachbarten Bürger. [−1 Außenseiter]",
+      "quote": "Alle Türen sind eine Tür. Alle Schlüssel sind ein Schlüssel. Alle Kelche sind ein Kelch, aber wer von dem Wasser trinkt, das ich gebe, wird nie mehr dürsten, denn das Wasser wird zu einer Quelle, die ins ewige Leben sprudelt.",
+      "full_text": "• Getötete Schergen bleiben aktiv (Hexe, Cerenovus, Alte Grubenhexe wirken weiter), solange der Vigormortis lebt.\n• Der nächste Bürger-Nachbar (im oder gegen den Uhrzeigersinn, auch tot) des toten Schergen wird vergiftet – der/die Geschichtenerzähler*in entscheidet, welcher der beiden. Stirbt der Vigormortis oder verliert er seine Fähigkeit → alle Vergiftungen enden.\n• Gilt für jeden getöteten Schergen einzeln, nicht nur den letzten.\n• Wird ein toter Scherge zu einem Nicht-Schergen oder selbst betrunken bzw. vergiftet → verliert er diese Sonderwirkung temporär oder permanent.",
+      "examples": [
+        "Die tote Hexe wirkt weiter, ihr Fluch tötet weiterhin.",
+        "Toter Böser Zwilling zwischen Tollpatsch und Blumenmädchen → der/die Weise (übernächster) wird vergiftet, der Gute Zwilling wird später exekutiert → Böse gewinnt.",
+        "Kettenreaktion: Alte Grubenhexe → Hexe → Vigormortis tötet die Hexe → Alte Grubenhexe verwandelt die tote Hexe in ein Orakel (fähigkeitslos) → Alte Grubenhexe wird selbst zu Vortox → keine Fähigkeit mehr."
+      ],
+      "how_to_run": "Vor Spielbeginn: einen Außenseiter-Token entfernen, einen Bürger-Token hinzufügen (ist kein Außenseiter vorhanden, keinen hinzufügen). Wecke ihn (außer in der ersten Nacht), er zeigt auf einen Spieler, schlafen schicken.\n\n• Kein Scherge: Ziel stirbt.\n• Scherge: Ziel stirbt UND behält seine Fähigkeit (TOT + HAT FÄHIGKEIT markieren), der nächste Bürger-Nachbar wird VERGIFTET markiert.",
+      "tips": [],
+      "wakes_first_night": false,
+      "wakes_other_nights": true,
+      "night_order_first": null,
+      "night_order_other": 8,
+      "setup_modifier": { "outsider": -1 },
+      "icon": "assets/icons/sects_violets/vigormortis.webp"
+    },
+    {
+      "id": "no_dashii",
+      "edition": "sects_violets",
+      "type": "demon",
+      "name_de": "No Dashii",
+      "name_en": "No Dashii",
+      "ability_short": "Jede Nacht* wählst du einen Spieler: Er stirbt. Deine 2 Bürger-Nachbarn sind vergiftet.",
+      "quote": "Bei den Sünden von Arnoch, ich spüre euren schweren Gestank. Bei der verfluchten Sonne und ihrer üblen Legion grinsender kleiner Götter, ich verderbe euch. Bei der gesegneten Nacht und den verborgenen Tiefen des schrecklichen, unheiligen Meeres, ich beende euer elendes Leben auf dieser Ebene.",
+      "full_text": "• Die beiden nächsten Bürger (im und gegen den Uhrzeigersinn) sind vergiftet, egal ob lebend oder tot.\n• Ändern sich die Nachbarn (Charakterwechsel, neuer No Dashii), verschieben sich die Vergiftungen sofort.",
+      "examples": [
+        "Stadtschreier*in und Schlangenbeschwörer*in als Nachbarn, beide vergiftet; sterben sie später, werden die nächsten lebenden Nachbarn NICHT automatisch vergiftet.",
+        "Philosoph und Näherin als jeweils nächste Bürger-Nachbarn → vergiftet.",
+        "Die Alte Grubenhexe verwandelt den toten No Dashii in ein Blumenmädchen, dann den lebenden Fang Gu in einen neuen No Dashii → neue Nachbarn werden vergiftet."
+      ],
+      "how_to_run": "Vor der ersten Nacht: die beiden Bürger-Nachbarn mit VERGIFTET markieren. Bei Änderungen: Marker sofort verschieben. Wecke ihn (außer in der ersten Nacht), er zeigt auf einen Spieler → Ziel stirbt (TOT markieren), schlafen schicken.",
+      "tips": [],
+      "wakes_first_night": false,
+      "wakes_other_nights": true,
+      "night_order_first": null,
+      "night_order_other": 9,
+      "icon": "assets/icons/sects_violets/no_dashii.webp"
+    },
+    {
+      "id": "vortox",
+      "edition": "sects_violets",
+      "type": "demon",
+      "name_de": "Vortox",
+      "name_en": "Vortox",
+      "ability_short": "Jede Nacht* wählst du einen Spieler: Er stirbt. Bürger-Fähigkeiten liefern falsche Informationen. Wird an einem Tag niemand exekutiert, gewinnt das Böse.",
+      "quote": "Schwarz ist weiß. Rechts ist falsch. Links ist richtig. Oben ist lang. Unten ist Sicht. Kurz ist blind. Folgt mir. Antworten findet.",
+      "full_text": "• Jede Information aus einer Bürger-Fähigkeit ist falsch – auch bei Betrunkenheit oder Vergiftung.\n• Betrifft nicht Informationen aus anderen Quellen (Regelklärung, Charakter- oder Gesinnungswechsel).\n• Wird an einem Tag niemand exekutiert (Verbannung zählt nicht), gewinnt Böse sofort bei Nachtanbruch.",
+      "examples": [
+        "Der/die Weise wird getötet, erfährt zwei Spieler, keiner davon ist der Dämon.",
+        "Der Mutant wird trotz fehlender Abstimmung exekutiert → Blumenmädchen und Stadtschreier*in erfahren beide „ja\".",
+        "Eine Alte-Grubenhexe-Verwandlung liefert korrekte Info (keine Bürger-Fähigkeit, also nicht betroffen).",
+        "Fünf Nominierungen, aber keine Exekution → Böse gewinnt."
+      ],
+      "how_to_run": "Solange er lebt: Jede Bürger-Information muss falsch sein. Wecke ihn (außer in der ersten Nacht), er zeigt auf einen Spieler → Ziel stirbt, schlafen schicken. Bei jeder Abenddämmerung: keine Exekution heute → das Spiel endet, Böse gewinnt.",
+      "tips": [],
+      "wakes_first_night": false,
+      "wakes_other_nights": true,
+      "night_order_first": null,
+      "night_order_other": 10,
+      "icon": "assets/icons/sects_violets/vortox.webp"
+    }
+  ]
+}

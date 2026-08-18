@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Seite nicht gefunden — Blood on the Clocktower Regelwiki</title>
+<meta name="color-scheme" content="light">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='32' r='28' fill='%235c1f2e'/%3E%3Cg fill='none' stroke='%23efe4cc' stroke-width='3' stroke-linecap='round'%3E%3Ccircle cx='32' cy='32' r='17'/%3E%3Cpath d='M32 21v11l8 5'/%3E%3C/g%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Grenze+Gothisch:wght@400;600;700&family=EB+Garamond:ital,wght@0,400;1,400&family=IM+Fell+English+SC&display=swap" rel="stylesheet">
+
+<!--
+  Bewusst ohne externes Stylesheet: GitHub Pages liefert diese Seite auch für
+  tiefe Pfade aus (/repo/a/b). Relative Pfade zu css/ oder assets/ würden dort
+  ins Leere greifen, deshalb steht hier alles inline.
+-->
+<style>
+  :root {
+    --parchment: #efe4cc;
+    --ink: #2b2117;
+    --ink-soft: #5b4a34;
+    --ink-faint: #8a7758;
+    --bordeaux: #5c1f2e;
+    --gold: #a8894c;
+    --shade: #d2bb92;
+    --font-display: "Grenze Gothisch", "Palatino Linotype", Palatino, Georgia, serif;
+    --font-body: "EB Garamond", Georgia, "Times New Roman", Times, serif;
+    --font-caps: "IM Fell English SC", Georgia, serif;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    font-family: var(--font-body);
+    font-size: 1.0625rem;
+    line-height: 1.62;
+    color: var(--ink);
+    background-color: var(--parchment);
+    background-image:
+      radial-gradient(ellipse 120% 90% at 50% 40%, rgba(60,38,16,0) 45%, rgba(46,28,10,.22) 100%),
+      radial-gradient(circle at 22% 18%, rgba(138,106,60,.14), transparent 42%),
+      radial-gradient(circle at 78% 72%, rgba(138,106,60,.12), transparent 45%);
+  }
+  header, footer { text-align: center; padding: 2.5rem 1rem 0; }
+  footer { padding: 2rem 1rem 3rem; color: var(--ink-faint); font-size: .92rem; }
+  .eyebrow {
+    margin: 0 0 .35rem; font-family: var(--font-caps); font-size: .78rem;
+    letter-spacing: .34em; text-transform: uppercase; color: var(--ink-faint);
+  }
+  h1 {
+    margin: 0; font-family: var(--font-display); font-weight: 700;
+    font-size: clamp(2rem, 7vw, 3.6rem); line-height: .98; letter-spacing: .015em;
+    color: var(--bordeaux); text-shadow: 0 1px 0 rgba(255,250,238,.6);
+  }
+  .subtitle {
+    margin: .45rem 0 0; font-family: var(--font-caps);
+    font-size: clamp(.8rem, 2vw, .95rem); letter-spacing: .22em;
+    text-transform: uppercase; color: var(--ink-soft);
+  }
+  main { flex: 1; display: grid; place-items: center; padding: 1.5rem 1rem; }
+  .sheet {
+    max-width: 40rem; width: 100%; text-align: center;
+    padding: clamp(1.5rem, 5vw, 3rem);
+    background: rgba(246,238,220,.72);
+    border: 1px solid var(--shade);
+    outline: 4px double var(--shade); outline-offset: 5px;
+    box-shadow: 0 3px 18px rgba(70,45,20,.14);
+  }
+  .code {
+    margin: 0; font-family: var(--font-display);
+    font-size: clamp(4rem, 17vw, 8rem); line-height: .9; color: var(--bordeaux);
+    text-shadow: 0 1px 0 rgba(255,250,238,.6);
+  }
+  h2 {
+    margin: .5rem 0 1rem; font-family: var(--font-display); font-weight: 700;
+    font-size: clamp(1.3rem, 4vw, 2rem); letter-spacing: .05em;
+    text-transform: uppercase; color: var(--bordeaux);
+  }
+  .rule {
+    width: 60%; margin: 0 auto 1.5rem; height: 1px; border: 0;
+    background: linear-gradient(to right, transparent, var(--gold), transparent);
+  }
+  .quote {
+    font-style: italic; font-size: 1.1rem; color: var(--ink-soft);
+    margin: 0 auto 2rem; max-width: 30rem;
+  }
+  .btn {
+    display: inline-block; text-decoration: none;
+    font-family: var(--font-display); font-weight: 600; font-size: 1.05rem;
+    letter-spacing: .04em; padding: .55rem 1.4rem;
+    border: 1.5px solid var(--bordeaux); border-radius: 2px;
+    background: var(--bordeaux); color: var(--parchment);
+    transition: background .15s;
+  }
+  .btn:hover { background: #7d2c3d; }
+  .btn:focus-visible { outline: 2px solid var(--bordeaux); outline-offset: 3px; }
+</style>
+</head>
+<body>
+
+<header>
+  <p class="eyebrow">Ravenswood Bluff</p>
+  <h1>Blood on the Clocktower</h1>
+  <p class="subtitle">Regelwiki für unsere Runde</p>
+</header>
+
+<main>
+  <div class="sheet">
+    <p class="code">404</p>
+    <h2>Diese Seite gibt es nicht</h2>
+    <hr class="rule">
+    <p class="quote">„Der Spieler, den Ihr sucht, ist heute Nacht leider nicht erschienen.
+      Möglicherweise war er nie hier.“</p>
+    <p><a class="btn" id="home" href="/">Zurück zum Regelwiki</a></p>
+  </div>
+</main>
+
+<footer>
+  <p>Blood on the Clocktower — Regelwiki · privat für unsere Spielrunde</p>
+</footer>
+
+<script>
+  /* Auf GitHub Pages liegt die Seite unter /<repo>/, lokal direkt unter /.
+     Der erste Pfadabschnitt ist also entweder das Repo oder schon der Fehlpfad —
+     hier wird daraus die passende Startadresse gebaut. */
+  (function () {
+    var seg = location.pathname.split('/').filter(Boolean);
+    var host = location.hostname;
+    var onPages = /\.github\.io$/.test(host);
+    document.getElementById('home').href = (onPages && seg.length) ? '/' + seg[0] + '/' : '/';
+  })();
+</script>
+
+</body>
+</html>

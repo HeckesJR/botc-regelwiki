@@ -1,0 +1,497 @@
+{
+  "title": "Glossar",
+  "intro": "Die Fachbegriffe des Regelwerks — deutsch, mit dem englischen Original dahinter. Übersetzt aus dem Glossar des offiziellen Regelbuchs.",
+  "categories": [
+    { "id": "ablauf", "label": "Spielablauf & Zeit" },
+    { "id": "abstimmung", "label": "Abstimmung, Exekution & Tod" },
+    { "id": "zustaende", "label": "Zustände & Fähigkeiten" },
+    { "id": "info", "label": "Informationen" },
+    { "id": "rollen", "label": "Rollen & Gesinnung" },
+    { "id": "material", "label": "Material" }
+  ],
+  "terms": [
+    {
+      "term": "Erste Nacht",
+      "en": "First Night",
+      "category": "ablauf",
+      "def": "Die Nachtphase, mit der das Spiel beginnt. Manche Charaktere handeln nur in der ersten Nacht, manche in jeder Nacht außer der ersten. Vor der ersten Nacht dürfen die Spieler noch miteinander reden."
+    },
+    {
+      "term": "Nacht",
+      "en": "Night",
+      "category": "ablauf",
+      "def": "Die Spielphase, in der alle die Augen schließen und bestimmte Charaktere geweckt werden, um zu handeln oder Informationen zu erhalten. Auf jede Nacht folgt ein Tag."
+    },
+    {
+      "term": "Tag",
+      "en": "Day",
+      "category": "ablauf",
+      "def": "Die Spielphase, in der alle die Augen offen haben, miteinander reden und über eine Exekution abstimmen. Auf jeden Tag folgt eine Nacht."
+    },
+    {
+      "term": "Abenddämmerung",
+      "en": "Dusk",
+      "category": "ablauf",
+      "def": "Der Beginn einer Nacht, direkt nachdem alle die Augen geschlossen haben. Charaktere, die „zur Abenddämmerung\" handeln, handeln vor fast allen anderen. Effekte, die „bis zur Abenddämmerung\" gelten, enden, sobald die Spieler schlafen gehen."
+    },
+    {
+      "term": "Morgendämmerung",
+      "en": "Dawn",
+      "category": "ablauf",
+      "def": "Das Ende einer Nacht, kurz bevor der nächste Tag beginnt. Charaktere, die „zur Morgendämmerung\" handeln, handeln nach fast allen anderen."
+    },
+    {
+      "term": "Morgen",
+      "en": "Tomorrow",
+      "category": "ablauf",
+      "def": "Die Tagphase und die darauffolgende Nachtphase nach der aktuellen Nachtphase."
+    },
+    {
+      "term": "Jede Nacht",
+      "en": "Each night",
+      "category": "ablauf",
+      "def": "Jede Nachtphase — die erste eingeschlossen."
+    },
+    {
+      "term": "Jede Nacht*",
+      "en": "Each night*",
+      "category": "ablauf",
+      "def": "Kurzschreibweise auf Charakterblättern und Token: „jede Nachtphase außer der ersten\".",
+      "see_also": ["Jede Nacht"]
+    },
+    {
+      "term": "Einmal pro Spiel",
+      "en": "Once per game",
+      "category": "ablauf",
+      "def": "Eine Fähigkeit, die nur ein einziges Mal genutzt werden kann. Nutzt ein Spieler sie, während er betrunken oder vergiftet ist, kann er sie danach nicht erneut nutzen. Stirbt ein Spieler, ohne sie genutzt zu haben, ist sie verloren."
+    },
+    {
+      "term": "Du beginnst wissend",
+      "en": "Start knowing",
+      "category": "ablauf",
+      "def": "Kurzschreibweise auf Charakterblättern und Token. Ein solcher Charakter erhält sein Wissen in der ersten Nacht — oder, falls er erst mitten im Spiel entsteht, zu diesem Zeitpunkt."
+    },
+    {
+      "term": "Nominierung",
+      "en": "Nomination",
+      "category": "abstimmung",
+      "def": "Das Ausrufen einer Gruppenabstimmung über die Exekution eines Spielers, bestätigt durch den/die Geschichtenerzähler*in. Jeder Spieler darf pro Tag einmal nominieren, und jeder Spieler kann pro Tag einmal nominiert werden. Nur lebende Spieler dürfen nominieren."
+    },
+    {
+      "term": "Abstimmen",
+      "en": "Vote",
+      "category": "abstimmung",
+      "def": "Das Heben der Hand, während der/die Geschichtenerzähler*in die Stimmen für eine Exekution zählt. Lebende Spieler dürfen pro Tag beliebig oft abstimmen; ein toter Spieler darf für den Rest des Spiels nur noch ein einziges Mal abstimmen. Gezählt wird im Uhrzeigersinn, endend beim nominierten Spieler.",
+      "see_also": ["Verbannung"]
+    },
+    {
+      "term": "Exekution",
+      "en": "Execution",
+      "category": "abstimmung",
+      "def": "Die Entscheidung der Gruppe, einen Spieler (der kein Reisender ist) am Tag zu töten. Es gibt höchstens eine Exekution pro Tag, es kann aber auch keine geben. Ein Nominierter wird exekutiert, wenn er Stimmen von mindestens der Hälfte der lebenden Spieler erhält UND mehr Stimmen als jeder andere Nominierte an diesem Tag."
+    },
+    {
+      "term": "Verbannung",
+      "en": "Exile",
+      "category": "abstimmung",
+      "def": "Die Entscheidung der Gruppe, einen Reisenden am Tag zu töten. Es kann beliebig viele Verbannungen pro Tag geben, auch keine. Jeder darf eine Verbannung unterstützen — auch tote Spieler ohne Stimm-Token. Fähigkeiten können eine Verbannung niemals beeinflussen. Eine Verbannung ist keine Abstimmung und keine Exekution.",
+      "see_also": ["Abstimmen", "Exekution"]
+    },
+    {
+      "term": "Todgeweiht",
+      "en": "About to die",
+      "category": "abstimmung",
+      "def": "Der Spieler, der genug Stimmen für eine Exekution hat und heute mehr Stimmen als jeder andere. Bekommt später jemand mehr Stimmen, ist stattdessen dieser todgeweiht."
+    },
+    {
+      "term": "Lebendig",
+      "en": "Alive",
+      "category": "abstimmung",
+      "def": "Ein Spieler, der nicht gestorben ist. Lebende Spieler haben ihre Fähigkeit, dürfen beliebig oft abstimmen und dürfen nominieren. Solange drei oder mehr Spieler leben, geht das Spiel weiter."
+    },
+    {
+      "term": "Tot",
+      "en": "Dead",
+      "category": "abstimmung",
+      "def": "Ein Spieler, der nicht mehr lebendig ist. Tote dürfen im restlichen Spiel nur noch einmal abstimmen. Beim Tod wird das Lebens-Token umgedreht, der Spieler erhält ein Stimm-Token und ein Leichentuch im Grimoire, verliert sofort seine Fähigkeit, und alle anhaltenden Effekte seiner Fähigkeit enden sofort."
+    },
+    {
+      "term": "Gewinnen",
+      "en": "Win",
+      "category": "abstimmung",
+      "def": "Am Spielende gewinnt ein Team. Gewinnt ein Team, gewinnen alle Spieler dieser Gesinnung — ob lebendig oder tot. Gut gewinnt, wenn der Dämon stirbt. Böse gewinnt, wenn nur noch zwei Spieler leben (Reisende zählen nicht)."
+    },
+    {
+      "term": "Verlieren",
+      "en": "Lose",
+      "category": "abstimmung",
+      "def": "Am Spielende verliert ein Team. Verliert ein Team, verlieren alle Spieler dieser Gesinnung — ob lebendig oder tot."
+    },
+    {
+      "term": "Fähigkeit",
+      "en": "Ability",
+      "category": "zustaende",
+      "def": "Die besondere Kraft oder Bürde eines Charakters. Der verbindliche Wortlaut steht auf dem Charakterblatt; der Almanach dient nur zur Orientierung. Charaktere haben keine Fähigkeit, wenn sie tot, betrunken oder vergiftet sind."
+    },
+    {
+      "term": "Zustand",
+      "en": "State",
+      "category": "zustaende",
+      "def": "Eine aktuelle Eigenschaft eines Spielers. Jeder Spieler ist immer entweder betrunken oder nüchtern, vergiftet oder gesund, lebendig oder tot, gut oder böse, und wahnsinnig oder klar."
+    },
+    {
+      "term": "Betrunken",
+      "en": "Drunk",
+      "category": "zustaende",
+      "def": "Ein betrunkener Spieler hat keine Fähigkeit, glaubt aber, eine zu haben — und der/die Geschichtenerzähler*in tut ebenfalls so. Liefert seine Fähigkeit Informationen, dürfen diese falsch sein. Betrunkene Spieler wissen nicht, dass sie betrunken sind."
+    },
+    {
+      "term": "Vergiftet",
+      "en": "Poisoned",
+      "category": "zustaende",
+      "def": "Mechanisch identisch zu betrunken: keine Fähigkeit, aber der Spieler glaubt weiterhin, eine zu haben, und kann falsche Informationen erhalten. Vergiftete Spieler wissen nicht, dass sie vergiftet sind.",
+      "see_also": ["Betrunken"]
+    },
+    {
+      "term": "Nüchtern",
+      "en": "Sober",
+      "category": "zustaende",
+      "def": "Nicht betrunken."
+    },
+    {
+      "term": "Gesund",
+      "en": "Healthy",
+      "category": "zustaende",
+      "def": "Nicht vergiftet."
+    },
+    {
+      "term": "Wahnsinnig („mad\")",
+      "en": "Mad",
+      "category": "zustaende",
+      "def": "Wer über etwas „mad\" ist, versucht die Gruppe davon zu überzeugen, dass es wahr ist. Manche Charaktere werden angewiesen, über etwas wahnsinnig zu sein. Findet der/die Geschichtenerzähler*in, dass ein Spieler nicht ernsthaft versucht hat, die Gruppe davon zu überzeugen, kann eine Strafe folgen — meist die Exekution."
+    },
+    {
+      "term": "Könnte",
+      "en": "Might",
+      "category": "zustaende",
+      "def": "Kurzschreibweise auf Charakterblättern und Token. Steht „könnte\" in einer Fähigkeit, entscheidet der/die Geschichtenerzähler*in, ob es eintritt oder nicht."
+    },
+    {
+      "term": "Wählen",
+      "en": "Choose",
+      "category": "zustaende",
+      "def": "Steht dieses Wort in einer Fähigkeit, entscheidet der **Spieler**. Fehlt es, entscheidet stattdessen der/die Geschichtenerzähler*in."
+    },
+    {
+      "term": "Wiederbelebt",
+      "en": "Resurrected / Reborn",
+      "category": "zustaende",
+      "def": "Ein toter Spieler wird wieder lebendig. Dabei erhält er seine Fähigkeit zurück — sogar eine bereits verbrauchte „einmal pro Spiel\"-Fähigkeit. Wirkt seine Fähigkeit nur in der ersten Nacht, wirkt sie in dieser Nacht erneut."
+    },
+    {
+      "term": "Wahre Information",
+      "en": "True info",
+      "category": "info",
+      "def": "Eine zutreffende Aussage, Geste oder ein zutreffendes Charakter-Token. Über die **Regeln** muss der/die Geschichtenerzähler*in immer die Wahrheit sagen.",
+      "see_also": ["Falsche Information"]
+    },
+    {
+      "term": "Falsche Information",
+      "en": "False info",
+      "category": "info",
+      "def": "Eine unzutreffende Aussage, Geste oder ein unzutreffendes Charakter-Token. Der/die Geschichtenerzähler*in darf falsche Informationen geben, wenn ein Charakter als etwas anderes registriert oder wenn ein Spieler betrunken oder vergiftet ist.",
+      "see_also": ["Wahre Information"]
+    },
+    {
+      "term": "Registriert als",
+      "en": "Registers as",
+      "category": "info",
+      "def": "Ein Spieler, der „als etwas registriert\", zählt für Spielregeln und für die Fähigkeiten anderer als dieser Charakter oder diese Gesinnung. Registriert ein guter Spieler als böse, ist er trotzdem gut und gewinnt mit Gut — für Fähigkeiten, die Böses erkennen, zählt er aber als böse. Als Charakter zu registrieren verleiht dessen Fähigkeit **nicht**."
+    },
+    {
+      "term": "Glaubt zu sein",
+      "en": "Think",
+      "category": "info",
+      "def": "Ein Spieler, der glaubt, ein anderer Charakter zu sein, erhält ein Charakter-Token, das nicht seinem wahren Charakter im Grimoire entspricht. Der/die Geschichtenerzähler*in tut diesem Spieler gegenüber so, als wäre er dieser falsche Charakter."
+    },
+    {
+      "term": "Nachbarn",
+      "en": "Neighbours",
+      "category": "info",
+      "def": "Die beiden Spieler, die einen Sitzplatz im und gegen den Uhrzeigersinn neben dem betreffenden Spieler sitzen."
+    },
+    {
+      "term": "Lebende Nachbarn",
+      "en": "Alive neighbours",
+      "category": "info",
+      "def": "Die beiden nächsten **lebenden** Spieler im und gegen den Uhrzeigersinn — tote Spieler dazwischen werden übersprungen.",
+      "see_also": ["Nachbarn"]
+    },
+    {
+      "term": "Schergen-Info",
+      "en": "Minion info",
+      "category": "info",
+      "def": "Kurzschreibweise auf dem Nachtblatt für die Information, die die Schergen in der ersten Nacht erhalten, sofern sieben oder mehr Spieler mitspielen: Sie erfahren, wer der Dämon ist, und wer die anderen Schergen sind."
+    },
+    {
+      "term": "Dämon-Info",
+      "en": "Demon info",
+      "category": "info",
+      "def": "Kurzschreibweise auf dem Nachtblatt für die Information, die der Dämon in der ersten Nacht erhält, sofern sieben oder mehr Spieler mitspielen: Er erfährt, wer seine Schergen sind, und drei gute Charaktere, die nicht im Spiel sind und die er zum Bluffen nutzen kann."
+    },
+    {
+      "term": "Bluffs",
+      "en": "Bluffs",
+      "category": "info",
+      "def": "Die drei nicht im Spiel befindlichen guten Charaktere, die der Dämon in der ersten Nacht gezeigt bekommt. Er kann sie gefahrlos vorgeben zu sein.",
+      "see_also": ["Nicht im Spiel"]
+    },
+    {
+      "term": "Red Herring",
+      "en": "Red Herring",
+      "category": "info",
+      "def": "Der eine gute Spieler, der der Wahrsagerin dauerhaft als Dämon erscheint. Er wird vor Spielbeginn festgelegt, bleibt das ganze Spiel derselbe und erfährt selbst nichts davon."
+    },
+    {
+      "term": "Privat",
+      "en": "Private",
+      "category": "info",
+      "def": "Alles, was zwischen zwei Spielern oder zwischen einem Spieler und dem/der Geschichtenerzähler*in geflüstert wird, sodass die übrigen Spieler es nicht hören."
+    },
+    {
+      "term": "Öffentlich",
+      "en": "Public",
+      "category": "info",
+      "def": "Alles, was so gesagt oder getan wird, dass die meisten Spieler und der/die Geschichtenerzähler*in mitbekommen, dass es geschehen ist."
+    },
+    {
+      "term": "Erklären",
+      "en": "Declare",
+      "category": "info",
+      "def": "Der Gruppe etwas so mitteilen, dass alle es hören können."
+    },
+    {
+      "term": "Schritte",
+      "en": "Steps",
+      "category": "info",
+      "def": "Die Anzahl sitzender Spieler zwischen zwei Spielern, im oder gegen den Uhrzeigersinn — es zählt der kürzere Weg. Relevant für den/die Uhrmacher*in."
+    },
+    {
+      "term": "Geschichtenerzähler*in",
+      "en": "Storyteller",
+      "category": "rollen",
+      "def": "Die Person, die das Spiel leitet. Sie führt das Grimoire, befolgt die Regeln und trifft die endgültige Entscheidung, wenn eine Situation ausgelegt werden muss."
+    },
+    {
+      "term": "Spieler",
+      "en": "Player",
+      "category": "rollen",
+      "def": "Jede Person mit einem Charakter im Spiel — der/die Geschichtenerzähler*in zählt nicht dazu."
+    },
+    {
+      "term": "Charakter",
+      "en": "Character",
+      "category": "rollen",
+      "def": "Die Rolle, die ein Spieler spielt, etwa der Butler. Charaktere können im Spiel oder nicht im Spiel sein."
+    },
+    {
+      "term": "Typ",
+      "en": "Type",
+      "category": "rollen",
+      "def": "Die Klasse eines Charakters: Bürger, Außenseiter, Scherge, Dämon, Reisender oder Fabled."
+    },
+    {
+      "term": "Bürger",
+      "en": "Townsfolk",
+      "category": "rollen",
+      "def": "Ein guter Charaktertyp. Bürger haben Fähigkeiten, die dem guten Team helfen. Meist sind die meisten Charaktere im Spiel Bürger. Das Reisenden-Blatt zeigt an, wie viele Bürger in der aktuellen Partie sind."
+    },
+    {
+      "term": "Außenseiter",
+      "en": "Outsider",
+      "category": "rollen",
+      "def": "Ein Charaktertyp, der gut beginnt. Außenseiter haben Fähigkeiten, die dem guten Team **nicht** helfen. Das Reisenden-Blatt zeigt an, wie viele Außenseiter in der aktuellen Partie sind."
+    },
+    {
+      "term": "Scherge",
+      "en": "Minion",
+      "category": "rollen",
+      "def": "Ein Charaktertyp, der böse beginnt. Schergen haben Fähigkeiten, die dem bösen Team helfen. Es gibt normalerweise einen bis drei Schergen pro Spiel."
+    },
+    {
+      "term": "Dämon",
+      "en": "Demon",
+      "category": "rollen",
+      "def": "Ein Charaktertyp, der böse beginnt. Stirbt der Dämon, gewinnt in der Regel das gute Team. Dämonen töten meist nachts und haben zusätzlich eine Fähigkeit, die dem guten Team schadet."
+    },
+    {
+      "term": "Der Dämon",
+      "en": "The Demon",
+      "category": "rollen",
+      "def": "Der Spieler mit dem Dämon-Charakter. Gibt es mehrere Dämonen, zählt jeder lebende Dämon-Spieler als „der Dämon\"."
+    },
+    {
+      "term": "Reisende",
+      "en": "Traveller",
+      "category": "rollen",
+      "def": "Ein Charaktertyp für Spieler, die verspätet dazukommen oder früh gehen müssen. Der Spieler wählt seinen Charakter selbst, der/die Geschichtenerzähler*in wählt seine Gesinnung. Reisende haben große Macht, können aber von der Gruppe verbannt werden.",
+      "see_also": ["Verbannung"]
+    },
+    {
+      "term": "Fabled",
+      "en": "Fabled",
+      "category": "rollen",
+      "def": "Ein Charaktertyp für den/die Geschichtenerzähler*in. Fabled sind neutral, werden öffentlich gewählt und machen das Spiel in ungewöhnlichen Situationen meist gerechter."
+    },
+    {
+      "term": "Gesinnung",
+      "en": "Alignment",
+      "category": "rollen",
+      "def": "Das Team, auf dem ein Spieler gerade steht: gut oder böse. Wechselt ein Spieler die Gesinnung, bleibt sein Charakter gleich. Wechselt er den Charakter, bleibt seine Gesinnung gleich. Spieler kennen ihre eigene Gesinnung."
+    },
+    {
+      "term": "Team",
+      "en": "Team",
+      "category": "rollen",
+      "def": "Alle Spieler mit derselben Gesinnung. „Dein Team\" heißt: du und alle anderen Spieler mit deiner Gesinnung."
+    },
+    {
+      "term": "Verbündeter",
+      "en": "Ally",
+      "category": "rollen",
+      "def": "Ein Spieler mit derselben Gesinnung."
+    },
+    {
+      "term": "Gut",
+      "en": "Good",
+      "category": "rollen",
+      "def": "Die gute Gesinnung. Bürger und Außenseiter (blaue Charaktere) beginnen gut. Gut gewinnt, wenn der Dämon stirbt."
+    },
+    {
+      "term": "Böse",
+      "en": "Evil",
+      "category": "rollen",
+      "def": "Die böse Gesinnung. Schergen und Dämonen (rote Charaktere) beginnen böse. Böse gewinnt, wenn nur noch zwei Spieler leben — Reisende nicht mitgezählt."
+    },
+    {
+      "term": "Im Spiel",
+      "en": "In play",
+      "category": "rollen",
+      "def": "Ein Charakter, der in der aktuellen Partie vorkommt — ob lebendig oder tot."
+    },
+    {
+      "term": "Nicht im Spiel",
+      "en": "Not in play",
+      "category": "rollen",
+      "def": "Ein Charakter, der in der aktuellen Partie nicht vorkommt, aber auf dem Charakterblatt steht."
+    },
+    {
+      "term": "Edition",
+      "en": "Edition",
+      "category": "rollen",
+      "def": "Ein Szenario mit eigenem Satz Token, Charakterblättern und Almanach — zum Beispiel Trouble Brewing. Jede Edition hat ein eigenes Thema, eine eigene Strategie und einen eigenen Ton."
+    },
+    {
+      "term": "Ravenswood Bluff",
+      "en": "Ravenswood Bluff",
+      "category": "rollen",
+      "def": "Die Stadt, in der alle Editionen spielen."
+    },
+    {
+      "term": "Grimoire",
+      "en": "Grimoire",
+      "category": "material",
+      "def": "Die Mappe, die die Charakter-Token aufbewahrt. Sie wird vom/von der Geschichtenerzähler*in geführt und aktualisiert; Spieler dürfen nicht hineinsehen. Das Grimoire zeigt alle Zustände aller Charaktere — wer lebt, wer tot ist, wer vergiftet ist, und so weiter."
+    },
+    {
+      "term": "Stadtplatz",
+      "en": "Town Square",
+      "category": "material",
+      "def": "Das lila Spielbrett in der Mitte des Sitzkreises. Darauf liegen die Lebens- und Stimm-Token der Spieler, darunter das Reisenden-Blatt."
+    },
+    {
+      "term": "Lebens-Token",
+      "en": "Life Token",
+      "category": "material",
+      "def": "Diese Token liegen auf dem Stadtplatz und entsprechen den Sitzpositionen der Spieler. Die helle Seite zeigt, dass der Spieler lebt, die dunkle, dass er tot ist."
+    },
+    {
+      "term": "Stimm-Token",
+      "en": "Vote Token",
+      "category": "material",
+      "def": "Das runde Token, das beim Tod auf das Lebens-Token eines Spielers gelegt wird. Stimmt dieser tote Spieler ab, gibt er sein Stimm-Token ab und kann für den Rest des Spiels nicht mehr abstimmen."
+    },
+    {
+      "term": "Erinnerungs-Token",
+      "en": "Reminder Token",
+      "category": "material",
+      "def": "Die kleinen Token, mit denen sich der/die Geschichtenerzähler*in alles Mögliche merkt. Erinnerungs-Token gehören immer zu einem bestimmten Charakter."
+    },
+    {
+      "term": "Charakter-Token",
+      "en": "Character Token",
+      "category": "material",
+      "def": "Das große runde Token, das jeder Spieler zu Spielbeginn erhält und das seinen Charakter angibt. Spieler dürfen die Token der anderen nicht ansehen."
+    },
+    {
+      "term": "Charakterblatt",
+      "en": "Character Sheet",
+      "category": "material",
+      "def": "Die laminierten Blätter, auf denen alle möglichen Charaktere der gewählten Edition mit ihren Fähigkeiten stehen. Der dort abgedruckte Wortlaut ist verbindlich."
+    },
+    {
+      "term": "Reisenden-Blatt",
+      "en": "Traveller Sheet",
+      "category": "material",
+      "def": "Das Blatt unter dem Stadtplatz. Es zeigt, wie viele Bürger, Außenseiter und Schergen in der aktuellen Partie sind, und beschreibt die Fähigkeiten der Reisenden."
+    },
+    {
+      "term": "Nachtblatt",
+      "en": "Night Sheet",
+      "category": "material",
+      "def": "Das Blatt, auf dem steht, welche Charaktere nachts in welcher Reihenfolge handeln. Es hat eine Seite für die erste Nacht und eine für alle weiteren."
+    },
+    {
+      "term": "Leichentuch",
+      "en": "Shroud",
+      "category": "material",
+      "def": "Das schwarze, bannerförmige Token, das im Grimoire anzeigt, dass ein Spieler tot ist."
+    },
+    {
+      "term": "Info-Token",
+      "en": "Info Token",
+      "category": "material",
+      "def": "Rechteckige Token, die den Spielern nachts Informationen geben — zum Beispiel DIES IST DER DÄMON oder DU BIST."
+    },
+    {
+      "term": "Blatt (Leaf)",
+      "en": "Leaf",
+      "category": "material",
+      "def": "Die kleinen farbigen Symbole auf vielen Charakter-Token. Grüne Blätter oben zeigen, wie viele Erinnerungs-Token dieser Charakter mitbringt. Ein grünes Blatt links bedeutet, dass er in der ersten Nacht ein Nacht-Token braucht, eines rechts, dass er es in allen weiteren Nächten braucht. Eine orange Blüte bedeutet, dass sein Setup vom Normalfall abweicht."
+    },
+    {
+      "term": "Skript",
+      "en": "Script",
+      "category": "material",
+      "def": "Eine Zusammenstellung von Charakteren, erstellt über das Skript-Tool, aus der sich Charakterblätter drucken lassen."
+    },
+    {
+      "term": "Skript-Tool",
+      "en": "Script Tool",
+      "category": "material",
+      "def": "Der Online-Charakterlisten-Generator, mit dem sich Skripte aus beliebigen eigenen Charakter-Token bauen lassen: script.bloodontheclocktower.com"
+    },
+    {
+      "term": "Dschinn / Jinx",
+      "en": "Djinn / Jinx",
+      "category": "material",
+      "def": "Ein „Jinx\" ist ein Paar von Charakteren, deren Fähigkeiten sich widersprechen. Der Dschinn ist der Fabled, der die nötige Sonderregel einbringt — alle Spieler erfahren sie zu Spielbeginn."
+    },
+    {
+      "term": "Teensyville",
+      "en": "Teensyville",
+      "category": "material",
+      "def": "Ein verkleinertes Skript für 5–6 Spieler: 6 Bürger, 2 Außenseiter, 2 Schergen, 1 Dämon. Wird oft mit dem/der Spielzeugmacher*in kombiniert."
+    }
+  ]
+}

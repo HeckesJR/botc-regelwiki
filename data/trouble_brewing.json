@@ -1,0 +1,626 @@
+{
+  "edition": "trouble_brewing",
+  "name_de": "Trouble Brewing",
+  "name_en": "Trouble Brewing",
+  "tagline": "Die Einsteiger-Edition — klare Informationen, ein Dämon, ein Giftmischer.",
+  "difficulty": "Einsteiger",
+  "intro": "Trouble Brewing ist die erste und zugänglichste Edition. Das gute Team bekommt in der ersten Nacht viele verlässliche Startinformationen; das böse Team hat mit Giftmischer, Spion und Baron nur wenige, dafür präzise Werkzeuge, um dieses Wissen zu verfälschen. Wer zum ersten Mal leitet, leitet Trouble Brewing.",
+  "storyteller_notes": [
+    "Gute Spieler können ihren Informationen die meiste Zeit vertrauen — das macht die Edition berechenbar und lehrreich.",
+    "Der/die Giftmischer*in ist der wichtigste böse Charakter: Er entscheidet, welche Information heute nicht stimmt.",
+    "Der Trunkenbold ist die häufigste Fehlerquelle für neue Geschichtenerzähler*innen — er weiß nicht, dass er der Trunkenbold ist, und wird wie sein geglaubter Charakter behandelt.",
+    "Denk daran, den Red Herring der Wahrsagerin vor der ersten Nacht festzulegen.",
+    "Einsiedler und Spion registrieren nach deinem Ermessen — und dürfen das sogar innerhalb einer Nacht unterschiedlich tun. Nutze das, um Informationen interessant statt eindeutig zu machen."
+  ],
+  "night_meta": {
+    "first": [
+      { "order": 1, "key": "dusk", "label": "Abenddämmerung", "text": "Prüfe, dass alle Augen geschlossen sind." },
+      { "order": 2, "key": "minion_info", "label": "Schergen-Info", "text": "Ab 7 Spielern: Alle Schergen aufwecken und den Dämon zeigen." },
+      { "order": 3, "key": "demon_info", "label": "Dämon-Info", "text": "Ab 7 Spielern: Dämon aufwecken, seine Schergen zeigen und 3 nicht im Spiel befindliche gute Charaktere als Bluffs." },
+      { "order": 13, "key": "dawn", "label": "Morgendämmerung", "text": "Kurz warten, dann zum Augenöffnen aufrufen." }
+    ],
+    "other": [
+      { "order": 1, "key": "dusk", "label": "Abenddämmerung", "text": "Prüfe, dass alle Augen geschlossen sind." },
+      { "order": 12, "key": "dawn", "label": "Morgendämmerung", "text": "Kurz warten, Augen öffnen und sofort verkünden, wer gestorben ist." }
+    ]
+  },
+  "setups": [
+    {
+      "id": "tb-einstieg",
+      "name": "Klarer Einstieg",
+      "players": 8,
+      "curated": false,
+      "difficulty": "Sehr leicht",
+      "characters": ["washerwoman", "librarian", "investigator", "chef", "empath", "butler", "poisoner", "imp"],
+      "reason": "Fünf Bürger, die fast alles schon in der ersten Nacht erfahren — nichts davon muss über mehrere Nächte verrechnet werden. Der/die Giftmischer*in ist die einzige Störquelle im Spiel, also gibt es zu jedem Zeitpunkt höchstens eine falsche Information. Für die allererste Partie einer Gruppe."
+    },
+    {
+      "id": "tb-druck",
+      "name": "Information unter Beschuss",
+      "players": 8,
+      "curated": false,
+      "difficulty": "Leicht",
+      "characters": ["fortune_teller", "empath", "undertaker", "monk", "soldier", "saint", "spy", "imp"],
+      "reason": "Hier muss das gute Team jede Nacht neu arbeiten statt einmal Informationen einzusammeln. Der/die Spion*in sieht das Grimoire und kann jede Behauptung gezielt kontern; der/die Heilige zwingt die Stadt zur Vorsicht beim Exekutieren. Mönch und Soldat*in geben dem Dämon echte Zielprobleme."
+    },
+    {
+      "id": "tb-langer-tag",
+      "name": "Der lange Tag",
+      "players": 8,
+      "curated": false,
+      "difficulty": "Mittel",
+      "characters": ["virgin", "slayer", "mayor", "ravenkeeper", "chef", "recluse", "scarlet_woman", "imp"],
+      "reason": "Ein Setup für Gruppen, die gern reden. Jungfrau, Dämonenjäger*in und Bürgermeister*in sind alles Fähigkeiten, die am Tag öffentlich ausgelöst werden — das erzeugt große Momente. Der/die Einsiedler*in sorgt für falsche Treffer, die Scharlachrote Frau dafür, dass ein früher Dämonentod das Spiel nicht beendet."
+    },
+    {
+      "id": "tb-baron",
+      "name": "Baron-Variante",
+      "players": 7,
+      "curated": false,
+      "difficulty": "Mittel",
+      "characters": ["washerwoman", "investigator", "fortune_teller", "drunk", "saint", "baron", "imp"],
+      "reason": "Der Baron bringt +2 Außenseiter mit: Aus 5 Bürgern / 0 Außenseitern werden 3 Bürger / 2 Außenseiter. Mit Trunkenbold und Heiligem sind zwei der sieben Spieler für das gute Team ein aktives Risiko — und einer davon weiß es nicht einmal. Klein, giftig, sehr lehrreich."
+    }
+  ],
+  "characters": [
+    {
+      "id": "washerwoman",
+      "edition": "trouble_brewing",
+      "type": "townsfolk",
+      "name_de": "Waschweib",
+      "name_en": "Washerwoman",
+      "ability_short": "Du weißt zu Beginn, dass 1 von 2 Spielern ein bestimmter Bürger ist.",
+      "quote": "Blutflecken auf einem Dinnerjackett? Nein. Das ist Kochsherry. Wie unachtsam.",
+      "full_text": "Das Waschweib erfährt, dass ein bestimmter Bürger im Spiel ist — aber nicht, wer ihn spielt.\n\n• In der ersten Nacht wird das Waschweib geweckt, bekommt zwei Spieler gezeigt und erfährt den Charakter von einem der beiden.\n• Es erfährt dies nur ein einziges Mal und danach nichts mehr.",
+      "examples": [
+        "Evin ist der Koch und Amy die Rabenhüterin. Das Waschweib erfährt, dass entweder Evin oder Amy der Koch ist.",
+        "Julian ist der Imp und Alex die Jungfrau. Das Waschweib erfährt, dass entweder Julian oder Alex die Jungfrau ist.",
+        "Marianna ist die Spionin und Sarah die Scharlachrote Frau. Das Waschweib erfährt, dass eine von beiden die Rabenhüterin ist — die Spionin registriert hier als Bürgerin, nämlich als Rabenhüterin."
+      ],
+      "how_to_run": "Lege bei der Vorbereitung der ersten Nacht das BÜRGER-Erinnerungs-Token des Waschweibs an einen beliebigen Bürger-Charakter und das FALSCH-Token an einen beliebigen anderen Charakter.\n\nWecke das Waschweib in der ersten Nacht und zeige auf die beiden markierten Spieler. Zeige ihm dann den mit BÜRGER markierten Charakter-Token. Schicke es wieder schlafen und entferne die Erinnerungs-Token bei Gelegenheit.",
+      "tips": [
+        "Wähle den zweiten Spieler bewusst: Stellst du den Dämon daneben, gibst du dem guten Team einen versteckten Hinweis.",
+        "Der Trunkenbold zählt als der Bürger, für den er sich hält — das ist eine hervorragende Falle."
+      ],
+      "wakes_first_night": true,
+      "wakes_other_nights": false,
+      "night_order_first": 6,
+      "night_order_other": null,
+      "icon": "assets/icons/trouble_brewing/washerwoman.webp"
+    },
+    {
+      "id": "librarian",
+      "edition": "trouble_brewing",
+      "type": "townsfolk",
+      "name_de": "Bibliothekar*in",
+      "name_en": "Librarian",
+      "ability_short": "Du weißt zu Beginn, dass 1 von 2 Spielern ein bestimmter Außenseiter ist. (Oder dass keine mitspielen.)",
+      "quote": "Gewiss, Madam, unter normalen Umständen dürften Sie den Codex Malificarium aus dem Bibliotheksgewölbe entleihen. Allerdings scheinen Sie kein Mitglied zu sein.",
+      "full_text": "Der/die Bibliothekar*in erfährt, dass ein bestimmter Außenseiter im Spiel ist — aber nicht, wer ihn spielt.\n\n• In der ersten Nacht erfährt er/sie, dass einer von zwei Spielern ein bestimmter Außenseiter ist.\n• Er/sie erfährt dies nur ein einziges Mal und danach nichts mehr.\n• Der Trunkenbold ist ein Außenseiter. Erfährt der/die Bibliothekar*in, dass einer von zwei Spielern der Trunkenbold ist, erfährt er/sie **nicht**, für welchen Bürger sich dieser Spieler hält.\n• Ist kein Außenseiter im Spiel, erfährt der/die Bibliothekar*in eine „0\".",
+      "examples": [
+        "Ben ist der Heilige und Lewis der Baron. Der/die Bibliothekar*in erfährt, dass entweder Ben oder Lewis der Heilige ist.",
+        "Der/die Geschichtenerzähler*in entscheidet, dass der Einsiedler als Scherge registriert, nicht als Außenseiter. Es sind keine weiteren Außenseiter im Spiel — der/die Bibliothekar*in erfährt eine „0\".",
+        "Abdallah ist der Trunkenbold, der sich für den Mönch hält, und Doug ist der Totengräber. Der/die Bibliothekar*in erfährt, dass entweder Abdallah oder Doug der Trunkenbold ist. Der Trunkenbold ist Abdallahs tatsächlicher Charakter, auch wenn er sich für den Mönch hält."
+      ],
+      "how_to_run": "Lege bei der Vorbereitung der ersten Nacht das AUSSENSEITER-Erinnerungs-Token an einen beliebigen Außenseiter-Charakter und das FALSCH-Token an einen beliebigen anderen Charakter.\n\nWecke den/die Bibliothekar*in in der ersten Nacht, zeige auf die beiden markierten Spieler und dann den mit AUSSENSEITER markierten Charakter-Token. Ist kein Außenseiter im Spiel, zeige stattdessen die Null. Schicke ihn/sie wieder schlafen.",
+      "tips": [
+        "Die Null ist keine Notlösung, sondern eine starke Information — sie schließt den Baron praktisch aus.",
+        "Zeigst du den Trunkenbold, deckst du auf, dass ein Spieler unbewusst falsch über sich selbst redet. Das ist mächtig, überlege es dir gut."
+      ],
+      "wakes_first_night": true,
+      "wakes_other_nights": false,
+      "night_order_first": 7,
+      "night_order_other": null,
+      "icon": "assets/icons/trouble_brewing/librarian.webp"
+    },
+    {
+      "id": "investigator",
+      "edition": "trouble_brewing",
+      "type": "townsfolk",
+      "name_de": "Detektiv*in",
+      "name_en": "Investigator",
+      "ability_short": "Du weißt zu Beginn, dass 1 von 2 Spielern ein bestimmter Scherge ist.",
+      "quote": "Eine schöne Nacht für einen Spaziergang, nicht wahr, Mister Morozov? Oder sollte ich sagen... BARON Morozov?",
+      "full_text": "Der/die Detektiv*in erfährt, dass ein bestimmter Scherge im Spiel ist — aber nicht, wer ihn spielt.\n\n• In der ersten Nacht erfährt er/sie, dass einer von zwei Spielern ein bestimmter Scherge ist.\n• Er/sie erfährt dies nur ein einziges Mal und danach nichts mehr.",
+      "examples": [
+        "Amy ist der Baron und Julian der/die Bürgermeister*in. Der/die Detektiv*in erfährt, dass entweder Amy oder Julian der Baron ist.",
+        "Lachlan ist der Spion und Lewis der Giftmischer. Der/die Detektiv*in erfährt, dass entweder Lachlan oder Lewis der Spion ist.",
+        "Evin ist der Einsiedler und Marianna der Imp. Der/die Detektiv*in erfährt, dass entweder Evin oder Marianna der Giftmischer ist — hier registriert der Einsiedler als Scherge, in diesem Fall als Giftmischer."
+      ],
+      "how_to_run": "Lege bei der Vorbereitung der ersten Nacht das SCHERGE-Erinnerungs-Token an einen beliebigen Schergen-Charakter und das FALSCH-Token an einen beliebigen anderen Charakter.\n\nWecke den/die Detektiv*in in der ersten Nacht, zeige auf die beiden markierten Spieler und dann den mit SCHERGE markierten Charakter-Token. Schicke ihn/sie wieder schlafen.",
+      "tips": [
+        "Der Einsiedler ist dein bestes Werkzeug: Registriert er als Scherge, bekommt das gute Team eine ehrliche und trotzdem falsche Spur.",
+        "Das ist die direkteste böse Information der Edition — und deshalb ein bevorzugtes Ziel für Giftmischer und Dämon."
+      ],
+      "wakes_first_night": true,
+      "wakes_other_nights": false,
+      "night_order_first": 8,
+      "night_order_other": null,
+      "icon": "assets/icons/trouble_brewing/investigator.webp"
+    },
+    {
+      "id": "chef",
+      "edition": "trouble_brewing",
+      "type": "townsfolk",
+      "name_de": "Koch/Köchin",
+      "name_en": "Chef",
+      "ability_short": "Du weißt zu Beginn, wie viele direkt benachbarte Paare BÖSER Spieler es gibt.",
+      "quote": "Die Reservierungen für heute Abend wirken merkwürdig. Nie zuvor hat Mrs. Mayweather diesem Tunichtgut aus Hudson Lime Gesellschaft geleistet. Und ausgerechnet heute haben sie einen Tisch für zwei. Seltsam.",
+      "full_text": "Der Koch erfährt, ob böse Spieler nebeneinander sitzen.\n\n• In der ersten Nacht erfährt er, wie viele Paare böser Spieler es insgesamt gibt. Ein Paar sind zwei Spieler, aber ein Spieler kann Teil von zwei Paaren sein: Zwei nebeneinandersitzende böse Spieler sind ein Paar, drei sind zwei Paare, vier sind drei Paare, und so weiter.\n• Der Koch erkennt böse Reisende wie alle anderen Charaktertypen — aber nur, wenn diese Reisenden vor seiner Handlung ins Spiel gekommen sind.",
+      "examples": [
+        "Es sitzen keine bösen Spieler nebeneinander. Der Koch erfährt eine „0\".",
+        "Der Imp sitzt neben dem Baron. Auf der anderen Seite des Kreises sitzt der Giftmischer neben der Scharlachroten Frau. Der Koch erfährt eine „2\".",
+        "Ein böser Sündenbock sitzt zwischen dem Imp und der Scharlachroten Frau. Auf der anderen Seite des Kreises sitzen Giftmischer und Baron nebeneinander. Der Koch erfährt eine „3\".",
+        "Der Einsiedler sitzt zwischen dem Imp und dem Giftmischer. Der Koch erfährt eine „1\" — der Einsiedler registriert für das Imp-Einsiedler-Paar als böse, für das Giftmischer-Einsiedler-Paar aber als gut."
+      ],
+      "how_to_run": "Wecke den Koch in der ersten Nacht. Zeige ihm mit den Fingern (0, 1, 2 usw.) die Anzahl der Paare benachbarter böser Spieler. Schicke ihn wieder schlafen.\n\nZähle im Kreis: Der letzte und der erste Spieler sitzen nebeneinander.",
+      "tips": [
+        "Die Koch-Zahl beschreibt die Sitzordnung zu Spielbeginn und bleibt für den Rest des Spiels gültig.",
+        "Beim Einsiedler darfst du für jedes Paar getrennt entscheiden. Wäre eine „2\" zu verräterisch, gib ruhig die wahre „0\"."
+      ],
+      "wakes_first_night": true,
+      "wakes_other_nights": false,
+      "night_order_first": 9,
+      "night_order_other": null,
+      "icon": "assets/icons/trouble_brewing/chef.webp"
+    },
+    {
+      "id": "empath",
+      "edition": "trouble_brewing",
+      "type": "townsfolk",
+      "name_de": "Empath*in",
+      "name_en": "Empath",
+      "ability_short": "Jede Nacht erfährst du, wie viele deiner 2 lebendigen Nachbarn BÖSE sind.",
+      "quote": "Meine Haut kribbelt. Irgendetwas stimmt hier nicht. Ich kann es fühlen.",
+      "full_text": "Der/die Empath*in erfährt fortlaufend, ob die eigenen Nachbarn böse sind.\n\n• Er/sie erfährt nur, **wie viele** der Nachbarn böse sind, nicht **welcher**.\n• Tote Spieler werden nicht erfasst: Sitzt der/die Empath*in neben einem toten Spieler, erhält er/sie stattdessen Information über den nächsten lebenden Spieler in dieser Richtung.\n• Der/die Empath*in handelt nach dem Dämon. Tötet der Dämon einen der lebenden Nachbarn, erfährt der/die Empath*in nichts mehr über diesen nun toten Spieler — die Information ist zur Morgendämmerung korrekt, nicht zur Abenddämmerung.",
+      "examples": [
+        "Der/die Empath*in hat zwei gute Nachbarn — einen Soldaten und einen Mönch. Er/sie erfährt eine „0\".",
+        "Am nächsten Tag wird der Soldat exekutiert, in dieser Nacht tötet der Imp den Mönch. Nun erfasst der/die Empath*in die lebenden Spieler neben Soldat und Mönch: eine Bibliothekarin und einen bösen Revolverhelden. Er/sie erfährt eine „1\".",
+        "In einer späteren Nacht leben nur noch drei Spieler: der/die Empath*in, der Imp und der Baron. Egal wer wo sitzt — der/die Empath*in erfährt eine „2\"."
+      ],
+      "how_to_run": "Wecke den/die Empath*in jede Nacht. Zeige ihm/ihr mit den Fingern (0, 1 oder 2), wie viele der benachbarten Spieler böse sind. Schicke ihn/sie wieder schlafen.",
+      "tips": [
+        "Der/die Empath*in ist ein hervorragendes erstes Giftziel: Eine einzige falsche Zahl entlastet eine ganze Nachbarschaft.",
+        "Ein Einsiedler neben dem/der Empath*in kann für dauerhaft irreführende Zahlen sorgen."
+      ],
+      "wakes_first_night": true,
+      "wakes_other_nights": true,
+      "night_order_first": 10,
+      "night_order_other": 9,
+      "icon": "assets/icons/trouble_brewing/empath.webp"
+    },
+    {
+      "id": "fortune_teller",
+      "edition": "trouble_brewing",
+      "type": "townsfolk",
+      "name_de": "Wahrsagerin",
+      "name_en": "Fortune Teller",
+      "ability_short": "Wähle jede Nacht 2 Spieler: Du erfährst, ob 1 davon der Dämon ist. Es gibt 1 GUTEN Spieler, der dir als Dämon erscheint.",
+      "quote": "Ich spüre großes Böses in deiner Seele! Aber... das könnte auch nur dein Parfüm sein. Ich bin allergisch gegen Holunder.",
+      "full_text": "Die Wahrsagerin kann erkennen, wer der Dämon ist — hält aber manchmal gute Spieler für Dämonen.\n\n• Jede Nacht wählt sie zwei Spieler und erfährt, ob mindestens einer der beiden der Dämon ist. Sie erfährt nicht, welcher.\n• Ein Spieler — der **Red Herring** — registriert für die Wahrsagerin dauerhaft als Dämon. Es ist das ganze Spiel über derselbe Spieler, er kann jeder beliebige gute Spieler sein, sogar die Wahrsagerin selbst, und sie erfährt nie, wer es ist.\n• Sie darf zwei beliebige Spieler wählen — lebend oder tot, auch sich selbst. Wählt sie einen toten Dämon, erhält sie trotzdem ein Nicken.",
+      "examples": [
+        "Die Wahrsagerin wählt den/die Bürgermeister*in und den/die Totengräber*in und erfährt ein „Nein\".",
+        "Die Wahrsagerin wählt den Imp und den/die Empath*in und erfährt ein „Ja\".",
+        "Die Wahrsagerin wählt einen lebenden Imp und einen toten Imp und erfährt ein „Ja\".",
+        "Die Wahrsagerin wählt sich selbst und einen Heiligen, der der Red Herring ist. Sie erfährt ein „Ja\"."
+      ],
+      "how_to_run": "Lege bei der Vorbereitung der ersten Nacht das RED-HERRING-Erinnerungs-Token an einen beliebigen guten Charakter.\n\nWecke die Wahrsagerin jede Nacht. Sie zeigt auf zwei beliebige Spieler. Ist einer davon ein Dämon oder der Red Herring, nicke. Sonst schüttle den Kopf. Schicke sie wieder schlafen.",
+      "tips": [
+        "In kleineren Runden empfiehlt es sich, die Wahrsagerin selbst zum Red Herring zu machen — dann erhält sie mehr Information, ohne dass sie zu mächtig wird.",
+        "Der Red Herring bleibt bis zum Spielende derselbe, auch wenn er stirbt."
+      ],
+      "wakes_first_night": true,
+      "wakes_other_nights": true,
+      "night_order_first": 11,
+      "night_order_other": 10,
+      "icon": "assets/icons/trouble_brewing/fortune_teller.webp"
+    },
+    {
+      "id": "undertaker",
+      "edition": "trouble_brewing",
+      "type": "townsfolk",
+      "name_de": "Totengräber*in",
+      "name_en": "Undertaker",
+      "ability_short": "Jede Nacht* erfährst du, welcher Charakter heute durch Exekution gestorben ist.",
+      "quote": "Hmmm... was haben wir denn hier? Der linke Stiefel ist bis zum Absatz abgelaufen, Feuersteinspäne unter der Zunge. Das ist die Tracht eines Militärmanns.",
+      "full_text": "Der/die Totengräber*in erfährt, welcher Charakter heute exekutiert wurde.\n\n• Der Spieler muss durch **Exekution** gestorben sein. Andere Tode am Tag — etwa durch den/die Revolverheld*in oder die Verbannung eines Reisenden — zählen nicht.\n• Er/sie wacht jede Nacht außer der ersten auf, denn vorher gab es noch keine Exekution.\n• Ist heute niemand gestorben, erfährt er/sie nichts. Der/die Geschichtenerzähler*in weckt ihn/sie dann entweder gar nicht oder weckt ihn/sie, ohne ein Token zu zeigen.\n• Wird der Trunkenbold exekutiert, wird das Trunkenbold-Token gezeigt — nicht der Bürger, für den sich der Spieler hielt.",
+      "examples": [
+        "Der/die Bürgermeister*in wird heute exekutiert. In dieser Nacht wird dem/der Totengräber*in das Bürgermeister-Token gezeigt.",
+        "Der Trunkenbold, der sich für die Jungfrau hält, wird exekutiert. Gezeigt wird das Trunkenbold-Token, denn der/die Totengräber*in erfährt den tatsächlichen Charakter.",
+        "Der Spion wird exekutiert, zwei Reisende werden verbannt. In dieser Nacht wird das Butler-Token gezeigt — der Spion registriert als Butler, und Verbannungen sind keine Exekutionen.",
+        "Heute wurde niemand exekutiert. In dieser Nacht wacht der/die Totengräber*in nicht auf."
+      ],
+      "how_to_run": "Stirbt ein Spieler durch Exekution, lege das HEUTE GESTORBEN-Erinnerungs-Token an dessen Charakter-Token.\n\nWecke den/die Totengräber*in jede Nacht außer der ersten, sofern heute jemand exekutiert wurde, und zeige den markierten Charakter-Token. Schicke ihn/sie wieder schlafen und entferne das Token bei Gelegenheit.",
+      "tips": [
+        "Der/die Totengräber*in belohnt eine Stadt, die sich zu Exekutionen durchringt. Erinnere neue Gruppen ruhig daran, dass Nicht-Exekutieren auch Kosten hat.",
+        "Bleib beim Wecken konsequent: Wenn du sonst immer weckst, verrät ein ausbleibendes Wecken bereits etwas."
+      ],
+      "wakes_first_night": false,
+      "wakes_other_nights": true,
+      "night_order_first": null,
+      "night_order_other": 8,
+      "icon": "assets/icons/trouble_brewing/undertaker.webp"
+    },
+    {
+      "id": "monk",
+      "edition": "trouble_brewing",
+      "type": "townsfolk",
+      "name_de": "Mönch",
+      "name_en": "Monk",
+      "ability_short": "Wähle jede Nacht* 1 Spieler (nicht dich selbst). Er ist heute Nacht sicher vor dem Dämon.",
+      "quote": "Es weht ein übler und tödlicher Wind heute Nacht. Komm, mein Bruder, such Schutz in der Abtei, solange der Sturm tobt. Bei meinem Wort oder bei meinem Leben, du wirst sicher sein.",
+      "full_text": "Der Mönch schützt andere vor dem Dämon.\n\n• Jede Nacht außer der ersten darf er einen beliebigen Spieler außer sich selbst schützen.\n• Greift der Dämon einen geschützten Spieler an, stirbt dieser nicht. Der Dämon darf dann **keinen** anderen Spieler angreifen — es stirbt in dieser Nacht einfach niemand.\n• Der Mönch schützt nicht davor, dass der Dämon jemanden nominiert und exekutieren lässt.",
+      "examples": [
+        "Der Mönch schützt die Wahrsagerin. Der Imp greift die Wahrsagerin an. In dieser Nacht stirbt niemand.",
+        "Der Mönch schützt den/die Bürgermeister*in, und der Imp greift ihn/sie an. Die Fähigkeit „ein anderer Spieler stirbt stattdessen\" löst nicht aus, weil der/die Bürgermeister*in vor dem Imp sicher ist. In dieser Nacht stirbt niemand.",
+        "Der Mönch schützt den Imp. Der Imp entscheidet sich, sich selbst zu töten — es passiert nichts. Der Imp bleibt am Leben, und es entsteht kein neuer Imp."
+      ],
+      "how_to_run": "Wecke den Mönch jede Nacht außer der ersten. Er zeigt auf einen beliebigen Spieler außer sich selbst. (Zeigt er auf sich selbst, schüttle den Kopf und fordere ihn zu einer neuen Wahl auf.) Schicke ihn wieder schlafen und lege das SICHER-Erinnerungs-Token an den gewählten Charakter.\n\nGreift der Dämon den mit SICHER markierten Spieler an, bleibt dieser am Leben — markiere ihn nicht als tot. Erkläre bei Morgendämmerung, dass niemand gestorben ist, aber nicht warum. Entferne den Marker bei Morgendämmerung.",
+      "tips": [
+        "In anderen Editionen haben Dämonen auch andere Fähigkeiten als das Töten. Der Mönchsschutz verhindert dort auch deren übrige schädliche Wirkungen.",
+        "Ein guter Mönch macht das Spiel für Böse zäh. Der Dämon sollte früh versuchen, ihn zu finden."
+      ],
+      "wakes_first_night": false,
+      "wakes_other_nights": true,
+      "night_order_first": null,
+      "night_order_other": 3,
+      "icon": "assets/icons/trouble_brewing/monk.webp"
+    },
+    {
+      "id": "ravenkeeper",
+      "edition": "trouble_brewing",
+      "type": "townsfolk",
+      "name_de": "Rabenhüter*in",
+      "name_en": "Ravenkeeper",
+      "ability_short": "Falls du während der Nacht stirbst, wirst du aufgeweckt & wählst 1 Spieler. Du erfährst seinen Charakter.",
+      "quote": "Meine Vögel werden mich rächen! Flieg! Flieg, meine süßen und pflichtbewussten Lieblinge! Zum Herrenhaus und zum Fluss! In die Gassen und in die Salons! Flieg!",
+      "full_text": "Der/die Rabenhüter*in erfährt den Charakter eines beliebigen Spielers — aber nur, wenn er/sie nachts stirbt.\n\n• Er/sie wird in der Nacht geweckt, in der er/sie stirbt, und wählt sofort einen Spieler.\n• Er/sie darf auch einen toten Spieler wählen.\n• Stirbt er/sie am Tag durch Exekution, löst die Fähigkeit nicht aus.",
+      "examples": [
+        "Der/die Rabenhüter*in wird vom Imp getötet und wacht auf, um einen Spieler zu wählen. Nach einigem Überlegen wählt er/sie Ben. Ben ist der/die Empath*in — und genau das erfährt der/die Rabenhüter*in.",
+        "Der Imp greift den/die Bürgermeister*in an. Der/die Bürgermeister*in stirbt nicht, stattdessen stirbt der/die Rabenhüter*in. Er/sie wird geweckt und wählt Doug, der ein toter Einsiedler ist. Der/die Rabenhüter*in erfährt, dass Doug die Scharlachrote Frau ist — der Einsiedler registriert als Scherge."
+      ],
+      "how_to_run": "Ist der/die Rabenhüter*in in dieser Nacht gestorben, wecke ihn/sie. Er/sie zeigt auf einen beliebigen Spieler. Zeige den Charakter-Token dieses Spielers. Schicke ihn/sie wieder schlafen.",
+      "tips": [
+        "Es empfiehlt sich, den Spielern zu untersagen, während der Nacht laut über ihre Handlungen zu sprechen.",
+        "Vergiftest du den/die Rabenhüter*in in der Nacht, in der er/sie stirbt, kannst du eine völlig falsche Spur legen."
+      ],
+      "wakes_first_night": false,
+      "wakes_other_nights": true,
+      "night_order_first": null,
+      "night_order_other": 7,
+      "icon": "assets/icons/trouble_brewing/ravenkeeper.webp"
+    },
+    {
+      "id": "virgin",
+      "edition": "trouble_brewing",
+      "type": "townsfolk",
+      "name_de": "Jungfrau",
+      "name_en": "Virgin",
+      "ability_short": "Wenn du zum 1. Mal nominiert wirst, wird der Nominierende sofort exekutiert, falls er ein Bürger ist.",
+      "quote": "Ich bin rein. Mögen jene, die ohne Sünde sind, sich niederwerfen und an meiner statt leiden. Mein Ruf soll nicht von euren giftigen Anschuldigungen befleckt werden.",
+      "full_text": "Die Jungfrau ist sicher vor Exekution... vielleicht. Wer die Jungfrau nominiert, stirbt meistens.\n\n• Nominiert ein Bürger die Jungfrau, wird dieser Bürger sofort exekutiert. Da es pro Tag nur eine Exekution geben kann, endet der Nominierungsprozess sofort — selbst wenn gerade ein anderer Spieler kurz vor dem Tod stand.\n• Nur Bürger werden durch die Jungfrau exekutiert. Nominiert ein Außenseiter, Scherge oder Dämon, passiert nichts und die Abstimmung läuft weiter.\n• Die Fähigkeit ist so stark, weil beide Charaktere fast sicher Bürger sind, wenn ein Nominierender stirbt.\n• Nach der ersten Nominierung verliert die Jungfrau ihre Fähigkeit — auch dann, wenn der Nominierende nicht gestorben ist, und auch dann, wenn die Jungfrau vergiftet oder betrunken war.",
+      "examples": [
+        "Das Waschweib nominiert die Jungfrau. Das Waschweib stirbt, und die Abstimmung endet.",
+        "Der Trunkenbold, der sich für den Koch hält, nominiert die Jungfrau. Der Trunkenbold bleibt am Leben, und die Jungfrau verliert ihre Fähigkeit — der Trunkenbold ist ein Außenseiter, kein Bürger. Die Spieler dürfen nun über die Exekution der Jungfrau abstimmen.",
+        "Ein toter Spieler nominiert die Jungfrau. Tote dürfen aber nicht nominieren: Der/die Geschichtenerzähler*in erklärt, dass diese Nominierung nicht zählt. Die Jungfrau verliert ihre Fähigkeit nicht."
+      ],
+      "how_to_run": "Ist der erste Spieler, der die Jungfrau jemals nominiert, ein Bürger, erkläre sofort, dass dieser Spieler exekutiert wird. Er stirbt — lege ein Leichentuch auf seinen Charakter-Token im Grimoire.\n\nDie Jungfrau verliert ihre Fähigkeit: Lege das KEINE FÄHIGKEIT-Token an ihr Token. Beende den Nominierungsprozess und gehe zur Nachtphase über.",
+      "tips": [
+        "Der Einsiedler registriert möglicherweise nicht als Bürger — hier hast du Spielraum.",
+        "Eine ausgelöste Jungfrau ist einer der stärksten Beweise im Spiel. Rechne damit, dass die Stadt danach sehr schnell wird."
+      ],
+      "wakes_first_night": false,
+      "wakes_other_nights": false,
+      "night_order_first": null,
+      "night_order_other": null,
+      "icon": "assets/icons/trouble_brewing/virgin.webp"
+    },
+    {
+      "id": "slayer",
+      "edition": "trouble_brewing",
+      "type": "townsfolk",
+      "name_de": "Dämonenjäger*in",
+      "name_en": "Slayer",
+      "ability_short": "Einmal im Spiel, während des Tages, wähle öffentlich 1 Spieler. Falls er der Dämon ist, stirbt er.",
+      "quote": "Stirb.",
+      "full_text": "Der/die Dämonenjäger*in kann den Dämon töten, indem er/sie richtig rät, wer es ist.\n\n• Die Fähigkeit darf zu jedem Zeitpunkt des Tages genutzt werden und muss dabei öffentlich angekündigt werden. Ist der Gewählte der Dämon, stirbt dieser sofort. Sonst passiert nichts.\n• Die Spieler erfahren die Identität des Getöteten nicht — es könnte schließlich der Einsiedler gewesen sein.\n• Nutzt der/die Dämonenjäger*in die Fähigkeit vergiftet oder betrunken, darf er/sie sie kein zweites Mal nutzen.\n• Es lohnt sich, einen lebenden Spieler zu wählen: Selbst bei einem toten Imp passiert nichts, denn ein toter Spieler kann nicht noch einmal sterben.\n• Spieler dürfen jederzeit alles behaupten — wer den/die Dämonenjäger*in vorgibt, darf auch vorgeben, die Fähigkeit zu nutzen.",
+      "examples": [
+        "Der/die Dämonenjäger*in wählt den Imp. Der Imp stirbt, und Gut gewinnt!",
+        "Der/die Dämonenjäger*in wählt den Einsiedler. Der Einsiedler stirbt, aber das Spiel geht weiter, weil der Einsiedler nur als Imp registriert.",
+        "Der Imp blufft als Dämonenjäger*in und erklärt, seine Fähigkeit auf die Scharlachrote Frau anzuwenden. Es passiert nichts."
+      ],
+      "how_to_run": "Erklärt der/die Dämonenjäger*in am Tag, die Fähigkeit nutzen zu wollen, zeigt er/sie auf einen beliebigen Spieler. Ist dieser ein lebender Dämon, erkläre, dass er **stirbt**, und lege ein Leichentuch auf sein Charakter-Token. Sonst sage „Es passiert nichts.\"\n\nIn jedem Fall verliert der/die Dämonenjäger*in die Fähigkeit — lege das KEINE FÄHIGKEIT-Token an sein/ihr Token.",
+      "tips": [
+        "Blufft jemand als Dämonenjäger*in und will die Fähigkeit nutzen, verhalte dich genau so, als wäre er es wirklich: Lass Zeit für die Entscheidung und tu so, als würdest du im Grimoire hantieren.",
+        "Reagiere immer gleich schnell und mit derselben Miene, egal ob es getroffen hat oder nicht."
+      ],
+      "wakes_first_night": false,
+      "wakes_other_nights": false,
+      "night_order_first": null,
+      "night_order_other": null,
+      "icon": "assets/icons/trouble_brewing/slayer.webp"
+    },
+    {
+      "id": "soldier",
+      "edition": "trouble_brewing",
+      "type": "townsfolk",
+      "name_de": "Soldat*in",
+      "name_en": "Soldier",
+      "ability_short": "Du bist sicher vor dem Dämon.",
+      "quote": "Wie David zu Goliath sagte, wie Theseus zum Minotaurus, wie Arjuna zu Bhagadatta... Nein.",
+      "full_text": "Der Soldat kann nicht vom Dämon getötet werden.\n\n• Der Soldat kann nicht durch die Fähigkeit des Dämons sterben. Greift der Imp den Soldaten nachts an, passiert nichts — es stirbt niemand, und der Imp darf **keinen** anderen Spieler stattdessen angreifen.\n• Der Soldat kann weiterhin durch Exekution sterben, selbst wenn der Dämon ihn nominiert hat. Er ist vor der tötenden Fähigkeit des Dämons geschützt, nicht vor den Handlungen des Dämon-Spielers.",
+      "examples": [
+        "Der Imp greift den Soldaten an. Der Soldat stirbt nicht, also stirbt in dieser Nacht niemand.",
+        "Der Giftmischer vergiftet den Soldaten, danach greift der Imp ihn an. Der Soldat stirbt, weil er vergiftet keine Fähigkeit hat.",
+        "Der Imp greift den/die Bürgermeister*in an. Der/die Geschichtenerzähler*in entscheidet, dass stattdessen der Soldat stirbt — da der Soldat aber nicht vom Dämon getötet werden kann, stirbt in dieser Nacht niemand."
+      ],
+      "how_to_run": "Greift der Dämon nachts den Soldaten an, bleibt der Soldat am Leben. Erkläre bei Morgendämmerung, dass niemand gestorben ist — aber nicht warum. Der Soldat wird nie geweckt.",
+      "tips": [
+        "In anderen Editionen haben Dämonen auch andere Fähigkeiten als das Töten. Der Soldat ist auch vor deren übrigen schädlichen Wirkungen geschützt.",
+        "Der Soldat ist ein starker Bluff für Böse, weil er nie geweckt wird und deshalb nichts beweisen muss."
+      ],
+      "wakes_first_night": false,
+      "wakes_other_nights": false,
+      "night_order_first": null,
+      "night_order_other": null,
+      "icon": "assets/icons/trouble_brewing/soldier.webp"
+    },
+    {
+      "id": "mayor",
+      "edition": "trouble_brewing",
+      "type": "townsfolk",
+      "name_de": "Bürgermeister*in",
+      "name_en": "Mayor",
+      "ability_short": "Falls nur noch 3 Spieler leben & es keine Exekution gibt, gewinnt dein Team. Falls du in der Nacht stirbst, könnte stattdessen ein anderer Spieler sterben.",
+      "quote": "Wir müssen unsere Differenzen beiseitelegen und dieses sinnlose Morden beenden. Wir sind schließlich alle Steuerzahler. Nun ja — die meisten von uns.",
+      "full_text": "Der/die Bürgermeister*in kann am letzten Tag auf friedlichem Weg gewinnen.\n\n• Um zu überleben, bringt der/die Bürgermeister*in manchmal „versehentlich\" jemand anderen um: Würde er/sie angegriffen und sterben, darf der/die Geschichtenerzähler*in entscheiden, dass stattdessen ein anderer Spieler stirbt. Niemand erfährt, wie jemand nachts gestorben ist — nur, dass er gestorben ist.\n• Leben am Ende eines Tages genau drei Spieler und wurde an diesem Tag niemand exekutiert, endet das Spiel und Gut gewinnt.\n• Reisende zählen für diesen Sieg als Spieler und müssen also zuvor verbannt werden. Verbannungen sind keine Exekutionen.\n• Fabled zählen nicht als Spieler, da der/die Geschichtenerzähler*in kein Spieler ist.\n• Greift der Dämon den/die Bürgermeister*in an und wählst du stattdessen einen toten Spieler, den Soldaten oder einen vom Mönch geschützten Spieler, stirbt dieser in dieser Nacht nicht.",
+      "examples": [
+        "Der Imp greift den/die Bürgermeister*in an. Der/die Geschichtenerzähler*in entscheidet, dass stattdessen der/die Rabenhüter*in stirbt. Am nächsten Tag leben noch drei Spieler. Es gibt keine Nominierung zur Exekution — Gut gewinnt.",
+        "Fünf Spieler leben, darunter zwei Reisende. Beide Reisenden werden verbannt, und die Abstimmung zwischen den verbleibenden Spielern endet unentschieden. Da ein Unentschieden keine Exekution bedeutet, gewinnt Gut."
+      ],
+      "how_to_run": "Würde der/die Bürgermeister*in nachts sterben, entscheidest du, ob er/sie tatsächlich stirbt oder ob stattdessen ein anderer Charakter stirbt — lege dann das TOT-Token des Dämons an dessen Charakter-Token statt an den des/der Bürgermeister*in.\n\nErkläre bei Morgendämmerung, dass der markierte Spieler nachts gestorben ist, aber nicht wie. Leben bei Abenddämmerung genau drei Spieler und wurde heute niemand exekutiert, erkläre das Spiel für beendet — Gut gewinnt.",
+      "tips": [
+        "Wir empfehlen, den/die Bürgermeister*in bis zum letzten Tag am Leben zu lassen — so macht es den Spielern am meisten Spaß.",
+        "Die Drei-Spieler-Regel ist der Grund, warum Böse am letzten Tag unbedingt exekutieren muss. Erinnere neue Gruppen nicht daran — lass sie es lernen."
+      ],
+      "wakes_first_night": false,
+      "wakes_other_nights": false,
+      "night_order_first": null,
+      "night_order_other": null,
+      "icon": "assets/icons/trouble_brewing/mayor.webp"
+    },
+    {
+      "id": "butler",
+      "edition": "trouble_brewing",
+      "type": "outsider",
+      "name_de": "Butler",
+      "name_en": "Butler",
+      "ability_short": "Wähle jede Nacht 1 Spieler (nicht dich selbst): Morgen darfst du nur dann abstimmen, wenn er auch abstimmt.",
+      "quote": "Jawohl, Sir... Nein, Sir... Gewiss, Sir.",
+      "full_text": "Der Butler darf nur abstimmen, wenn sein Herr abstimmt.\n\n• Jede Nacht wählt der Butler einen Spieler zu seinem Herrn. Das darf derselbe wie gestern sein oder ein anderer.\n• Hat der Herr die Hand zur Abstimmung erhoben oder wurde seine Stimme bereits gezählt, darf auch der Butler die Hand heben.\n• Hält der Herr die Hand unten oder senkt er sie, bevor seine Stimme gezählt wurde, muss der Butler die Hand ebenfalls senken.\n• Es ist nicht Aufgabe des/der Geschichtenerzähler*in, den Butler zu überwachen. Absichtlich falsch abzustimmen gilt als Betrug.\n• Da Verbannungen nie von Fähigkeiten beeinflusst werden, darf der Butler bei Verbannungen frei abstimmen.\n• Tote Spieler dürfen nur mit einem Stimm-Token abstimmen. Wählt der Butler einen toten Spieler als Herrn, gilt das ebenfalls.\n• Der Butler ist nie gezwungen abzustimmen.\n• Die Stimme des Butlers darf vor oder nach der seines Herrn gezählt werden — die Sitzposition spielt keine Rolle.\n• **Ist der Butler tot, hat er keine Fähigkeit mehr** und darf sein Stimm-Token jederzeit frei einsetzen.",
+      "examples": [
+        "Der Butler wählt Abdallah zu seinem Herrn. Hebt Abdallah am nächsten Tag die Hand für eine Exekution, darf der Butler das auch. Sonst nicht.",
+        "Eine Nominierung läuft. Butler und Herr haben beide die Hand erhoben. Während der/die Geschichtenerzähler*in zählt, senkt der Herr im letzten Moment die Hand — der Butler muss sie sofort ebenfalls senken.",
+        "Der Butler ist tot. Da tote Spieler keine Fähigkeit haben, darf er sein Stimm-Token jederzeit einsetzen."
+      ],
+      "how_to_run": "Wecke den Butler jede Nacht. Er zeigt auf einen beliebigen Spieler. Markiere diesen mit dem HERR-Erinnerungs-Token. Schicke ihn wieder schlafen.\n\nWährend einer Nominierung darf der Butler die Hand nur erheben, wenn sein Herr die Hand erhoben hat oder dessen Stimme bereits gezählt wurde.",
+      "tips": [
+        "Der Butler ist mächtiger, als er aussieht: Er kann seinen Herrn nach Verhalten wählen und so Rückschlüsse über den Tisch verteilen.",
+        "Achte darauf, dass der Butler nicht versehentlich mitstimmt — das passiert in der Praxis dauernd."
+      ],
+      "wakes_first_night": true,
+      "wakes_other_nights": true,
+      "night_order_first": 12,
+      "night_order_other": 11,
+      "icon": "assets/icons/trouble_brewing/butler.webp"
+    },
+    {
+      "id": "drunk",
+      "edition": "trouble_brewing",
+      "type": "outsider",
+      "name_de": "Trunkenbold",
+      "name_en": "Drunk",
+      "ability_short": "Du weißt nicht, dass du der Trunkenbold bist. Du glaubst, ein Bürger-Charakter zu sein, aber das stimmt nicht.",
+      "quote": "Ich bin nur ein *hicks* Gelegenheitstrinker, meine Liebe. Zugegeben — ich bin ein schwerer *rülps* Geselligkeitstrinker.",
+      "full_text": "Der Trunkenbold hält sich für einen Bürger und hat keine Ahnung, dass er in Wahrheit der Trunkenbold ist.\n\n• Beim Setup kommt das Trunkenbold-Token **nicht** in den Beutel. Stattdessen kommt ein zusätzliches Bürger-Token hinein, und der Spieler, der es zieht, ist heimlich das ganze Spiel über der Trunkenbold. Nur der/die Geschichtenerzähler*in weiß das.\n• Der Trunkenbold hat keine Fähigkeit. Immer wenn seine geglaubte Bürger-Fähigkeit das Spiel beeinflussen würde, tut sie es nicht.\n• Der/die Geschichtenerzähler*in tut aber so, als wäre der Spieler dieser Bürger: Würde dieser Charakter nachts geweckt, wird der Trunkenbold geweckt. Würde er Informationen erhalten, darf der/die Geschichtenerzähler*in falsche Informationen geben — und ist ausdrücklich dazu ermutigt.",
+      "examples": [
+        "Der Trunkenbold, der sich für den Soldaten hält, wird vom Imp angegriffen. Der Trunkenbold stirbt.",
+        "Der Trunkenbold, der sich für den/die Empath*in hält, wacht auf und erfährt eine „0\", obwohl er neben einem bösen Spieler sitzt. In der nächsten Nacht erfährt er eine „1\".",
+        "Der Trunkenbold, der sich für den/die Rabenhüter*in hält, wird nachts getötet. Er wählt den Heiligen, erfährt aber, dass dieser Spieler der Giftmischer sei.",
+        "Die Wahrsagerin wird exekutiert. In dieser Nacht erfährt der Trunkenbold, der sich für den/die Totengräber*in hält, dass heute der Trunkenbold gestorben sei."
+      ],
+      "how_to_run": "Entferne beim Aufbau, bevor die Charakter-Token in den Beutel kommen, das Trunkenbold-Token und lege stattdessen ein Bürger-Charakter-Token dazu. Lege das IST DER TRUNKENBOLD-Erinnerungs-Token ins Grimoire.\n\nLege bei der Vorbereitung der ersten Nacht das IST DER TRUNKENBOLD-Token an das gezogene Bürger-Token. Der Spieler ist nun ein Außenseiter und hat die Fähigkeit dieses Bürgers nicht — glaubt es aber.\n\nVerhalte dich im Spiel so, als wäre der Trunkenbold tatsächlich dieser Bürger.",
+      "tips": [
+        "Der häufigste Fehler ist, den Trunkenbold zu vergessen und ihn nicht zu wecken. Setz dir einen deutlichen Marker.",
+        "Gib ihm nicht nur Unsinn: Ein paar zufällig korrekte Informationen machen ihn für die Stadt viel gefährlicher.",
+        "Der Trunkenbold zählt für die Spieleranzahl-Tabelle als Außenseiter, obwohl er ein Bürger-Token trägt."
+      ],
+      "wakes_first_night": false,
+      "wakes_other_nights": false,
+      "night_order_first": null,
+      "night_order_other": null,
+      "icon": "assets/icons/trouble_brewing/drunk.webp"
+    },
+    {
+      "id": "recluse",
+      "edition": "trouble_brewing",
+      "type": "outsider",
+      "name_de": "Einsiedler*in",
+      "name_en": "Recluse",
+      "ability_short": "Du erscheinst möglicherweise als BÖSE & als Scherge oder Dämon, sogar wenn du tot bist.",
+      "quote": "Gaarn git ya darn grub ya mitts ouma lorn yasee. Grr. Natsy pikkins yonder southwise eye begittin afta ya! Git!",
+      "full_text": "Der/die Einsiedler*in wirkt böse, ist aber tatsächlich gut.\n\n• Immer wenn die Gesinnung des/der Einsiedler*in erkannt wird, entscheidet der/die Geschichtenerzähler*in, ob er/sie als gut oder als böse registriert.\n• Immer wenn er/sie von einer Fähigkeit betroffen ist, die bestimmte Schergen oder Dämonen betrifft, entscheidet der/die Geschichtenerzähler*in, ob er/sie als dieser Scherge oder Dämon registriert.\n• Er/sie darf innerhalb derselben Nacht unterschiedlich registrieren — als gut oder böse, als Außenseiter, Scherge oder Dämon. Der/die Geschichtenerzähler*in wählt, was am interessantesten ist.\n• Registriert er/sie als bestimmter Scherge oder Dämon, hat er/sie dessen Fähigkeit **nicht**. Ein Einsiedler, der als Giftmischer registriert, wacht nachts nicht auf und vergiftet niemanden.",
+      "examples": [
+        "Der/die Dämonenjäger*in nutzt die Fähigkeit auf den Einsiedler. Der/die Geschichtenerzähler*in entscheidet, dass der Einsiedler als Imp registriert — der Einsiedler stirbt, und der/die Dämonenjäger*in glaubt, gerade den Imp getötet zu haben.",
+        "Der/die Empath*in sitzt zwischen Einsiedler und Mönch und erfährt, dass ein böser Nachbar dabei ist. In der nächsten Nacht erfährt er/sie, dass kein böser Nachbar dabei ist.",
+        "Der/die Detektiv*in erfährt, dass entweder der Einsiedler oder der Heilige die Scharlachrote Frau ist.",
+        "Der Einsiedler wird exekutiert. Der/die Totengräber*in erfährt, dass der Imp exekutiert wurde.",
+        "Der Einsiedler sitzt neben dem Imp und einem bösen Reisenden. Da eine „2\" für den Koch zu verräterisch wäre, gibt der/die Geschichtenerzähler*in stattdessen die wahre Information — eine „0\"."
+      ],
+      "how_to_run": "Jedes Mal, wenn der/die Einsiedler*in von einer Fähigkeit erfasst wird, die böse Charaktere erkennt oder betrifft, entscheidest du, als welcher Charakter und welche Gesinnung er/sie registriert.",
+      "tips": [
+        "Registriert der/die Einsiedler*in bei allem als böse, wird er/sie sicher exekutiert — das kostet Gut oft das Spiel. Dosiere.",
+        "Ein/e Einsiedler*in, der/die beim Dämonenjäger als Dämon registriert, ist ein enormer Schlag für Gut. Nutze das nur, wenn Böse deutlich hinten liegt."
+      ],
+      "wakes_first_night": false,
+      "wakes_other_nights": false,
+      "night_order_first": null,
+      "night_order_other": null,
+      "icon": "assets/icons/trouble_brewing/recluse.webp"
+    },
+    {
+      "id": "saint",
+      "edition": "trouble_brewing",
+      "type": "outsider",
+      "name_de": "Heilige*r",
+      "name_en": "Saint",
+      "ability_short": "Falls du durch Exekution stirbst, verliert dein Team.",
+      "quote": "Weisheit gebiert Frieden. Geduld gebiert Weisheit. Fürchtet euch nicht, denn die Zeit wird kommen, da auch die Furcht vergeht. Lasst uns beten, und möge die Einheit unserer Vision uns alle zu Heiligen machen.",
+      "full_text": "Der/die Heilige beendet das Spiel, wenn er/sie exekutiert wird.\n\n• Stirbt der/die Heilige durch Exekution, endet das Spiel: Gut verliert und Böse gewinnt.\n• Stirbt er/sie auf andere Weise — etwa durch den Dämon —, geht das Spiel weiter.",
+      "examples": [
+        "Sieben Spieler leben, und die Nominierungen laufen. Der/die Heilige bekommt vier Stimmen und steht kurz vor dem Tod. Danach wird der Baron nominiert, bekommt aber nur drei Stimmen. Es folgen keine weiteren Nominierungen — der/die Heilige wird exekutiert, und Böse gewinnt.",
+        "Der Imp wird nominiert, und die Spieler stimmen ab. Der/die Revolverheld*in tötet den/die Heilige(n). Der/die Heilige stirbt, aber das Spiel geht weiter.",
+        "Der/die Heilige wird exekutiert. Die Fähigkeit des Sündenbocks löst jedoch aus, sodass stattdessen der Sündenbock stirbt. Das Spiel geht weiter, weil der/die Heilige nicht gestorben ist."
+      ],
+      "how_to_run": "Stirbt der/die Heilige durch Exekution, erkläre, dass das Spiel endet und Böse gewinnt.",
+      "tips": [
+        "Die Fähigkeit sagt „dein Team verliert\". In Trouble Brewing bedeutet das immer „Böse gewinnt\", da der/die Heilige stets gut ist. In anderen Editionen können Charaktere die Gesinnung wechseln — wird ein böser Heiliger exekutiert, gewinnt Gut.",
+        "Ein/e Heilige, der/die sich früh outet, macht das gute Team vorsichtig — genau das will Böse."
+      ],
+      "wakes_first_night": false,
+      "wakes_other_nights": false,
+      "night_order_first": null,
+      "night_order_other": null,
+      "icon": "assets/icons/trouble_brewing/saint.webp"
+    },
+    {
+      "id": "poisoner",
+      "edition": "trouble_brewing",
+      "type": "minion",
+      "name_de": "Giftmischer*in",
+      "name_en": "Poisoner",
+      "ability_short": "Wähle jede Nacht 1 Spieler: Er ist in dieser Nacht und am folgenden Tag vergiftet.",
+      "quote": "Gib Verbindung Alpha zu Verbindung Beta... NICHT ZU VIEL!",
+      "full_text": "Der/die Giftmischer*in stört heimlich die Fähigkeiten anderer Charaktere.\n\n• Jede Nacht wählt er/sie jemanden, der in dieser Nacht und am gesamten folgenden Tag vergiftet ist.\n• Ein vergifteter Spieler hat keine Fähigkeit, aber der/die Geschichtenerzähler*in tut so, als hätte er eine. Um die Illusion aufrechtzuerhalten, wird der Spieler zur gewohnten Zeit geweckt und alles läuft scheinbar normal ab. Liefert seine Fähigkeit Informationen, darf der/die Geschichtenerzähler*in falsche Informationen geben.\n• Nutzt ein vergifteter Spieler eine „einmal pro Spiel\"-Fähigkeit, während er vergiftet ist, kann er sie danach nicht erneut nutzen.",
+      "examples": [
+        "In der Nacht vergiftet der/die Giftmischer*in den/die Dämonenjäger*in. Am nächsten Tag versucht diese*r, den Imp zu erschlagen — es passiert nichts. Der/die Dämonenjäger*in hat nun keine Fähigkeit mehr.",
+        "Der/die vergiftete Empath*in, der/die zwischen zwei bösen Spielern sitzt, erfährt eine „0\". In der nächsten Nacht, nicht mehr vergiftet, erfährt er/sie die korrekte Information: eine „2\".",
+        "Der/die Detektiv*in ist vergiftet und erfährt, dass einer von zwei Spielern der Baron sei — obwohl keiner der beiden ein Scherge ist.",
+        "Der/die Giftmischer*in vergiftet den/die Bürgermeister*in und wird dann selbst zum Imp. Der/die Bürgermeister*in ist nun nicht mehr vergiftet, weil kein/e Giftmischer*in mehr im Spiel ist."
+      ],
+      "how_to_run": "Wecke den/die Giftmischer*in jede Nacht. Er/sie zeigt auf einen beliebigen Spieler. Dieser wird vergiftet — lege das VERGIFTET-Erinnerungs-Token an dessen Charakter-Token. Schicke ihn/sie wieder schlafen.\n\nDer vergiftete Spieler wird weiterhin ganz normal geweckt und handelt scheinbar normal. Entferne den Marker erst bei der nächsten Abenddämmerung.",
+      "tips": [
+        "Die häufigsten Ziele sind Empath*in, Wahrsagerin und Mönch — je nachdem, wer sich geoutet hat.",
+        "Der/die Giftmischer*in kann sich selbst vergiften, um einer Prüfung zu entgehen. Das ist legal und gelegentlich brillant.",
+        "Vergiss nicht: Der vergiftete Spieler wird trotzdem geweckt und bekommt trotzdem eine Information."
+      ],
+      "wakes_first_night": true,
+      "wakes_other_nights": true,
+      "night_order_first": 4,
+      "night_order_other": 2,
+      "icon": "assets/icons/trouble_brewing/poisoner.webp"
+    },
+    {
+      "id": "spy",
+      "edition": "trouble_brewing",
+      "type": "minion",
+      "name_de": "Spion*in",
+      "name_en": "Spy",
+      "ability_short": "Jede Nacht siehst du das Grimoire. Du erscheinst möglicherweise als GUT & als Bürger oder Außenseiter, sogar wenn du tot bist.",
+      "quote": "Kein Braumeister, der seinen Schnaps wert ist, kennt ein Gebräu, das schneller Ärger einschenkt als eines, in dem Spione doppelt erscheinen.",
+      "full_text": "Der/die Spion*in weiß, wer alle sind. Er/sie wirkt gut, ist aber tatsächlich böse.\n\n• Hat ein Charakter eine Fähigkeit, die gute Spieler erkennt oder betrifft, registriert der/die Spion*in möglicherweise als gut. Erkennt eine Fähigkeit Bürger oder Außenseiter, registriert er/sie möglicherweise als ein bestimmter Bürger oder Außenseiter. Der/die Geschichtenerzähler*in entscheidet — sogar mehrere Charaktere oder beide Gesinnungen innerhalb derselben Nacht.\n• Registriert er/sie als bestimmter Bürger oder Außenseiter, hat er/sie dessen Fähigkeit **nicht**. Ein Spion, der als Dämonenjäger*in registriert, kann den Dämon nicht erschlagen.",
+      "examples": [
+        "Das Waschweib erfährt, dass entweder Abdallah oder Doug der/die Rabenhüter*in ist. Abdallah ist der Mönch, und Doug ist der Spion, der als Rabenhüter*in registriert.",
+        "Der Spion sitzt zwischen dem Imp und dem/der Empath*in. Der Koch erfährt eine „1\", weil der Spion als böse registriert. Später in derselben Nacht erfährt der/die Empath*in eine „0\", weil der Spion nun als gut registriert.",
+        "Der Spion nominiert die Jungfrau und wird durch deren Fähigkeit exekutiert, weil der/die Geschichtenerzähler*in ihn als Bürger registrieren lässt. In dieser Nacht erfährt der/die Totengräber*in, dass der Trunkenbold gestorben ist, weil der Spion nun als Trunkenbold registriert."
+      ],
+      "how_to_run": "Wecke den/die Spion*in jede Nacht und zeige ihm/ihr das Grimoire so lange, wie er/sie braucht. Schicke ihn/sie wieder schlafen.\n\nJedes Mal, wenn der/die Spion*in von einer Fähigkeit erfasst wird, die gute Charaktere erkennt oder betrifft, entscheidest du, als welcher Charakter und welche Gesinnung er/sie registriert.",
+      "tips": [
+        "Halte dein Grimoire aufgeräumt und zeige es dem/der Spion*in in der ersten Nacht — dann kann er/sie es überhaupt lesen.",
+        "Ein/e Spion*in, der/die als guter Bürger registriert, ist der beste Bluff-Schutz, den Böse haben kann.",
+        "Wecke den/die Spion*in auch dann, wenn er/sie tot ist — die Registrierung wirkt weiter, das Grimoire-Lesen nicht."
+      ],
+      "wakes_first_night": true,
+      "wakes_other_nights": true,
+      "night_order_first": 5,
+      "night_order_other": 4,
+      "icon": "assets/icons/trouble_brewing/spy.webp"
+    },
+    {
+      "id": "baron",
+      "edition": "trouble_brewing",
+      "type": "minion",
+      "name_de": "Baron",
+      "name_en": "Baron",
+      "ability_short": "Es sind zusätzliche Außenseiter im Spiel. [+2 Außenseiter]",
+      "quote": "Diese Stadt ist auf den Hund gekommen, was? Billige ausländische Arbeitskräfte, das ist des Pudels Kern. Steckt sie in die Mine, sage ich. Ein bisschen Handarbeit hat noch niemandem geschadet — und eine Ohrfeige für jeden Strolch, der etwas anderes behauptet. Es geht doch nur ums Geschäft, nicht wahr?",
+      "full_text": "Der Baron verändert die Anzahl der Außenseiter im Spiel.\n\n• Diese Veränderung geschieht beim Setup und wird nicht rückgängig gemacht, wenn der Baron stirbt.\n• Die hinzugefügten Außenseiter ersetzen immer Bürger, nie andere Charaktertypen.\n• Eine Setup-Veränderung wird auf dem Charakterblatt in eckigen Klammern am Ende der Fähigkeitsbeschreibung angegeben — so wie hier.",
+      "examples": [
+        "Ein Spiel wird für sieben Spieler aufgebaut: fünf Bürger, ein Scherge und ein Dämon. Da der Scherge der Baron ist, entfernt der/die Geschichtenerzähler*in zwei Bürger-Token und legt einen Heiligen und einen Butler dazu. Insgesamt kommen Token für drei Bürger, zwei Außenseiter, einen Schergen und einen Dämon in den Beutel.",
+        "Ein Spiel wird für fünfzehn Spieler aufgebaut: neun Bürger, zwei Außenseiter, drei Schergen und ein Dämon. Da der Baron im Spiel ist, müssen ein Trunkenbold und ein Einsiedler ergänzt werden. Der/die Geschichtenerzähler*in entfernt das Mönch-Token und legt ein Einsiedler-Token dazu. Statt ein Trunkenbold-Token zu ergänzen, kommt dessen IST DER TRUNKENBOLD-Erinnerungs-Token ins Grimoire — in diesem Spiel ist ein Spieler kein Bürger, sondern der Trunkenbold."
+      ],
+      "how_to_run": "Entferne beim Aufbau zwei beliebige Bürger-Charakter-Token und lege zwei beliebige Außenseiter-Charakter-Token dazu. (Ergänzt du den Trunkenbold, befolge zusätzlich dessen Setup-Anweisung.) Diese Außenseiter-Token kommen anstelle der Bürger-Token in den Beutel.\n\nDer Baron wird nachts nie geweckt.",
+      "tips": [
+        "Der Baron ist besonders stark in kleinen Runden, wo zwei zusätzliche Außenseiter einen riesigen Anteil ausmachen.",
+        "Trunkenbold plus Heilige*r ist die klassische Baron-Kombination: eine falsche Informationsquelle und eine Exekutionsfalle.",
+        "Erfährt der/die Bibliothekar*in eine „0\", ist damit praktisch bewiesen, dass kein Baron im Spiel ist."
+      ],
+      "wakes_first_night": false,
+      "wakes_other_nights": false,
+      "night_order_first": null,
+      "night_order_other": null,
+      "setup_modifier": { "outsider": 2 },
+      "icon": "assets/icons/trouble_brewing/baron.webp"
+    },
+    {
+      "id": "scarlet_woman",
+      "edition": "trouble_brewing",
+      "type": "minion",
+      "name_de": "Scharlachrote Frau",
+      "name_en": "Scarlet Woman",
+      "ability_short": "Falls 5 oder mehr Spieler lebendig sind & der Dämon stirbt, wirst du zum Dämon. (Reisende zählen nicht.)",
+      "quote": "Du hast mir die Geheimnisse des Rates der Purpurnen Flamme offenbart. Wir haben beieinander gelegen, in Feuer und in Lust und in bestialischer Vereinigung, und ich bin auf ewig dein Diener. Doch heute Nacht, mein Lieber, bin ich dein Meister.",
+      "full_text": "Die Scharlachrote Frau wird zum Dämon, wenn der Dämon stirbt.\n\n• Leben unmittelbar vor dem Tod des Dämons fünf oder mehr Spieler — also vier oder mehr danach —, wird die Scharlachrote Frau sofort zum Dämon, und das Spiel geht weiter, als wäre nichts geschehen.\n• Reisende zählen dabei nicht als Spieler.\n• Leben weniger als fünf Spieler, wenn der Dämon exekutiert wird, endet das Spiel und Gut gewinnt.\n• Leben fünf oder mehr Spieler, wenn der Imp sich selbst tötet, **muss** die Scharlachrote Frau der neue Imp werden.\n• Wird sie zum Dämon, ist sie dieser Dämon in jeder Hinsicht: Gut gewinnt, wenn sie exekutiert wird, sie greift jede Nacht an und sie registriert als Dämon.",
+      "examples": [
+        "Sieben Spieler leben: der Imp, die Scharlachrote Frau, zwei Bürger und drei Reisende. Der Imp wird exekutiert — das Spiel endet und Gut gewinnt, denn Reisende zählen für die Fähigkeit der Scharlachroten Frau nicht mit.",
+        "Fünf Spieler leben: der Imp, die Scharlachrote Frau, der Baron und zwei Bürger. Der Imp wird exekutiert. Die Scharlachrote Frau wird zum Imp, und das Spiel geht weiter.",
+        "Lachlan ist die Scharlachrote Frau. Die Wahrsagerin wählt Lachlan und Sarah und erfährt ein „Nein\". Später stirbt der Imp, und Lachlan wird zum Imp. Die Wahrsagerin wählt erneut Lachlan und Sarah — und erfährt nun ein „Ja\"."
+      ],
+      "how_to_run": "Stirbt der Dämon und lebten unmittelbar davor fünf oder mehr Spieler, ersetze das Token der Scharlachroten Frau durch ein freies Imp-Token. Dieser Spieler ist nun der Dämon und hat die Fähigkeit des Imps; stirbt er, gewinnt Gut.\n\nWecke in dieser Nacht den neuen Imp, zeige ihm das DU BIST-Infotoken und danach das Imp-Token.",
+      "tips": [
+        "Sag am Tag nichts. Die Stadt darf ruhig glauben, gewonnen zu haben — sie merkt es beim nächsten Toten.",
+        "Die Scharlachrote Frau macht den/die Dämonenjäger*in deutlich weniger spielentscheidend. Gute Kombination, wenn deine Gruppe schnell gewinnt."
+      ],
+      "wakes_first_night": false,
+      "wakes_other_nights": true,
+      "night_order_first": null,
+      "night_order_other": 5,
+      "icon": "assets/icons/trouble_brewing/scarlet_woman.webp"
+    },
+    {
+      "id": "imp",
+      "edition": "trouble_brewing",
+      "type": "demon",
+      "name_de": "Imp",
+      "name_en": "Imp",
+      "ability_short": "Wähle jede Nacht* 1 Spieler: Er stirbt. Falls du dich damit selbst tötest, wird ein Scherge zum Imp.",
+      "quote": "Wir müssen unseren Verstand scharf halten und unsere Schwerter schärfer. Das Böse wandelt unter uns und wird vor nichts zurückschrecken, um uns gutes, einfaches Volk zu vernichten und unsere schöne Stadt ins Verderben zu stürzen. Traut niemandem. Aber wenn ihr jemandem trauen müsst — traut mir.",
+      "full_text": "Der Imp tötet nachts und kann Kopien von sich selbst erschaffen... zu einem furchtbaren Preis.\n\n• Jede Nacht außer der ersten wählt der Imp einen Spieler, der stirbt. Da die meisten Charaktere nach dem Dämon handeln, kommt dieser Spieler in dieser Nacht vermutlich nicht mehr zum Zug.\n• Als Dämon weiß der Imp, welche Spieler seine Schergen sind, und kennt drei nicht im Spiel befindliche gute Charaktere, als die er gefahrlos bluffen kann.\n• Stirbt der Imp, endet das Spiel und Gut gewinnt. Tötet der Imp jedoch nachts sich selbst, stirbt er, und ein lebender Scherge wird zum Imp. Dieser neue Imp handelt in derselben Nacht nicht mehr, ist aber ansonsten in jeder Hinsicht der Imp: Er tötet jede Nacht, und Böse verliert, wenn er stirbt.",
+      "examples": [
+        "Es ist die erste Nacht. Der Imp erfährt, dass Evin und Sarah die Schergen sind, und dass Mönch, Koch und Bibliothekar*in nicht im Spiel sind. Der Imp blufft zunächst als Koch, später als Bürgermeister*in. Am Ende wird er exekutiert, und Gut gewinnt.",
+        "In der Nacht wacht der Imp auf und wählt einen Spieler, der stirbt. In der nächsten Nacht wählt der Imp sich selbst. Der Imp stirbt, und der/die Giftmischer*in wird zum Imp."
+      ],
+      "how_to_run": "Wecke den Imp jede Nacht außer der ersten. Er zeigt auf einen beliebigen Spieler und wird wieder schlafen geschickt. Der gewählte Spieler **stirbt** — lege das TOT-Erinnerungs-Token an dessen Charakter-Token und ein Leichentuch darauf.\n\nHat sich der Imp nachts selbst getötet, wähle **du** einen lebenden Schergen und ersetze dessen Charakter-Token durch ein freies Imp-Token. Wecke den neuen Imp, zeige ihm das DU BIST-Infotoken und danach das Imp-Token. Schicke ihn wieder schlafen.",
+      "tips": [
+        "Gibt es keinen lebenden Schergen mehr, kann der Wechsel nicht ausgeführt werden — der Imp stirbt einfach, und Gut gewinnt.",
+        "Der Selbstmord ist am stärksten, wenn der Imp ohnehin am nächsten Tag exekutiert würde.",
+        "Die Wahl des neuen Imps liegt bei dir, nicht beim Imp-Spieler."
+      ],
+      "wakes_first_night": false,
+      "wakes_other_nights": true,
+      "night_order_first": null,
+      "night_order_other": 6,
+      "icon": "assets/icons/trouble_brewing/imp.webp"
+    }
+  ]
+}
