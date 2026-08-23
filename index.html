@@ -6,6 +6,14 @@
 <title>Blood on the Clocktower — Regelwiki</title>
 <meta name="description" content="Deutschsprachiges Regelwiki für Blood on the Clocktower: Grundregeln, Charaktere, Nachtreihenfolge und Setup-Generator.">
 <meta name="color-scheme" content="light">
+
+<!-- Als App auf dem Homescreen: Manifest für Android/Chrome, die apple-Angaben für iOS -->
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#5c1f2e">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="BotC Wiki">
+<link rel="apple-touch-icon" href="assets/icons/app/icon-180.png">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='32' r='28' fill='%235c1f2e'/%3E%3Cg fill='none' stroke='%23efe4cc' stroke-width='3' stroke-linecap='round'%3E%3Ccircle cx='32' cy='32' r='17'/%3E%3Cpath d='M32 21v11l8 5'/%3E%3C/g%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -32,6 +40,7 @@
     <button class="tab"           role="tab" id="tab-nacht"       aria-selected="false" aria-controls="panel-nacht"       data-tab="nacht">Nachtreihenfolge</button>
     <button class="tab"           role="tab" id="tab-generator"   aria-selected="false" aria-controls="panel-generator"   data-tab="generator">Generator</button>
     <button class="tab"           role="tab" id="tab-skripte"     aria-selected="false" aria-controls="panel-skripte"     data-tab="skripte">Eigene Skripte</button>
+    <button class="tab"           role="tab" id="tab-notizen"     aria-selected="false" aria-controls="panel-notizen"     data-tab="notizen">Notizen</button>
   </div>
 </nav>
 
@@ -196,6 +205,18 @@
     </div>
   </section>
 
+  <!-- ============================================ NOTIZEN -->
+  <section class="panel" id="panel-notizen" role="tabpanel" aria-labelledby="tab-notizen" data-panel="notizen" hidden>
+    <div class="sheet sheet--notes">
+      <span class="sheet__tab">Notizen</span>
+      <h2 class="section-heading">Spielnotizen</h2>
+      <img class="fleuron fleuron--sm" src="assets/textures/fleuron.svg" alt="" aria-hidden="true">
+      <p class="lede">Für während der Partie. Alles bleibt auf diesem Gerät gespeichert und wird beim Tippen automatisch gesichert.</p>
+
+      <div id="notes-root"></div>
+    </div>
+  </section>
+
 </main>
 
 <footer class="site-footer">
@@ -209,6 +230,7 @@
 <script src="js/search.js"></script>
 <script src="js/generator.js"></script>
 <script src="js/scripts.js"></script>
+<script src="js/notes.js"></script>
 <script src="js/pdf-export.js"></script>
 <script src="js/app.js"></script>
 </body>

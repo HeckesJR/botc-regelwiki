@@ -38,6 +38,7 @@ botc-regelwiki/
 │   ├── search.js        Such- und Filterlogik
 │   ├── generator.js     Verteilung, Bluffs, Balance-Bewertung, Vorschläge
 │   ├── scripts.js       eigene, editionsübergreifende Skripte
+│   ├── notes.js         Spielnotizen (Sitzordnung, Verdacht, Status)
 │   └── pdf-export.js    PDF-Export im Pergament-Design
 ├── data/
 │   ├── grundregeln_de.json
@@ -52,6 +53,7 @@ botc-regelwiki/
 │   └── textures/                            Pergament, Fleuron, Eckornament
 ├── vendor/jspdf.umd.min.js                  lokal eingebunden, kein CDN nötig
 ├── _icon-sources.txt                        Quell-URLs der offiziellen Icons
+├── manifest.webmanifest                     macht die Seite auf dem Handy installierbar
 └── _devserve.ps1                            nur zum lokalen Testen
 ```
 
@@ -117,7 +119,7 @@ Morgendämmerung mit ihren Positionen) und `setups` (die kuratierten Vorlagen).
 
 ---
 
-## Die fünf Tabs
+## Die sechs Tabs
 
 **Grundregeln** — Fließtext mit Initialen, Spieleranzahl-Tabelle, Handzeichen, Nominierung &
 Exekution, betrunken/vergiftet, Wahnsinn, Gesinnung. Darunter das Glossar mit 79 Begriffen,
@@ -152,6 +154,26 @@ und exportiert alles als PDF. Drei Modi:
 Bad Moon Rising und Sects & Violets frei kombinieren; das Tool zeigt laufend die Typ-Verteilung
 und für welche Spieleranzahlen das Skript reicht. Gespeichert wird im `localStorage` des
 Browsers, danach steht das Skript im Generator zur Auswahl.
+
+**Notizen** — Das einzige Werkzeug für *während* der Partie, gedacht für Spieler (der
+Geschichtenerzähler hat sein Grimoire). Oben Skript und Spielerzahl mit der Verteilungstabelle,
+darunter eine Karte je Spieler:
+
+- **Sitzordnung** statt bloßer Liste, mit ▲▼ verschiebbar. Jede Karte nennt ihre beiden
+  **lebenden** Nachbarn — tote werden übersprungen. Das ist der Punkt, an dem Empath-Zahlen,
+  Koch, Uhrmacher, Teedame und No Dashii überhaupt nachrechenbar werden.
+- **Behauptet und vermutet getrennt.** Was jemand zu sein *behauptet* und was du *glaubst*,
+  sind zwei Felder. Die Lücke dazwischen ist das Spiel.
+- **Vermutungen haben drei Zustände:** einmal tippen = verdächtig, zweimal = ausgeschlossen,
+  dreimal = zurück auf neutral. Ein „ist nicht der Giftmischer" ist oft mehr wert als ein Verdacht.
+- **Status und Ampel:** lebt / tot / Geisterstimme verbraucht, dazu gut / unklar / böse — die
+  Ampel färbt die ganze Karte, sodass ein Blick über die Liste reicht.
+- **Von niemandem behauptet:** leitet aus Skript und Verteilung ab, welche Rollen noch offen sind.
+- **Zwei Reset-Stufen:** „Neue Runde" behält Namen und Sitzordnung und leert den Rest,
+  „Alles löschen" räumt komplett auf. Beide fragen vorher nach.
+
+Alles wird beim Tippen automatisch im `localStorage` gesichert — es gibt keinen Speichern-Knopf,
+und nichts verlässt das Gerät.
 
 ---
 

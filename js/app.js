@@ -827,6 +827,26 @@
     initNightTab();
     initScriptsTab();
     initGeneratorTab();
+
+    /* Notizen: bekommt Zugriff auf Editionen und eigene Skripte */
+    BOTC.notes.init({
+      scriptOptions: function () {
+        var opts = PLAYABLE.map(function (id) {
+          var e = EDITIONS.filter(function (x) { return x.id === id; })[0];
+          return { id: id, label: e.label };
+        });
+        BOTC.scripts.load().forEach(function (s) {
+          opts.push({ id: s.id, label: s.name + ' (eigenes Skript)' });
+        });
+        return opts;
+      },
+      getScript: function (id) {
+        if (id && id.indexOf('script-') === 0) {
+          return BOTC.scripts.hydrate(BOTC.scripts.get(id)) || { characters: [] };
+        }
+        return state.editions[id] || state.editions.trouble_brewing;
+      }
+    });
   }
 
   if (document.readyState === 'loading') {

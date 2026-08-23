@@ -20,6 +20,7 @@ $mime = @{
   ".jpg"  = "image/jpeg"
   ".woff2"= "font/woff2"
   ".pdf"  = "application/pdf"
+  ".webmanifest" = "application/manifest+json"
 }
 
 while ($listener.IsListening) {

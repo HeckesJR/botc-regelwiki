@@ -437,7 +437,8 @@ tbody tr[data-tone="evil"] th, tbody tr[data-tone="evil"] td { color: var(--evil
 }
 input[type="search"], input[type="number"], select {
   font-family: var(--font-body);
-  font-size: 1rem;
+  /* 16px Mindestgröße: kleiner zoomt iOS beim Antippen automatisch hinein */
+  font-size: max(1rem, 16px);
   color: var(--ink);
   background: rgba(255,253,246,.8);
   border: 1.5px solid var(--parchment-shade);
@@ -893,7 +894,7 @@ input:focus, select:focus { border-color: var(--bordeaux); outline: none; }
 .script-bar .field { flex: 1 1 12rem; }
 .script-bar__actions { display: flex; gap: .5rem; flex-wrap: wrap; }
 input[type="text"] {
-  font-family: var(--font-body); font-size: 1rem; color: var(--ink);
+  font-family: var(--font-body); font-size: max(1rem, 16px); color: var(--ink);
   background: rgba(255,253,246,.8);
   border: 1.5px solid var(--parchment-shade);
   border-radius: var(--radius);
@@ -965,6 +966,201 @@ input[type="text"]:focus { border-color: var(--bordeaux); outline: none; }
   text-transform: uppercase; color: var(--ink-faint);
 }
 
+/* ============================================================ Notizen */
+
+.sheet--notes { padding-left: clamp(.7rem, 3vw, 3rem); padding-right: clamp(.7rem, 3vw, 3rem); }
+
+.notes-setup {
+  display: flex; flex-wrap: wrap; align-items: flex-end; gap: 1rem;
+  padding: 1rem;
+  background: rgba(255,252,244,.55);
+  border: 1.5px solid var(--parchment-shade);
+  border-radius: var(--radius);
+  margin-bottom: 1rem;
+}
+.notes-count { text-align: center; min-width: 5rem; }
+.notes-count__value {
+  display: block; font-family: var(--font-display);
+  font-size: 2rem; line-height: 1; color: var(--bordeaux);
+}
+.notes-dist { margin-bottom: 1.2rem; }
+.notes-hint { font-style: italic; color: var(--ink-faint); margin: 0 0 1.2rem; }
+
+/* --- Von niemandem behauptet --- */
+.open-roles {
+  margin-bottom: 1.2rem;
+  border: 1px dashed var(--parchment-shade);
+  border-radius: var(--radius);
+  background: rgba(255,252,244,.4);
+}
+.open-roles > summary {
+  cursor: pointer; padding: .7rem .9rem;
+  font-family: var(--font-caps); font-size: .84rem;
+  letter-spacing: .12em; text-transform: uppercase; color: var(--bordeaux);
+}
+.open-roles__grid {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: .9rem; padding: 0 .9rem .9rem;
+}
+.open-roles__title {
+  margin: 0 0 .2rem; font-family: var(--font-caps);
+  font-size: .78rem; letter-spacing: .1em; text-transform: uppercase;
+}
+.open-roles__group[data-tone="good"] .open-roles__title { color: var(--good); }
+.open-roles__group[data-tone="evil"] .open-roles__title { color: var(--evil); }
+.open-roles__count { color: var(--ink-faint); letter-spacing: .04em; }
+.open-roles__list { margin: 0; font-size: .92rem; color: var(--ink-soft); }
+.open-roles__list--empty { font-style: italic; color: var(--ink-faint); }
+
+/* --- Spielerkarten --- */
+.pcards { display: grid; gap: .8rem; margin-bottom: 1.2rem; }
+
+.pcard {
+  --tone: var(--ink-faint);
+  padding: .7rem .8rem .8rem;
+  background: linear-gradient(180deg, rgba(255,252,244,.8), rgba(246,236,214,.62));
+  border: 1.5px solid var(--parchment-shade);
+  border-left: 5px solid var(--tone);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-emboss);
+}
+.pcard[data-align="good"] { --tone: var(--good); }
+.pcard[data-align="evil"] { --tone: var(--evil); }
+.pcard.is-dead { opacity: .62; }
+.pcard.is-dead .pcard__name { text-decoration: line-through; }
+
+.pcard__head { display: flex; align-items: center; gap: .5rem; }
+.pcard__seat {
+  flex: 0 0 auto; width: 1.9rem; height: 1.9rem;
+  display: grid; place-items: center; border-radius: 50%;
+  background: var(--tone); color: var(--parchment);
+  font-family: var(--font-display); font-size: .95rem;
+}
+.pcard__name {
+  flex: 1 1 auto; min-width: 0;
+  font-family: var(--font-display); font-weight: 600;
+  font-size: max(1.15rem, 16px); color: var(--tone);
+  background: transparent; border: none;
+  border-bottom: 1px dotted var(--parchment-shade);
+  border-radius: 0; padding: .2rem .1rem;
+}
+.pcard__name:focus { outline: none; border-bottom-color: var(--bordeaux); }
+.pcard__move { display: flex; gap: .2rem; }
+
+.iconbtn {
+  appearance: none; cursor: pointer;
+  min-width: 2.2rem; min-height: 2.2rem;
+  border: 1.5px solid var(--parchment-shade);
+  background: rgba(255,252,244,.7);
+  color: var(--ink-soft); border-radius: var(--radius);
+  font-size: .8rem; line-height: 1;
+}
+.iconbtn:hover { background: var(--parchment-warm); }
+.iconbtn--del { color: var(--evil); }
+
+.pcard__neighbours {
+  margin: .45rem 0 .1rem; font-size: .86rem; color: var(--ink-faint);
+}
+.pcard__neighbours strong { color: var(--ink-soft); font-weight: 600; }
+
+.pcard__row { display: flex; flex-wrap: wrap; gap: .5rem; margin: .6rem 0 .5rem; }
+
+.seg { display: flex; border: 1.5px solid var(--parchment-shade); border-radius: 999px; overflow: hidden; }
+.seg__btn {
+  appearance: none; cursor: pointer; border: none; background: transparent;
+  font-family: var(--font-body); font-size: .92rem;
+  padding: .35rem .8rem; min-height: 2.2rem; color: var(--ink-soft);
+  border-right: 1px solid var(--parchment-shade);
+}
+.seg__btn:last-child { border-right: none; }
+.seg__btn.is-on { background: var(--tone); color: var(--parchment); }
+.seg--state .seg__btn.is-on { background: var(--bordeaux); color: var(--parchment); }
+
+.pcard__roles { display: grid; gap: .4rem; margin-bottom: .5rem; }
+.rolerow { display: flex; align-items: flex-start; gap: .5rem; flex-wrap: wrap; }
+.rolerow__label {
+  appearance: none; cursor: pointer; flex: 0 0 auto;
+  border: 1.5px solid var(--bordeaux); background: rgba(255,252,244,.6);
+  color: var(--bordeaux); border-radius: 999px;
+  font-family: var(--font-caps); font-size: .74rem; letter-spacing: .1em;
+  padding: .3rem .7rem; min-height: 2.1rem;
+}
+.rolerow__label:hover { background: var(--parchment-deep); }
+.rolerow__chips { display: flex; flex-wrap: wrap; gap: .3rem; flex: 1 1 12rem; }
+.rolerow__empty { font-size: .86rem; color: var(--ink-faint); font-style: italic; align-self: center; }
+
+.rolechip {
+  display: inline-flex; align-items: center; gap: .3rem;
+  padding: .15rem .55rem .15rem .2rem;
+  border: 1.5px solid var(--good); border-radius: 999px;
+  background: rgba(255,252,244,.75);
+  font-size: .86rem; color: var(--good);
+}
+.rolechip__icon { width: 22px; height: 22px; object-fit: contain; }
+.rolechip[data-state="ruled"] {
+  border-color: var(--ink-faint); color: var(--ink-faint);
+  text-decoration: line-through;
+}
+.rolechip[data-state="ruled"] .rolechip__icon { filter: grayscale(1); opacity: .55; }
+.rolechip[data-mode="guess"][data-state="suspect"] { border-color: var(--evil); color: var(--evil); }
+
+.pcard__note {
+  width: 100%; font-family: var(--font-body); font-size: max(1rem, 16px);
+  color: var(--ink); background: rgba(255,253,246,.75);
+  border: 1.5px solid var(--parchment-shade); border-radius: var(--radius);
+  padding: .45rem .6rem; resize: vertical;
+}
+.pcard__note:focus { outline: none; border-color: var(--bordeaux); }
+
+.notes-add { display: flex; gap: .5rem; margin-bottom: 1rem; }
+.notes-add input { flex: 1 1 auto; }
+.notes-actions { display: flex; gap: .6rem; flex-wrap: wrap; }
+
+/* --- Rollenwähler (Overlay) --- */
+body.is-locked { overflow: hidden; }
+
+.sheetover {
+  position: fixed; inset: 0; z-index: 200;
+  background: rgba(40,25,12,.55);
+  display: flex; align-items: flex-end; justify-content: center;
+}
+.sheetover__panel {
+  width: min(720px, 100%);
+  max-height: 88vh;
+  display: flex; flex-direction: column;
+  background: var(--parchment);
+  background-image: url("../assets/textures/parchment.svg");
+  background-size: 600px 600px;
+  border-top: 4px solid var(--bordeaux);
+  border-radius: 10px 10px 0 0;
+  padding-bottom: env(safe-area-inset-bottom);
+  box-shadow: 0 -6px 26px rgba(30,18,8,.35);
+}
+.sheetover__head {
+  display: flex; align-items: center; justify-content: space-between; gap: 1rem;
+  padding: .8rem 1rem .4rem;
+  border-bottom: 1px solid var(--parchment-shade);
+}
+.sheetover__head h3 {
+  margin: 0; font-family: var(--font-display); font-size: 1.15rem;
+  color: var(--bordeaux); font-weight: 700;
+}
+.sheetover__hint { margin: .5rem 1rem; font-size: .88rem; color: var(--ink-soft); font-style: italic; }
+.sheetover__body { overflow-y: auto; padding: 0 1rem 1rem; -webkit-overflow-scrolling: touch; }
+
+.pick--role[data-state="on"],
+.pick--role[data-state="suspect"] {
+  background: var(--evil); border-color: var(--evil);
+}
+.pick--role[data-state="on"] { background: var(--good); border-color: var(--good); }
+.pick--role[data-state="on"] .pick__name,
+.pick--role[data-state="suspect"] .pick__name { color: var(--parchment); }
+.pick--role[data-state="on"] .pick__icon,
+.pick--role[data-state="suspect"] .pick__icon { filter: brightness(0) invert(1); }
+.pick--role[data-state="ruled"] { opacity: .45; }
+.pick--role[data-state="ruled"] .pick__name { text-decoration: line-through; }
+.pick--role[data-state="ruled"] .pick__icon { filter: grayscale(1); }
+
 /* ============================================================ Fußbereich */
 
 .site-footer {
@@ -989,4 +1185,37 @@ input[type="text"]:focus { border-color: var(--bordeaux); outline: none; }
 
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation-duration: .001ms !important; transition-duration: .001ms !important; }
+}
+
+/* ============================================================ Als App auf dem Homescreen
+
+   Im Vollbildmodus („display: standalone") gibt es keine Safari-Leisten mehr.
+   Dann müssen Notch und Home-Indikator selbst freigehalten werden, sonst liegt
+   der Titel unter der Uhr und die letzte Schaltfläche unter dem Balken. */
+
+@media (display-mode: standalone) {
+  .site-header { padding-top: calc(1.25rem + env(safe-area-inset-top)); }
+  .tabs { padding-left: calc(1rem + env(safe-area-inset-left));
+          padding-right: calc(1rem + env(safe-area-inset-right)); }
+  main { padding-left: calc(1rem + env(safe-area-inset-left));
+         padding-right: calc(1rem + env(safe-area-inset-right)); }
+  .site-footer { padding-bottom: calc(3rem + env(safe-area-inset-bottom)); }
+}
+
+/* Touch-Bedienung: größere Ziele, kein Hover-Klebenbleiben */
+@media (pointer: coarse) {
+  .btn, .chip, .tab, .seg__btn, .iconbtn, .rolerow__label { min-height: 44px; }
+  .pick { min-height: 84px; }
+  .card, .pick, .chip, .btn { -webkit-tap-highlight-color: rgba(92,31,46,.15); }
+}
+
+/* Auf schmalen Geräten bekommen die Spielerkarten mehr Luft */
+@media (max-width: 560px) {
+  .notes-setup { gap: .7rem; padding: .8rem; }
+  .notes-count { min-width: 4rem; }
+  .pcard__row { gap: .4rem; }
+  .seg__btn { padding: .35rem .6rem; font-size: .88rem; }
+  .picker__grid { grid-template-columns: repeat(auto-fill, minmax(104px, 1fr)); gap: .4rem; }
+  .pick__name { font-size: .82rem; }
+  .sheetover__panel { max-height: 92vh; }
 }
