@@ -1250,3 +1250,43 @@ body.is-locked { overflow: hidden; }
   .pick__name { font-size: .82rem; }
   .sheetover__panel { max-height: 92vh; }
 }
+
+/* ============================================================ Update-Hinweis
+
+   Erscheint unten, wenn eine neue Fassung bereitliegt. Bewusst nicht
+   aufdringlich und ohne automatisches Neuladen — mitten in einer Partie
+   will niemand, dass ihm die Notizen unter den Fingern neu laden. */
+
+.sw-update {
+  position: fixed;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: calc(1rem + env(safe-area-inset-bottom));
+  z-index: 150;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: .6rem;
+  max-width: min(38rem, calc(100vw - 2rem));
+  padding: .75rem 1rem;
+  background: var(--parchment);
+  border: 1.5px solid var(--bordeaux);
+  border-radius: var(--radius);
+  box-shadow: 0 6px 22px rgba(40,20,10,.28);
+  animation: swSlideIn .25s ease-out;
+}
+
+.sw-update__text {
+  flex: 1 1 12rem;
+  font-family: var(--font-body);
+  color: var(--ink);
+}
+
+.btn--small { font-size: .9rem; padding: .35rem .8rem; }
+
+@keyframes swSlideIn {
+  from { opacity: 0; transform: translate(-50%, .6rem); }
+  to   { opacity: 1; transform: translate(-50%, 0); }
+}
+
+@media print { .sw-update { display: none !important; } }

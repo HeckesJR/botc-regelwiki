@@ -39,7 +39,8 @@ botc-regelwiki/
 │   ├── generator.js     Verteilung, Bluffs, Balance-Bewertung, Vorschläge
 │   ├── scripts.js       eigene, editionsübergreifende Skripte
 │   ├── notes.js         Spielnotizen (Sitzordnung, Verdacht, Status)
-│   └── pdf-export.js    PDF-Export im Pergament-Design
+│   ├── pdf-export.js    PDF-Export im Pergament-Design
+│   └── sw-register.js   meldet den Service Worker an, zeigt die Update-Leiste
 ├── data/
 │   ├── grundregeln_de.json
 │   ├── glossar_de.json
@@ -54,6 +55,7 @@ botc-regelwiki/
 ├── vendor/jspdf.umd.min.js                  lokal eingebunden, kein CDN nötig
 ├── _icon-sources.txt                        Quell-URLs der offiziellen Icons
 ├── manifest.webmanifest                     macht die Seite auf dem Handy installierbar
+├── sw.js                                    Service Worker für den Offline-Betrieb
 └── _devserve.ps1                            nur zum lokalen Testen
 ```
 
@@ -375,6 +377,34 @@ vergessen, `night_meta` mitzuziehen, wenn sich Positionen verschieben.
 **Neuen Charakter hinzufügen** — Objekt nach obigem Schema ins `characters`-Array einfügen und
 eine SVG-Datei unter dem in `icon` angegebenen Pfad ablegen (viewBox `0 0 64 64`,
 `stroke="currentColor"`).
+
+---
+
+## Offline-Betrieb (Service Worker)
+
+`sw.js` macht die Seite ohne Netz benutzbar. Der übliche Ärger mit Service Workern — sie
+liefern hartnäckig alte Stände aus — ist hier durch getrennte Strategien entschärft:
+
+| Dateiart | Strategie | Folge |
+|---|---|---|
+| HTML, JS, CSS, JSON | **erst Netz**, Cache nur als Rückfall | online immer der frische Stand |
+| Bilder, Icons, Schriften | **erst Cache** | spart die 3,4 MB bei jedem Aufruf |
+
+Kein Netz nach vier Sekunden gilt als kein Netz, dann übernimmt der Cache. Beim ersten Besuch
+wird alles außer den 198 Charakter-Icons vorgeladen; die kommen nach, sobald sie einmal
+angezeigt wurden.
+
+> **Beim Ändern von Bildern, Icons oder Schriften `VERSION` in `sw.js` hochzählen.**
+> Sonst behält jeder, der die Seite schon einmal geöffnet hat, die alten Bilder — unbegrenzt.
+> Für HTML, JS, CSS und die JSON-Daten ist das **nicht** nötig, die kommen ohnehin frisch.
+
+Liegt eine neue Fassung bereit, erscheint unten eine Leiste „Eine neue Fassung des Regelwikis
+ist da" mit *Jetzt laden* und *Später*. Es wird **nie** automatisch neu geladen — mitten in
+einer Partie sollen einem die Notizen nicht unter den Fingern verschwinden.
+
+**Beim Entwickeln:** Der Service Worker läuft auf `localhost` mit. Wenn du Änderungen nicht
+siehst, in den Entwicklerwerkzeugen unter *Application → Service Workers* „Update on reload"
+anhaken oder „Unregister" drücken. Über `file://` meldet er sich gar nicht erst an.
 
 ---
 

@@ -165,6 +165,14 @@ git push
 Nach 1–2 Minuten ist die Änderung online. Wenn du die alte Version siehst: harter Reload mit
 `Strg`+`F5`.
 
+> **Hast du Bilder, Icons oder Schriften geändert?** Dann vorher in `sw.js` die Zeile
+> `var VERSION = 'v1';` hochzählen (`'v2'`, `'v3'`, …). Sonst behalten alle, die die Seite
+> schon einmal geöffnet haben, die alten Bilder — der Offline-Speicher gibt sie sonst nie
+> wieder her. Für Text, Regeln, Charakterdaten, JS und CSS ist das **nicht** nötig.
+
+Wer die Seite offen hat, bekommt beim nächsten Aufruf unten die Leiste „Eine neue Fassung des
+Regelwikis ist da". Erst ein Klick auf *Jetzt laden* holt sie.
+
 **Zur Kontrolle, ob der Push wirklich durch ist:**
 
 ```bash
