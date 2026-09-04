@@ -53,6 +53,7 @@ var SHELL = [
   'assets/textures/parchment.svg',
   'assets/textures/fleuron.svg',
   'assets/textures/corner.svg',
+  'assets/brand/ccc-sleeve.png',
   'assets/icons/app/icon-180.png',
   'assets/icons/app/icon-192.png',
   'assets/icons/app/icon-512.png',

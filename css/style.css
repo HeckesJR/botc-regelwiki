@@ -1203,6 +1203,21 @@ body.is-locked { overflow: hidden; }
 .site-footer p { margin: .3rem 0; }
 .site-footer__fineprint { max-width: 52ch; margin: .8rem auto 0; font-size: .82rem; opacity: .85; }
 
+/* Das offizielle CCC-Abzeichen von TPI. Bewusst klein: die Richtlinie
+   verlangt, dass die eigene Kennzeichnung mindestens so prominent ist wie
+   TPIs Logo — der Seitentitel oben ist um ein Vielfaches größer. Die Datei
+   liegt in Originalgröße vor und wird hier herunterskaliert; sie ist nur
+   47 kB und kommt beim zweiten Aufruf aus dem Offline-Speicher. */
+.ccc-badge {
+  display: block;
+  width: 200px;
+  height: auto;
+  margin: 1.4rem auto 0;
+  opacity: .8;
+  transition: opacity .15s;
+}
+.ccc-badge:hover { opacity: 1; }
+
 /* ============================================================ Druck */
 
 @media print {

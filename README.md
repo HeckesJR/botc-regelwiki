@@ -51,6 +51,7 @@ botc-regelwiki/
 │   └── balance.json     Tags & Gewichte für den Balance-Check
 ├── assets/
 │   ├── icons/{edition}/{charakter-id}.webp  99 offizielle Icons (+ .svg als Fallback)
+│   ├── brand/ccc-sleeve.png                 offizielles Community-Created-Content-Abzeichen
 │   └── textures/                            Pergament, Fleuron, Eckornament
 ├── vendor/jspdf.umd.min.js                  lokal eingebunden, kein CDN nötig
 ├── _icon-sources.txt                        Quell-URLs der offiziellen Icons
@@ -412,4 +413,25 @@ anhaken oder „Unregister" drücken. Über `file://` meldet er sich gar nicht e
 
 Blood on the Clocktower ist ein Spiel von Steven Medway, veröffentlicht von The Pandemonium
 Institute. Dieses Wiki ist eine inoffizielle, nicht-kommerzielle Zusammenfassung für den
-privaten Gebrauch der eigenen Spielrunde und enthält keine Original-Grafiken des Spiels.
+privaten Gebrauch der eigenen Spielrunde.
+
+Es verwendet offizielle Token-Grafiken von TPI (99 WebP in `assets/icons/`, Quell-URLs in
+`_icon-sources.txt`) sowie eigene Übersetzungen der Regeltexte. Beides ist von TPIs
+[Community Created Content Policy](https://bloodontheclocktower.com/pages/community-created-content-policy)
+gedeckt, solange die drei Grundregeln eingehalten werden:
+
+1. **Nicht als offiziell ausgeben.** Deshalb steht das offizielle CCC-Abzeichen
+   (`assets/brand/ccc-sleeve.png`, von TPI unter `release.botc.app/resources/community/`)
+   in der Fußzeile. Die Richtlinie verlangt, dass die eigene Kennzeichnung mindestens so
+   prominent ist wie TPIs Logo — der Seitentitel ist um ein Vielfaches größer.
+2. **Nicht kommerzialisieren.** Kein Verkauf, keine Werbung, kein Sponsoring.
+3. **Nicht konkurrieren.** Nichts bauen, was den offiziellen Angeboten das Wasser abgräbt.
+
+> **Keine Open-Source-Lizenz hinzufügen.** Die Regeltexte sind Übersetzungen des offiziellen
+> Regelwerks, die Icons sind TPIs Token-Grafiken. Nichts davon gehört uns, um es unter MIT
+> zu stellen.
+
+Die Seite trägt `<meta name="robots" content="noindex, nofollow, noarchive">` und taucht
+damit nicht in Suchmaschinen auf. Ein `robots.txt` wäre hier wirkungslos: GitHub Pages liest
+es nur unter `heckesjr.github.io/robots.txt`, nicht im Projektunterordner — und ein
+`Disallow` würde Crawler sogar daran hindern, das `noindex` überhaupt zu sehen.
