@@ -265,31 +265,106 @@
 
   /* ---------------------------------------------- Nachtreihenfolge */
 
-  function renderNightTab() {
-    BOTC.renderNightOrder(state.editions[state.nightEdition], state.nightPhase, $('#night-list'));
+  function isScriptId(id) { return String(id).indexOf('script-') === 0; }
+
+  /* Die Rahmenschritte (Abenddämmerung, Schergen- und Dämon-Info,
+     Morgendämmerung) sind in allen drei Editionen dieselben. Für eigene
+     Skripte werden sie deshalb aus Trouble Brewing übernommen, statt sie
+     im Code zu doppeln. Der Eintrag mit der höchsten Nummer ist immer die
+     Morgendämmerung, alle anderen leiten die Nacht ein. */
+  function frameSteps(phase) {
+    var meta = ((state.editions.trouble_brewing || {}).night_meta || {})[phase] || [];
+    if (!meta.length) return { opening: [], closing: null };
+    var sorted = meta.slice().sort(function (a, b) { return a.order - b.order; });
+    return { opening: sorted.slice(0, -1), closing: sorted[sorted.length - 1] };
   }
 
-  function initNightTab() {
+  function renderApproxNightTab(script) {
+    var steps = BOTC.scripts.approximateNightOrder(script, state.editions, state.nightPhase);
+    var frame = frameSteps(state.nightPhase);
+    var entries = [];
+    var n = 0;
+
+    frame.opening.forEach(function (m) { entries.push(BOTC.nightEntryFromMeta(m, ++n)); });
+    steps.forEach(function (s) { entries.push(BOTC.nightEntryFromCharacter(s.character, ++n)); });
+    if (frame.closing) entries.push(BOTC.nightEntryFromMeta(frame.closing, ++n));
+
+    /* Nur die Rahmenschritte heißt: kein Charakter des Skripts wacht in dieser
+       Phase auf. Dann ist die Liste ohne Aussage. */
+    if (!steps.length) {
+      BOTC.renderNightSteps([], $('#night-list'),
+        'In diesem Skript wacht in dieser Nacht kein Charakter auf.');
+      return;
+    }
+
+    BOTC.renderNightSteps(entries, $('#night-list'));
+  }
+
+  function renderNightTab() {
+    var note = $('#night-approx-note');
+    var id = state.nightEdition;
+
+    if (isScriptId(id)) {
+      var script = BOTC.scripts.get(id);
+      if (script) {
+        note.hidden = false;
+        renderApproxNightTab(script);
+        return;
+      }
+      /* Skript wurde zwischenzeitlich gelöscht */
+      state.nightEdition = PLAYABLE[0];
+      refreshNightScripts();
+      return;
+    }
+
+    note.hidden = true;
+    BOTC.renderNightOrder(state.editions[id], state.nightPhase, $('#night-list'));
+  }
+
+  function selectNightScript(id) {
+    state.nightEdition = id;
+    $('#night-edition-switch').querySelectorAll('.chip').forEach(function (c) {
+      var on = c.dataset.edition === id;
+      c.classList.toggle('is-active', on);
+      c.setAttribute('aria-pressed', String(on));
+    });
+    renderNightTab();
+  }
+
+  /* Baut die Auswahl neu: die drei Editionen, danach die gespeicherten
+     eigenen Skripte. Wird auch nach Speichern und Löschen aufgerufen. */
+  function refreshNightScripts() {
     var box = $('#night-edition-switch');
-    PLAYABLE.forEach(function (id) {
+    box.innerHTML = '';
+
+    var choices = PLAYABLE.map(function (id) {
       var e = EDITIONS.filter(function (x) { return x.id === id; })[0];
-      var chip = makeChip(e.label, {
-        data: { edition: id },
-        active: id === state.nightEdition,
-        pressed: id === state.nightEdition
+      return { id: id, label: e.label, own: false };
+    });
+
+    BOTC.scripts.load().forEach(function (s) {
+      choices.push({ id: s.id, label: s.name, own: true });
+    });
+
+    /* Zeigt das aktive Skript noch auf etwas Vorhandenes? */
+    var stillThere = choices.some(function (c) { return c.id === state.nightEdition; });
+    if (!stillThere) state.nightEdition = PLAYABLE[0];
+
+    choices.forEach(function (c) {
+      var chip = makeChip(c.label, {
+        data: { edition: c.id },
+        active: c.id === state.nightEdition,
+        pressed: c.id === state.nightEdition
       });
-      chip.addEventListener('click', function () {
-        state.nightEdition = id;
-        box.querySelectorAll('.chip').forEach(function (c) {
-          var on = c.dataset.edition === id;
-          c.classList.toggle('is-active', on);
-          c.setAttribute('aria-pressed', String(on));
-        });
-        renderNightTab();
-      });
+      if (c.own) chip.classList.add('chip--own');
+      chip.addEventListener('click', function () { selectNightScript(c.id); });
       box.appendChild(chip);
     });
 
+    renderNightTab();
+  }
+
+  function initNightTab() {
     $('#night-phase-switch').addEventListener('click', function (ev) {
       var btn = ev.target.closest('.chip');
       if (!btn) return;
@@ -300,7 +375,8 @@
       renderNightTab();
     });
 
-    renderNightTab();
+    state.refreshNightScripts = refreshNightScripts;
+    refreshNightScripts();
   }
 
   /* ---------------------------------------------- Generator */
@@ -751,9 +827,10 @@
       builder.id = saved.id;
       refreshScriptSelect();
       if (state.refreshGenScripts) state.refreshGenScripts();
+      if (state.refreshNightScripts) state.refreshNightScripts();
       var box = $('#script-status');
       box.insertAdjacentHTML('afterbegin',
-        '<p class="script-saved">Gespeichert — „' + BOTC.esc(name) + '\" steht jetzt im Generator zur Auswahl.</p>');
+        '<p class="script-saved">Gespeichert — „' + BOTC.esc(name) + '\" steht jetzt im Generator und in der Nachtreihenfolge zur Auswahl.</p>');
       setTimeout(function () {
         var el = box.querySelector('.script-saved');
         if (el) el.remove();
@@ -794,6 +871,7 @@
       BOTC.scripts.remove(builder.id);
       loadIntoBuilder(null);
       if (state.refreshGenScripts) state.refreshGenScripts();
+      if (state.refreshNightScripts) state.refreshNightScripts();
     });
 
     $('#script-select').addEventListener('change', function () { loadIntoBuilder(this.value); });

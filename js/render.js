@@ -261,32 +261,37 @@ window.BOTC = window.BOTC || {};
 
   /* ---------------------------------------------- Nachtreihenfolge */
 
-  function renderNightOrder(doc, phase, list) {
-    var key = phase === 'first' ? 'night_order_first' : 'night_order_other';
+  /* Ein Charakter als Nachtschritt. Die Nummer wird getrennt übergeben, weil
+     eigene Skripte durchnummeriert werden und nicht die Nummer der
+     Herkunftsedition tragen dürfen. */
+  function nightEntryFromCharacter(ch, order) {
+    return {
+      order: order,
+      name: ch.name_de,
+      en: ch.name_en,
+      text: ch.ability_short,
+      tone: TYPE_TONE[ch.type] || 'neutral',
+      meta: false
+    };
+  }
 
-    var entries = [];
+  function nightEntryFromMeta(m, order) {
+    return {
+      order: order == null ? m.order : order,
+      name: m.label,
+      en: '',
+      text: m.text,
+      tone: 'neutral',
+      meta: true
+    };
+  }
 
-    (doc.characters || []).forEach(function (ch) {
-      if (ch[key] == null) return;
-      entries.push({
-        order: ch[key],
-        name: ch.name_de,
-        en: ch.name_en,
-        text: ch.ability_short,
-        tone: TYPE_TONE[ch.type] || 'neutral',
-        meta: false
-      });
-    });
-
-    var meta = (doc.night_meta && doc.night_meta[phase]) || [];
-    meta.forEach(function (m) {
-      entries.push({ order: m.order, name: m.label, en: '', text: m.text, tone: 'neutral', meta: true });
-    });
-
-    entries.sort(function (a, b) { return a.order - b.order; });
-
+  /* Gemeinsame Ausgabe für Editionen und eigene Skripte. Erwartet eine
+     bereits sortierte Liste. */
+  function renderNightSteps(entries, list, emptyText) {
     if (!entries.length) {
-      list.innerHTML = '<p class="empty-state">Für diese Edition sind keine Nachtschritte hinterlegt.</p>';
+      list.innerHTML = '<p class="empty-state">' +
+        esc(emptyText || 'Hier sind keine Nachtschritte hinterlegt.') + '</p>';
       return;
     }
 
@@ -300,9 +305,30 @@ window.BOTC = window.BOTC || {};
     }).join('');
   }
 
+  function renderNightOrder(doc, phase, list) {
+    var key = phase === 'first' ? 'night_order_first' : 'night_order_other';
+
+    var entries = [];
+
+    (doc.characters || []).forEach(function (ch) {
+      if (ch[key] == null) return;
+      entries.push(nightEntryFromCharacter(ch, ch[key]));
+    });
+
+    var meta = (doc.night_meta && doc.night_meta[phase]) || [];
+    meta.forEach(function (m) { entries.push(nightEntryFromMeta(m)); });
+
+    entries.sort(function (a, b) { return a.order - b.order; });
+
+    renderNightSteps(entries, list, 'Für diese Edition sind keine Nachtschritte hinterlegt.');
+  }
+
   BOTC.renderRules = renderRules;
   BOTC.renderGlossary = renderGlossary;
   BOTC.renderCards = renderCards;
   BOTC.renderNightOrder = renderNightOrder;
+  BOTC.renderNightSteps = renderNightSteps;
+  BOTC.nightEntryFromCharacter = nightEntryFromCharacter;
+  BOTC.nightEntryFromMeta = nightEntryFromMeta;
 
 })(window.BOTC);
