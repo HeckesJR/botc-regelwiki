@@ -175,6 +175,34 @@ darunter eine Karte je Spieler:
 - **Zwei Reset-Stufen:** „Neue Runde" behält Namen und Sitzordnung und leert den Rest,
   „Alles löschen" räumt komplett auf. Beide fragen vorher nach.
 
+### „Nur für mich" — der geheime Bereich
+
+Drei Plätze für die Bluffs, die der Dämon in der ersten Nacht gezeigt bekommt, plus eine
+Freitextzeile. Das Auge blendet alles ein und aus.
+
+Der Bereich heißt bewusst **nicht** „Dämon". Hieße er so, wäre schon das Öffnen ein Verrat —
+und ein guter Spieler, der neugierig drauftippt, sähe schuldig aus. So benutzt ihn jeder
+plausibel: der Dämon für seine Bluffs, Schergen für „wer ist der Dämon", Waschweib und
+Detektiv\*in für ihre Nachtinfo.
+
+Was ihn zumacht:
+
+| Auslöser | Warum |
+|---|---|
+| Auge antippen | von Hand |
+| 20 Sekunden ohne Eingabe | Handy liegt offen auf dem Tisch |
+| anderer Tab im Wiki | `MutationObserver` auf `#panel-notizen[hidden]` |
+| Handy gesperrt, App gewechselt | `visibilitychange` |
+| Seite neu geladen | der offene Zustand wird nie gespeichert |
+
+Ein Punkt neben der Überschrift zeigt, dass etwas drinsteht — ohne zu verraten, was.
+
+> **Das ist Sichtschutz, keine Verschlüsselung.** Es hilft gegen Blicke über die Schulter.
+> Wer das Handy in die Hand bekommt, tippt aufs Auge. Steht auch so in der Oberfläche.
+
+„Neue Runde" leert Bluffs und Notiz mit — mit den Bluffs der Vorrunde weiterzuspielen wäre
+schlimmer als gar keine. Ein Skriptwechsel wirft Bluffs raus, die es im neuen Skript nicht gibt.
+
 Alles wird beim Tippen automatisch im `localStorage` gesichert — es gibt keinen Speichern-Knopf,
 und nichts verlässt das Gerät.
 

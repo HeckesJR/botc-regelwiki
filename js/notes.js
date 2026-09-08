@@ -16,9 +16,19 @@ window.BOTC = window.BOTC || {};
     { id: 'evil',    label: 'böse' }
   ];
 
-  var state = null;      /* { script, players: [] } */
+  var state = null;      /* { script, players: [], secret: {} } */
   var ctx = null;        /* { editions, playableIds, getScript } */
   var picker = null;     /* offener Rollenwähler */
+
+  /* Der Dämon bekommt in der ersten Nacht genau drei Bluffs gezeigt. */
+  var MAX_BLUFFS = 3;
+
+  /* Ob der geheime Bereich gerade offen ist, wird bewusst NICHT gespeichert:
+     nach jedem Neuladen ist er wieder zu. Dazu schließt er sich von selbst,
+     weil die eigentliche Gefahr das offen liegengelassene Handy ist. */
+  var secretOpen = false;
+  var secretTimer = null;
+  var SECRET_TIMEOUT = 20000;
 
   /* ---------------------------------------------- Zustand */
 
@@ -35,17 +45,25 @@ window.BOTC = window.BOTC || {};
     };
   }
 
+  function emptySecret() {
+    return { bluffs: [], note: '' };
+  }
+
   function load() {
     try {
       var raw = localStorage.getItem(KEY);
       if (raw) {
         var p = JSON.parse(raw);
-        if (p && Array.isArray(p.players)) return p;
+        if (p && Array.isArray(p.players)) {
+          /* Ältere Stände kennen den geheimen Bereich noch nicht */
+          if (!p.secret || !Array.isArray(p.secret.bluffs)) p.secret = emptySecret();
+          return p;
+        }
       }
     } catch (e) {
       console.warn('Notizen konnten nicht gelesen werden:', e);
     }
-    return { script: 'trouble_brewing', players: [] };
+    return { script: 'trouble_brewing', players: [], secret: emptySecret() };
   }
 
   var saveTimer = null;
@@ -136,6 +154,93 @@ window.BOTC = window.BOTC || {};
     }
 
     return html;
+  }
+
+  /* ---------------------------------------------- Geheimer Bereich
+
+     Bewusst „Nur für mich" und nicht „Dämon": Hieße der Bereich nach der
+     Rolle, wäre schon das Öffnen ein Verrat. So benutzt ihn jeder plausibel
+     — der Dämon für seine Bluffs, Schergen für den Dämon, Bürger für ihre
+     Nachtinfo. */
+
+  function bluffChars() {
+    return scriptChars().filter(function (c) {
+      return c.type === 'townsfolk' || c.type === 'outsider';
+    });
+  }
+
+  function renderSecret() {
+    var slots = '';
+    for (var i = 0; i < MAX_BLUFFS; i++) {
+      var c = state.secret.bluffs[i] ? charById(state.secret.bluffs[i]) : null;
+      slots += c
+        ? '<div class="sbluff" data-tone="' + BOTC.TYPE_TONE[c.type] + '">' +
+            '<img class="sbluff__icon" src="' + esc(c.icon) + '" alt="" aria-hidden="true" ' +
+            'data-fallback="' + esc(String(c.icon).replace(/\.webp$/, '.svg')) + '">' +
+            '<span class="sbluff__name">' + esc(c.name_de) + '</span></div>'
+        : '<div class="sbluff sbluff--empty"><span class="sbluff__name">leer</span></div>';
+    }
+
+    var gefuellt = state.secret.bluffs.length;
+    var hatInhalt = gefuellt > 0 || !!state.secret.note;
+
+    return '' +
+      '<section class="secret" id="notes-secret">' +
+        '<div class="secret__head">' +
+          '<h3 class="secret__title">Nur für mich</h3>' +
+          (hatInhalt && !secretOpen ? '<span class="secret__dot" aria-hidden="true"></span>' : '') +
+          '<button type="button" class="iconbtn secret__eye" data-act="secret-toggle" ' +
+            'aria-expanded="' + (secretOpen ? 'true' : 'false') + '" ' +
+            'aria-controls="secret-body" ' +
+            'title="' + (secretOpen ? 'Verbergen' : 'Anzeigen') + '" ' +
+            'aria-label="' + (secretOpen ? 'Geheimen Bereich verbergen' : 'Geheimen Bereich anzeigen') + '">' +
+            eyeIcon(secretOpen) +
+          '</button>' +
+        '</div>' +
+
+        (secretOpen
+          ? '<div class="secret__body" id="secret-body">' +
+              '<p class="secret__hint">Schließt sich nach 20 Sekunden von selbst. ' +
+                'Schützt vor Blicken über die Schulter — nicht davor, dass jemand ' +
+                'das Handy in die Hand nimmt.</p>' +
+              '<div class="secret__row">' +
+                '<span class="field__label">Meine Bluffs (' + gefuellt + ' von ' + MAX_BLUFFS + ')</span>' +
+                '<button type="button" class="btn btn--small" data-act="pick-bluffs">Wählen</button>' +
+              '</div>' +
+              '<div class="sbluffs">' + slots + '</div>' +
+              '<label class="field">' +
+                '<span class="field__label">Gemerkt</span>' +
+                '<input type="text" data-act="secret-note" value="' + esc(state.secret.note) + '" ' +
+                  'placeholder="z. B. Dämon ist Anna · Waschweib-Info: Ben oder Cem" autocomplete="off">' +
+              '</label>' +
+            '</div>'
+          : '<p class="secret__closed">' +
+              (hatInhalt ? 'Verborgen. Auge antippen zum Ansehen.'
+                         : 'Platz für Bluffs und alles, was du dir merken musst.') +
+            '</p>') +
+      '</section>';
+  }
+
+  function eyeIcon(offen) {
+    return offen
+      ? '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" ' +
+        'stroke-width="1.7" stroke-linecap="round" aria-hidden="true">' +
+        '<path d="M1.5 12S5.5 5 12 5s10.5 7 10.5 7-4 7-10.5 7S1.5 12 1.5 12Z"/>' +
+        '<circle cx="12" cy="12" r="3.2"/></svg>'
+      : '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" ' +
+        'stroke-width="1.7" stroke-linecap="round" aria-hidden="true">' +
+        '<path d="M1.5 12S5.5 5 12 5s10.5 7 10.5 7-4 7-10.5 7S1.5 12 1.5 12Z"/>' +
+        '<circle cx="12" cy="12" r="3.2"/><path d="m3 3 18 18"/></svg>';
+  }
+
+  /* Zeitschloss neu stellen. Jede Berührung im Bereich verlängert. */
+  function armSecretTimer() {
+    clearTimeout(secretTimer);
+    if (!secretOpen) return;
+    secretTimer = setTimeout(function () {
+      secretOpen = false;
+      render();
+    }, SECRET_TIMEOUT);
   }
 
   /* Welche Rollen hat noch niemand behauptet? */
@@ -258,6 +363,7 @@ window.BOTC = window.BOTC || {};
 
     root.innerHTML =
       renderHeader() +
+      renderSecret() +
       renderOpenRoles() +
       '<div class="pcards">' +
         (state.players.length
@@ -276,18 +382,28 @@ window.BOTC = window.BOTC || {};
 
   /* ---------------------------------------------- Rollenwähler */
 
+  /* mode: 'claim' | 'guess' | 'bluff'. Bei 'bluff' gibt es keinen Spieler —
+     gewählt werden die eigenen drei Bluffs, und nur gute Charaktere. */
   function openPicker(playerId, mode) {
-    var p = state.players.filter(function (x) { return x.id === playerId; })[0];
-    if (!p) return;
-    picker = { playerId: playerId, mode: mode };
+    var bluffMode = mode === 'bluff';
+    var p = null;
 
-    var groups = [
-      { type: 'townsfolk', label: 'Bürger' },
-      { type: 'outsider',  label: 'Außenseiter' },
-      { type: 'minion',    label: 'Schergen' },
-      { type: 'demon',     label: 'Dämon' }
-    ];
-    var chars = scriptChars();
+    if (!bluffMode) {
+      p = state.players.filter(function (x) { return x.id === playerId; })[0];
+      if (!p) return;
+    }
+    picker = { playerId: bluffMode ? null : playerId, mode: mode };
+
+    var groups = bluffMode
+      ? [ { type: 'townsfolk', label: 'Bürger' },
+          { type: 'outsider',  label: 'Außenseiter' } ]
+      : [ { type: 'townsfolk', label: 'Bürger' },
+          { type: 'outsider',  label: 'Außenseiter' },
+          { type: 'minion',    label: 'Schergen' },
+          { type: 'demon',     label: 'Dämon' } ];
+
+    var chars = bluffMode ? bluffChars() : scriptChars();
+    var voll = bluffMode && state.secret.bluffs.length >= MAX_BLUFFS;
 
     var body = groups.map(function (g) {
       var list = chars.filter(function (c) { return c.type === g.type; });
@@ -295,9 +411,15 @@ window.BOTC = window.BOTC || {};
       return '<div class="picker__group"><h4 class="picker__group-title" data-tone="' +
         BOTC.TYPE_TONE[g.type] + '">' + g.label + '</h4><div class="picker__grid">' +
         list.map(function (c) {
-          var st = mode === 'claim'
-            ? (p.claims.indexOf(c.id) !== -1 ? 'on' : '')
-            : (p.guesses[c.id] || '');
+          var st;
+          if (bluffMode) {
+            var drin = state.secret.bluffs.indexOf(c.id) !== -1;
+            st = drin ? 'on' : (voll ? 'blocked' : '');
+          } else {
+            st = mode === 'claim'
+              ? (p.claims.indexOf(c.id) !== -1 ? 'on' : '')
+              : (p.guesses[c.id] || '');
+          }
           return '<button type="button" class="pick pick--role" data-role="' + esc(c.id) + '"' +
             ' data-type="' + esc(c.type) + '" data-state="' + st + '">' +
             '<img class="pick__icon" src="' + esc(c.icon) + '" alt="" aria-hidden="true" ' +
@@ -306,19 +428,26 @@ window.BOTC = window.BOTC || {};
         }).join('') + '</div></div>';
     }).join('');
 
+    var titel = bluffMode
+      ? 'Meine Bluffs — <span id="bluff-count">' + state.secret.bluffs.length + '</span> von ' + MAX_BLUFFS
+      : (mode === 'claim' ? 'Behauptet' : 'Vermutet') + ' — ' + esc(p.name || 'Spieler');
+
+    var hinweis = bluffMode
+      ? 'Die drei guten Charaktere, die dir der Geschichtenerzähler als Bluffs gezeigt hat. Nochmal tippen entfernt einen.'
+      : (mode === 'guess'
+          ? 'Einmal tippen = verdächtig, zweimal = ausgeschlossen, dreimal = zurücksetzen.'
+          : 'Tippen, um die behauptete Rolle an- oder abzuwählen.');
+
     var overlay = document.createElement('div');
-    overlay.className = 'sheetover';
+    overlay.className = 'sheetover' + (bluffMode ? ' sheetover--secret' : '');
     overlay.id = 'role-picker';
     overlay.innerHTML =
       '<div class="sheetover__panel" role="dialog" aria-modal="true" aria-label="Rolle wählen">' +
         '<div class="sheetover__head">' +
-          '<h3>' + (mode === 'claim' ? 'Behauptet' : 'Vermutet') + ' — ' +
-            esc(p.name || 'Spieler') + '</h3>' +
+          '<h3>' + titel + '</h3>' +
           '<button type="button" class="btn btn--ghost btn--sm" data-close>Fertig</button>' +
         '</div>' +
-        (mode === 'guess'
-          ? '<p class="sheetover__hint">Einmal tippen = verdächtig, zweimal = ausgeschlossen, dreimal = zurücksetzen.</p>'
-          : '<p class="sheetover__hint">Tippen, um die behauptete Rolle an- oder abzuwählen.</p>') +
+        '<p class="sheetover__hint">' + hinweis + '</p>' +
         '<div class="sheetover__body">' + body + '</div>' +
       '</div>';
 
@@ -332,6 +461,8 @@ window.BOTC = window.BOTC || {};
     document.body.classList.remove('is-locked');
     picker = null;
     render();
+    /* Das Zeitschloss lief währenddessen nicht — jetzt wieder stellen. */
+    armSecretTimer();
   }
 
   /* ---------------------------------------------- Verdrahtung */
@@ -366,6 +497,12 @@ window.BOTC = window.BOTC || {};
     root.addEventListener('input', function (ev) {
       var t = ev.target;
       if (t.id === 'notes-script') return;
+      if (t.dataset.act === 'secret-note') {
+        state.secret.note = t.value;
+        save();
+        armSecretTimer();       /* Tippen verlängert, sonst schließt es mitten im Satz */
+        return;
+      }
       var hit = playerAt(t);
       if (!hit) return;
       if (t.dataset.act === 'name') { hit.p.name = t.value; save(); refreshNeighbourLabels(); }
@@ -375,6 +512,11 @@ window.BOTC = window.BOTC || {};
     root.addEventListener('change', function (ev) {
       if (ev.target.id === 'notes-script') {
         state.script = ev.target.value;
+        /* Bluffs, die es im neuen Skript nicht gibt, fallen raus — sonst
+           stehen dort leere Plätze, die sich nicht erklären lassen. */
+        state.secret.bluffs = state.secret.bluffs.filter(function (id) {
+          return !!charById(id);
+        });
         save();
         render();
       }
@@ -398,6 +540,19 @@ window.BOTC = window.BOTC || {};
 
       if (btn.dataset.reset) {
         doReset(btn.dataset.reset);
+        return;
+      }
+
+      /* Der geheime Bereich hängt an keiner Spielerkarte — vor playerAt() abfangen */
+      if (btn.dataset.act === 'secret-toggle') {
+        secretOpen = !secretOpen;
+        render();
+        armSecretTimer();
+        return;
+      }
+      if (btn.dataset.act === 'pick-bluffs') {
+        clearTimeout(secretTimer);   /* läuft weiter, sobald der Wähler zu ist */
+        openPicker(null, 'bluff');
         return;
       }
 
@@ -441,9 +596,34 @@ window.BOTC = window.BOTC || {};
       var btn = ev.target.closest('.pick--role');
       if (!btn || !picker) return;
 
+      var role = btn.dataset.role;
+
+      if (picker.mode === 'bluff') {
+        var bl = state.secret.bluffs;
+        var pos = bl.indexOf(role);
+        if (pos !== -1) {
+          bl.splice(pos, 1);
+        } else if (bl.length < MAX_BLUFFS) {
+          bl.push(role);
+        } else {
+          return;   /* schon drei — der vierte Griff geht ins Leere */
+        }
+        save();
+
+        /* Zähler und Sperrzustand ohne kompletten Neuaufbau nachziehen,
+           sonst springt die Liste beim Tippen nach oben. */
+        var voll = bl.length >= MAX_BLUFFS;
+        var zaehler = document.getElementById('bluff-count');
+        if (zaehler) zaehler.textContent = bl.length;
+        document.querySelectorAll('#role-picker .pick--role').forEach(function (b) {
+          var drin = bl.indexOf(b.dataset.role) !== -1;
+          b.dataset.state = drin ? 'on' : (voll ? 'blocked' : '');
+        });
+        return;
+      }
+
       var p = state.players.filter(function (x) { return x.id === picker.playerId; })[0];
       if (!p) return;
-      var role = btn.dataset.role;
 
       if (picker.mode === 'claim') {
         var idx = p.claims.indexOf(role);
@@ -461,6 +641,26 @@ window.BOTC = window.BOTC || {};
     document.addEventListener('keydown', function (ev) {
       if (ev.key === 'Escape' && picker) closePicker();
     });
+
+    /* Der geheime Bereich schließt sich, sobald man ihn aus den Augen lässt:
+       Handy gesperrt, App gewechselt, anderer Tab im Wiki. */
+    function closeSecret() {
+      if (!secretOpen) return;
+      secretOpen = false;
+      clearTimeout(secretTimer);
+      if (picker && picker.mode === 'bluff') closePicker(); else render();
+    }
+
+    document.addEventListener('visibilitychange', function () {
+      if (document.hidden) closeSecret();
+    });
+
+    var panel = document.getElementById('panel-notizen');
+    if (panel && window.MutationObserver) {
+      new MutationObserver(function () {
+        if (panel.hidden) closeSecret();
+      }).observe(panel, { attributes: true, attributeFilter: ['hidden'] });
+    }
   }
 
   /* Nur die Nachbar-Zeilen auffrischen, ohne die Eingabefelder neu zu bauen */
@@ -482,7 +682,7 @@ window.BOTC = window.BOTC || {};
   function doReset(kind) {
     if (kind === 'all') {
       if (!confirm('Alle Spieler und Notizen löschen?')) return;
-      state = { script: state.script, players: [] };
+      state = { script: state.script, players: [], secret: emptySecret() };
     } else {
       if (!confirm('Neue Runde starten? Namen und Sitzordnung bleiben, alles andere wird zurückgesetzt.')) return;
       state.players = state.players.map(function (p) {
@@ -491,7 +691,12 @@ window.BOTC = window.BOTC || {};
           align: 'unknown', claims: [], guesses: {}, note: ''
         };
       });
+      /* Neue Runde heißt neue Bluffs — alte stehen zu lassen wäre gefährlicher
+         Unsinn, man würde mit der Info der Vorrunde bluffen. */
+      state.secret = emptySecret();
     }
+    secretOpen = false;
+    clearTimeout(secretTimer);
     save();
     render();
   }
