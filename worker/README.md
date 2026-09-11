@@ -149,6 +149,22 @@ keine Konten und keine Passwörter außer dem gemeinsamen Gruppenwort.
 
 ---
 
+## Das Banner auf der Startseite
+
+`GET /api/current` liefert in **einer** Antwort beides: die neueste offene
+Abfrage und den nächsten feststehenden Termin. Das Banner liegt über den Tabs
+und ist damit auf jedem Tab sichtbar.
+
+Es wird geladen, wenn die Seite startet, wenn man zur Seite zurückkommt
+(`visibilitychange`, `focus`) und nach jedem Speichern. **Kein Abruf im
+Sekundentakt** — D1 liefert bei Überschreiten der Gratis-Grenzen seit
+September 2026 Fehler statt Verlangsamung.
+
+Ohne Gruppenwort, ohne Netz oder ohne laufende Abfrage bleibt das Banner leer.
+Es verrät also niemandem etwas, der das Wort nicht hat.
+
+---
+
 ## Was hier gespeichert wird
 
 Vornamen, gewählte Rolle und Verfügbarkeiten. **Sonst nichts.** Spielnotizen und

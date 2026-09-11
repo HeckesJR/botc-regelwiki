@@ -187,6 +187,173 @@ window.BOTC = window.BOTC || {};
     return l;
   }
 
+  /* ---------------------------------------------- Banner auf allen Tabs
+
+     Liegt über den Tabs und ist deshalb überall sichtbar. Es fragt genau
+     einmal beim Laden nach und danach nur noch, wenn sich etwas geändert
+     hat oder man zur Seite zurückkommt — kein Abruf im Sekundentakt. */
+
+  var UHR_SVG =
+    '<svg class="banner__icon" viewBox="0 0 24 24" width="20" height="20" fill="none" ' +
+    'stroke="currentColor" stroke-width="1.7" stroke-linecap="round" aria-hidden="true">' +
+    '<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>';
+
+  function bannerEl() { return document.getElementById('termine-banner'); }
+
+  function ladeBanner() {
+    var el = bannerEl();
+    if (!el) return;
+    if (!lokal.gruppenwort) { el.hidden = true; el.innerHTML = ''; return; }
+
+    req('/api/current').then(function (d) {
+      zeichneBanner(d);
+    }).catch(function () {
+      /* Kein Netz oder Wort abgelaufen: lieber nichts zeigen als etwas Falsches */
+      el.hidden = true;
+      el.innerHTML = '';
+    });
+  }
+
+  function zeichneBanner(d) {
+    var el = bannerEl();
+    if (!el) return;
+
+    var zeilen = [];
+
+    if (d.termin) {
+      zeilen.push(
+        '<button type="button" class="banner__zeile banner__zeile--fest" ' +
+          'data-banner="' + esc(d.termin.id) + '">' +
+          UHR_SVG +
+          '<span class="banner__text"><strong>Nächste Runde:</strong> ' +
+            esc(fmtDatum(d.termin.beginnt_am)) +
+            (d.termin.label ? ' · ' + esc(d.termin.label) : '') +
+            ' — ' + d.termin.zusagen + (d.termin.zusagen === 1 ? ' Zusage' : ' Zusagen') +
+          '</span>' +
+          '<span class="banner__mehr">Ansehen</span>' +
+        '</button>');
+    }
+
+    if (d.umfrage) {
+      var u = d.umfrage;
+      zeilen.push(
+        '<button type="button" class="banner__zeile" data-banner="' + esc(u.id) + '">' +
+          UHR_SVG +
+          '<span class="banner__text"><strong>Terminabfrage läuft:</strong> ' +
+            esc(u.titel) + ' · ' + u.anzahl_optionen +
+            (u.anzahl_optionen === 1 ? ' Vorschlag' : ' Vorschläge') + ' · ' +
+            u.anzahl_teilnehmer +
+            (u.anzahl_teilnehmer === 1 ? ' hat abgestimmt' : ' haben abgestimmt') +
+            (u.frist ? ' · bis ' + esc(fmtDatum(u.frist)) : '') +
+          '</span>' +
+          '<span class="banner__mehr">Abstimmen</span>' +
+        '</button>');
+    }
+
+    el.innerHTML = zeilen.join('');
+    el.hidden = zeilen.length === 0;
+  }
+
+  /* ---------------------------------------------- WhatsApp-Text */
+
+  function seitenLink(pollId) {
+    return location.origin + location.pathname + '#termine/' + pollId;
+  }
+
+  function whatsappText(poll) {
+    var zeilen = [];
+
+    if (poll.status === 'entschieden') {
+      var fest = null;
+      poll.optionen.forEach(function (o) { if (o.id === poll.entschieden_option) fest = o; });
+      var l = fest ? lage(poll, fest.id) : null;
+
+      zeilen.push('🕰 Der Termin steht!');
+      zeilen.push('');
+      zeilen.push('Blood on the Clocktower — ' + (fest ? fmtDatum(fest.beginnt_am) : '?'));
+      if (fest && fest.label) zeilen.push(fest.label);
+      zeilen.push('');
+      if (l) {
+        zeilen.push('Dabei (' + l.zusagen + '): ' + l.namenJa.join(', '));
+        if (l.leiter.length) zeilen.push(l.leiter[0].name + ' leitet.');
+        else if (l.notfalls.length) zeilen.push('Achtung: noch kein fester Spielleiter!');
+      }
+      zeilen.push('');
+      zeilen.push('Details: ' + seitenLink(poll.id));
+
+    } else if (poll.status === 'abgesagt') {
+      zeilen.push('🕰 Der Termin fällt aus.');
+      zeilen.push('');
+      zeilen.push('„' + poll.titel + '"');
+      if (poll.notiz) zeilen.push(poll.notiz);
+      zeilen.push('');
+      zeilen.push('Neuer Versuch: ' + seitenLink(poll.id));
+
+    } else {
+      zeilen.push('🕰 Neue Terminabfrage für Blood on the Clocktower');
+      zeilen.push('');
+      zeilen.push('„' + poll.titel + '" — ' + poll.optionen.length +
+                  (poll.optionen.length === 1 ? ' Vorschlag:' : ' Vorschläge:'));
+      poll.optionen.forEach(function (o) {
+        zeilen.push('• ' + fmtDatum(o.beginnt_am) + (o.label ? ' (' + o.label + ')' : ''));
+      });
+      zeilen.push('');
+      zeilen.push('Bitte eintragen — auch ob ihr leiten könnt:');
+      zeilen.push(seitenLink(poll.id));
+      zeilen.push('');
+      zeilen.push('Stand: ' + poll.teilnehmer.length +
+                  (poll.teilnehmer.length === 1 ? ' hat' : ' haben') + ' abgestimmt' +
+                  (poll.frist ? ' · Antworten bis ' + fmtDatum(poll.frist) : ''));
+    }
+
+    return zeilen.join('\n');
+  }
+
+  /* Overlay statt stiller Kopie: Das Kopieren scheitert auf manchen Geräten
+     ohne Rückmeldung. So sieht man den Text immer und kann ihn notfalls von
+     Hand markieren. */
+  function zeigeTextZumKopieren(text) {
+    var alt = document.getElementById('wa-overlay');
+    if (alt) alt.remove();
+
+    var o = document.createElement('div');
+    o.className = 'sheetover';
+    o.id = 'wa-overlay';
+    o.innerHTML =
+      '<div class="sheetover__panel" role="dialog" aria-modal="true" aria-label="Text für WhatsApp">' +
+        '<div class="sheetover__head">' +
+          '<h3>Text für WhatsApp</h3>' +
+          '<button type="button" class="btn btn--ghost btn--sm" data-wa-close>Fertig</button>' +
+        '</div>' +
+        '<p class="sheetover__hint" id="wa-hinweis">In die Gruppe einfügen.</p>' +
+        '<div class="sheetover__body">' +
+          '<textarea class="wa-text" id="wa-text" rows="14" readonly></textarea>' +
+          '<button type="button" class="btn btn--primary" data-wa-kopieren>Nochmal kopieren</button>' +
+        '</div>' +
+      '</div>';
+
+    document.body.appendChild(o);
+    document.body.classList.add('is-locked');
+    document.getElementById('wa-text').value = text;
+
+    kopiereInZwischenablage(text);
+  }
+
+  function kopiereInZwischenablage(text) {
+    var hinweis = document.getElementById('wa-hinweis');
+    var melde = function (s) { if (hinweis) hinweis.textContent = s; };
+
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(function () {
+        melde('Kopiert — in die Gruppe einfügen.');
+      }).catch(function () {
+        melde('Kopieren hat nicht geklappt. Text unten markieren und von Hand kopieren.');
+      });
+    } else {
+      melde('Text unten markieren und kopieren.');
+    }
+  }
+
   /* ---------------------------------------------- Ansichten */
 
   function wurzel() { return document.getElementById('termine-root'); }
@@ -354,6 +521,7 @@ window.BOTC = window.BOTC || {};
     zeichne(kopf + meins + '<div class="tbloecke">' + termine + '</div>' +
       '<div class="termine-aktionen">' +
         '<button type="button" class="btn btn--primary" data-act="speichern">Antwort speichern</button>' +
+        '<button type="button" class="btn" data-act="whatsapp">Text für WhatsApp</button>' +
         '<button type="button" class="btn btn--ghost btn--small" data-act="neuladen">Stand aktualisieren</button>' +
         '<span class="termine-status" id="termine-status"></span>' +
       '</div>');
@@ -430,6 +598,7 @@ window.BOTC = window.BOTC || {};
       req('/api/check').then(function () {
         sichereLokal();
         zeige(sicht.pollId);
+        ladeBanner();   /* jetzt erst darf das Banner überhaupt etwas anzeigen */
       }).catch(function (e) {
         lokal.gruppenwort = '';
         zeichneTor(e.message);
@@ -510,18 +679,56 @@ window.BOTC = window.BOTC || {};
         case 'neuladen':
           if (sicht.modus === 'detail') ladeDetail(); else ladeListe();
           break;
+
+        case 'whatsapp':
+          if (sicht.poll) zeigeTextZumKopieren(whatsappText(sicht.poll));
+          break;
       }
     });
+
+    /* Banner: liegt außerhalb von #termine-root */
+    var b = bannerEl();
+    if (b) {
+      b.addEventListener('click', function (ev) {
+        var z = ev.target.closest('[data-banner]');
+        if (z) BOTC.gotoTab('termine', z.dataset.banner);
+      });
+    }
+
+    /* Overlay für den WhatsApp-Text */
+    document.addEventListener('click', function (ev) {
+      var o = ev.target.closest('#wa-overlay');
+      if (!o) return;
+      if (ev.target.closest('[data-wa-close]') || ev.target.classList.contains('sheetover')) {
+        o.remove();
+        document.body.classList.remove('is-locked');
+        return;
+      }
+      if (ev.target.closest('[data-wa-kopieren]')) {
+        kopiereInZwischenablage(document.getElementById('wa-text').value);
+      }
+    });
+
+    document.addEventListener('keydown', function (ev) {
+      if (ev.key !== 'Escape') return;
+      var o = document.getElementById('wa-overlay');
+      if (o) { o.remove(); document.body.classList.remove('is-locked'); }
+    });
+
+    ladeBanner();
 
     /* Wer die Abfrage offen liegen lässt, sieht sonst einen Stand von vor
        einer Stunde. Beim Zurückkommen einmal nachladen — bewusst kein
        Dauerabruf im Sekundentakt, D1 liefert bei Überschreiten der
        Gratis-Grenzen seit September 2026 Fehler statt Verlangsamung. */
     function nachladenWennSichtbar() {
-      if (document.hidden) return;
+      if (document.hidden || !lokal.gruppenwort) return;
+
+      /* Das Banner hängt an keinem Tab und wird immer aufgefrischt */
+      ladeBanner();
+
       var panel = document.getElementById('panel-termine');
       if (!panel || panel.hidden) return;
-      if (!lokal.gruppenwort) return;
       if (sicht.modus === 'detail' && sicht.pollId) ladeDetail(true);
       else if (sicht.modus === 'liste') ladeListe(true);
     }
@@ -552,6 +759,7 @@ window.BOTC = window.BOTC || {};
       sichereLokal();
       entwurf = null;
       BOTC.gotoTab('termine', p.id);
+      ladeBanner();
     }).catch(function (err) {
       sicht.fehler = err.message;
       zeichneAnlegen();
@@ -589,6 +797,7 @@ window.BOTC = window.BOTC || {};
       sichereLokal();
       sicht.poll = neu;
       zeichneDetail();
+      ladeBanner();   /* Zusagenzahl im Banner zieht mit */
       var s = document.getElementById('termine-status');
       if (s) {
         s.textContent = 'Gespeichert.';

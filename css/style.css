@@ -1500,3 +1500,66 @@ body.is-locked { overflow: hidden; }
 .antwortwahl .seg__btn.is-active[data-antwort="ja"]         { background: var(--good); }
 .antwortwahl .seg__btn.is-active[data-antwort="vielleicht"] { background: var(--gold); }
 .antwortwahl .seg__btn.is-active[data-antwort="nein"]       { background: var(--evil); }
+
+/* ------------------------------------------------ Banner über den Tabs
+
+   Liegt zwischen Kopfbereich und Tableiste und ist damit auf jedem Tab
+   sichtbar. Scrollt bewusst mit weg — es ist eine Ankündigung, kein
+   Bedienelement, das immer im Bild bleiben muss. */
+
+.banner {
+  max-width: var(--sheet-max);
+  margin: 0 auto .6rem;
+  padding: 0 1rem;
+  display: grid;
+  gap: .4rem;
+}
+
+.banner__zeile {
+  display: flex; align-items: center; gap: .6rem; width: 100%;
+  appearance: none; cursor: pointer; text-align: left;
+  padding: .6rem .9rem;
+  border: 1.5px solid var(--bordeaux);
+  border-radius: var(--radius);
+  background: rgba(92,31,46,.08);
+  color: var(--ink);
+  font-family: var(--font-body); font-size: .95rem;
+  min-height: 44px;
+  transition: background .15s;
+}
+.banner__zeile:hover { background: rgba(92,31,46,.15); }
+
+/* Der feststehende Termin ist die Information, die Abfrage der Aufruf */
+.banner__zeile--fest { border-color: var(--good); background: var(--good-wash); }
+.banner__zeile--fest:hover { background: #d3dae8; }
+
+.banner__icon { flex: 0 0 auto; color: var(--bordeaux); }
+.banner__zeile--fest .banner__icon { color: var(--good); }
+
+.banner__text { flex: 1 1 auto; line-height: 1.35; }
+.banner__text strong { color: var(--bordeaux); }
+.banner__zeile--fest .banner__text strong { color: var(--good); }
+
+.banner__mehr {
+  flex: 0 0 auto;
+  font-family: var(--font-caps); font-size: .72rem; letter-spacing: .12em;
+  text-transform: uppercase; color: var(--ink-soft);
+  border-bottom: 1px solid currentColor;
+}
+
+@media (max-width: 560px) {
+  .banner__zeile { flex-wrap: wrap; }
+  .banner__text { flex: 1 1 100%; order: 2; }
+  .banner__mehr { order: 3; margin-left: auto; }
+}
+
+/* Textfeld im Kopier-Overlay */
+.wa-text {
+  width: 100%; margin-bottom: .8rem;
+  font-family: var(--font-body); font-size: .95rem; line-height: 1.5;
+  padding: .7rem; resize: vertical;
+  border: 1.5px solid var(--parchment-shade); border-radius: var(--radius);
+  background: rgba(255,252,244,.85); color: var(--ink);
+}
+
+@media print { .banner { display: none !important; } }
