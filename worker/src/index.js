@@ -218,19 +218,42 @@ async function postVote(request, env, id) {
   return json(await ladePoll(env, id), request, env);
 }
 
+/* Schaltet einen Terminvorschlag fest oder wieder los. Mehrere gleichzeitig
+   sind ausdruecklich erlaubt — manchmal spielt die Runde an zwei Abenden.
+   Ohne festgelegt-Feld im Koerper wird umgeschaltet. */
 async function postDecide(request, env, id) {
   const body = await request.json().catch(() => null);
   const optionId = text(body && body.option_id, 40);
 
   const option = await env.DB
-    .prepare('SELECT id FROM poll_options WHERE id = ? AND poll_id = ?')
+    .prepare('SELECT id, festgelegt FROM poll_options WHERE id = ? AND poll_id = ?')
     .bind(optionId, id).first();
   if (!option) return fehler('Diesen Terminvorschlag gibt es hier nicht.', request, env, 404);
 
-  await env.DB.prepare("UPDATE polls SET status = 'entschieden', entschieden_option = ? WHERE id = ?")
-    .bind(optionId, id).run();
+  const neu = (body && typeof body.festgelegt === 'boolean')
+    ? (body.festgelegt ? 1 : 0)
+    : (option.festgelegt ? 0 : 1);
 
+  await env.DB.prepare('UPDATE poll_options SET festgelegt = ? WHERE id = ?')
+    .bind(neu, optionId).run();
+
+  await aktualisiereStatus(env, id);
   return json(await ladePoll(env, id), request, env);
+}
+
+/* Status und die alte Einzelspalte nachziehen. entschieden_option zeigt auf
+   den FRUEHESTEN festgelegten Termin — die Spalte wird nicht mehr gebraucht,
+   haelt aber eine noch im Speicher haengende Seitenfassung am Leben. */
+async function aktualisiereStatus(env, id) {
+  const poll = await env.DB.prepare('SELECT status FROM polls WHERE id = ?').bind(id).first();
+  if (!poll || poll.status === 'abgesagt') return;
+
+  const erster = await env.DB.prepare(
+    'SELECT id FROM poll_options WHERE poll_id = ? AND festgelegt = 1 ORDER BY beginnt_am LIMIT 1'
+  ).bind(id).first();
+
+  await env.DB.prepare('UPDATE polls SET status = ?, entschieden_option = ? WHERE id = ?')
+    .bind(erster ? 'entschieden' : 'offen', erster ? erster.id : null, id).run();
 }
 
 /* Ort und Uhrzeit stehen beim Anlegen oft noch nicht fest — „wir sehen dann,
@@ -301,24 +324,35 @@ async function getCurrent(request, env) {
     };
   }
 
+  /* Der naechste anstehende festgelegte Termin, ueber alle Abfragen hinweg.
+     Stehen mehrere fest, zaehlt fuers Banner der zeitlich naechste. */
   const heute = new Date().toISOString().slice(0, 10);
   const fest = await env.DB.prepare(
-    "SELECT p.id, p.titel, o.beginnt_am, o.label FROM polls p " +
-    'JOIN poll_options o ON o.id = p.entschieden_option ' +
+    'SELECT p.id, p.titel, o.id AS option_id, o.beginnt_am, o.label FROM polls p ' +
+    'JOIN poll_options o ON o.poll_id = p.id AND o.festgelegt = 1 ' +
     "WHERE p.status = 'entschieden' AND substr(o.beginnt_am, 1, 10) >= ? " +
     'ORDER BY o.beginnt_am LIMIT 1'
   ).bind(heute).first();
 
   let zusagen = 0;
+  let weitere = 0;
   if (fest) {
-    const z = await env.DB.prepare(
-      "SELECT COUNT(*) AS n FROM votes v JOIN polls p ON p.id = v.poll_id " +
-      "WHERE v.poll_id = ? AND v.option_id = p.entschieden_option AND v.antwort = 'ja'"
-    ).bind(fest.id).first();
+    const [z, w] = await Promise.all([
+      env.DB.prepare(
+        "SELECT COUNT(*) AS n FROM votes WHERE option_id = ? AND antwort = 'ja'"
+      ).bind(fest.option_id).first(),
+      /* Stehen noch mehr Abende an? Das Banner nennt nur die Zahl. */
+      env.DB.prepare(
+        'SELECT COUNT(*) AS n FROM polls p JOIN poll_options o ON o.poll_id = p.id ' +
+        "AND o.festgelegt = 1 WHERE p.status = 'entschieden' " +
+        'AND substr(o.beginnt_am, 1, 10) >= ? AND o.id != ?'
+      ).bind(heute, fest.option_id).first()
+    ]);
     zusagen = z ? z.n : 0;
+    weitere = w ? w.n : 0;
   }
 
-  return json({ umfrage, termin: fest ? { ...fest, zusagen } : null }, request, env);
+  return json({ umfrage, termin: fest ? { ...fest, zusagen, weitere } : null }, request, env);
 }
 
 async function getPolls(request, env) {

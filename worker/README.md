@@ -115,7 +115,7 @@ jeder mit dem Link sehen, wer wann kann.
 | `POST /api/polls` | Abfrage anlegen (höchstens 12 Terminvorschläge) |
 | `GET /api/polls/:id` | eine Abfrage mit Terminen, Teilnehmern, Stimmen |
 | `POST /api/polls/:id/vote` | eigene Rolle und Antworten speichern |
-| `POST /api/polls/:id/decide` | Termin festlegen |
+| `POST /api/polls/:id/decide` | Termin festlegen oder wieder lösen (`festgelegt`); mehrere je Abfrage erlaubt |
 | `POST /api/polls/:id/cancel` | absagen |
 | `POST /api/polls/:id/option` | Ort (`label`) und Uhrzeit (`zeit`, HH:MM) nachtragen — `/ort` bleibt als alter Name gültig |
 
@@ -138,7 +138,7 @@ das richtige Wort, sonst wäre die Sperre wirkungslos.
 
 ```
 polls          id · titel · erstellt_von · erstellt_am · frist · status · entschieden_option · notiz
-poll_options   id · poll_id · beginnt_am · label · sortierung
+poll_options   id · poll_id · beginnt_am · label · sortierung · festgelegt
 participants   poll_id · voter_id · name · rolle · geaendert
 votes          poll_id · option_id · voter_id · antwort
 fehlversuche   kennung · anzahl · bis

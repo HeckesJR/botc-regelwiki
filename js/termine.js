@@ -248,6 +248,10 @@ window.BOTC = window.BOTC || {};
             esc(fmtDatum(d.termin.beginnt_am)) +
             (d.termin.label ? ' · ' + esc(d.termin.label) : '') +
             ' — ' + d.termin.zusagen + (d.termin.zusagen === 1 ? ' Zusage' : ' Zusagen') +
+            (d.termin.weitere
+              ? ' · ' + d.termin.weitere +
+                (d.termin.weitere === 1 ? ' weiterer Abend steht' : ' weitere Abende stehen')
+              : '') +
           '</span>' +
           '<span class="banner__mehr">Ansehen</span>' +
         '</button>');
@@ -283,21 +287,24 @@ window.BOTC = window.BOTC || {};
     var zeilen = [];
 
     if (poll.status === 'entschieden') {
-      var fest = null;
-      poll.optionen.forEach(function (o) { if (o.id === poll.entschieden_option) fest = o; });
-      var l = fest ? lage(poll, fest.id) : null;
+      var feste = festeTermine(poll);
+      var mehrere = feste.length > 1;
 
-      zeilen.push('🕰 Der Termin steht!');
+      zeilen.push(mehrere ? '🕰 Die Termine stehen!' : '🕰 Der Termin steht!');
       zeilen.push('');
-      zeilen.push('Blood on the Clocktower — ' + (fest ? fmtDatum(fest.beginnt_am) : '?'));
-      if (fest && fest.label) zeilen.push(fest.label);
+      zeilen.push('Blood on the Clocktower');
       zeilen.push('');
-      if (l) {
-        zeilen.push('Dabei (' + l.zusagen + '): ' + l.namenJa.join(', '));
-        if (l.leiter.length) zeilen.push(l.leiter[0].name + ' leitet.');
-        else if (l.notfalls.length) zeilen.push('Achtung: noch kein fester Spielleiter!');
-      }
-      zeilen.push('');
+
+      feste.forEach(function (o) {
+        var l = lage(poll, o.id);
+        zeilen.push((mehrere ? '• ' : '') + fmtDatum(o.beginnt_am) +
+                    (o.label ? ' · ' + o.label : ''));
+        if (l.namenJa.length) zeilen.push('   Dabei (' + l.zusagen + '): ' + l.namenJa.join(', '));
+        if (l.leiter.length) zeilen.push('   ' + l.leiter[0].name + ' leitet.');
+        else if (l.notfalls.length) zeilen.push('   Achtung: noch kein fester Spielleiter!');
+        zeilen.push('');
+      });
+
       zeilen.push('Details: ' + seitenLink(poll.id));
 
     } else if (poll.status === 'abgesagt') {
@@ -425,66 +432,78 @@ window.BOTC = window.BOTC || {};
     return teile.join('\r\n');
   }
 
-  function icsDatei(poll) {
-    var fest = null;
-    poll.optionen.forEach(function (o) { if (o.id === poll.entschieden_option) fest = o; });
-    if (!fest) return null;
+  /* Alle festgelegten Termine einer Abfrage, nach Datum */
+  function festeTermine(poll) {
+    return (poll.optionen || [])
+      .filter(function (o) { return !!o.festgelegt; })
+      .sort(function (a, b) { return a.beginnt_am < b.beginnt_am ? -1 : 1; });
+  }
 
-    var ganztag = fest.beginnt_am.length <= 10;
+  /* Ein VEVENT je festgelegtem Termin. Stehen zwei Abende fest, legt eine
+     einzige Datei beide in den Kalender. */
+  function icsEreignis(poll, o) {
     var start, ende;
 
-    if (ganztag) {
-      start = 'DTSTART;VALUE=DATE:' + fest.beginnt_am.replace(/-/g, '');
-      var naechster = new Date(fest.beginnt_am + 'T00:00');
+    if (o.beginnt_am.length <= 10) {
+      start = 'DTSTART;VALUE=DATE:' + o.beginnt_am.replace(/-/g, '');
+      var naechster = new Date(o.beginnt_am + 'T00:00');
       naechster.setDate(naechster.getDate() + 1);
       ende = 'DTEND;VALUE=DATE:' + naechster.toISOString().slice(0, 10).replace(/-/g, '');
     } else {
-      var d = new Date(fest.beginnt_am);
+      var d = new Date(o.beginnt_am);
       var roh = function (x) {
         return x.getFullYear() + zwei(x.getMonth() + 1) + zwei(x.getDate()) + 'T' +
                zwei(x.getHours()) + zwei(x.getMinutes()) + '00';
       };
-      var bis = new Date(d.getTime() + ABEND_STUNDEN * 3600 * 1000);
       start = 'DTSTART:' + roh(d);
-      ende  = 'DTEND:'   + roh(bis);
+      ende  = 'DTEND:'   + roh(new Date(d.getTime() + ABEND_STUNDEN * 3600 * 1000));
     }
 
-    var l = lage(poll, fest.id);
+    var l = lage(poll, o.id);
     var beschreibung = poll.titel +
       (l.namenJa.length ? '\nDabei: ' + l.namenJa.join(', ') : '') +
       (l.leiter.length ? '\n' + l.leiter[0].name + ' leitet.' : '') +
       '\n' + seitenLink(poll.id);
 
-    /* Zeilenenden müssen CRLF sein, sonst mäkeln manche Kalender */
     return [
-      'BEGIN:VCALENDAR',
-      'VERSION:2.0',
-      'PRODID:-//BotC Regelwiki//DE',
-      'CALSCALE:GREGORIAN',
       'BEGIN:VEVENT',
-      'UID:' + poll.id + '@botc-regelwiki',
+      /* Die UID muss je Ereignis verschieden sein, sonst ueberschreibt der
+         Kalender den ersten Termin mit dem zweiten. */
+      'UID:' + poll.id + '-' + o.id + '@botc-regelwiki',
       'DTSTAMP:' + icsStempel(),
       start,
       ende,
       'SUMMARY:' + icsEscape('Blood on the Clocktower'),
       'DESCRIPTION:' + icsEscape(beschreibung),
-      fest.label ? 'LOCATION:' + icsEscape(fest.label) : null,
-      'END:VEVENT',
-      'END:VCALENDAR'
-    ].filter(Boolean).map(icsFalte).join('\r\n') + '\r\n';
+      o.label ? 'LOCATION:' + icsEscape(o.label) : null,
+      'END:VEVENT'
+    ].filter(Boolean);
+  }
+
+  function icsDatei(poll) {
+    var feste = festeTermine(poll);
+    if (!feste.length) return null;
+
+    var zeilen = ['BEGIN:VCALENDAR', 'VERSION:2.0',
+                  'PRODID:-//BotC Regelwiki//DE', 'CALSCALE:GREGORIAN'];
+    feste.forEach(function (o) { zeilen = zeilen.concat(icsEreignis(poll, o)); });
+    zeilen.push('END:VCALENDAR');
+
+    /* Zeilenenden müssen CRLF sein, sonst mäkeln manche Kalender */
+    return zeilen.map(icsFalte).join('\r\n') + '\r\n';
   }
 
   function ladeIcsHerunter(poll) {
     var text = icsDatei(poll);
     if (!text) return;
-    var fest = null;
-    poll.optionen.forEach(function (o) { if (o.id === poll.entschieden_option) fest = o; });
+    var feste = festeTermine(poll);
 
     var blob = new Blob([text], { type: 'text/calendar;charset=utf-8' });
     var url = URL.createObjectURL(blob);
     var a = document.createElement('a');
     a.href = url;
-    a.download = 'botc-' + fest.beginnt_am.slice(0, 10) + '.ics';
+    a.download = 'botc-' + feste[0].beginnt_am.slice(0, 10) +
+                 (feste.length > 1 ? '-und-' + (feste.length - 1) + '-weitere' : '') + '.ics';
     document.body.appendChild(a);
     a.click();
     a.remove();
@@ -660,7 +679,7 @@ window.BOTC = window.BOTC || {};
     var termine = p.optionen.map(function (o) {
       var l = lage(p, o.id);
       var meine = meineAntworten[o.id] || '';
-      var istFest = p.entschieden_option === o.id;
+      var istFest = !!o.festgelegt;
 
       return '<div class="tblock' + (istFest ? ' tblock--fest' : '') +
              '" data-stufe="' + l.stufe + '">' +
@@ -677,7 +696,7 @@ window.BOTC = window.BOTC || {};
         /* Beim Anlegen weiß oft noch niemand, wo man sich trifft. Sobald der
            Termin steht, lässt sich der Ort hier nachtragen — er landet dann
            auch im Banner, im Kalendereintrag und im WhatsApp-Text. */
-        (istFest && p.status === 'entschieden'
+        (istFest
           ? '<div class="nachtragen">' +
               '<label class="field"><span class="field__label">Uhrzeit</span>' +
                 '<input type="time" data-feld="zeit-fest" data-option="' + esc(o.id) + '" ' +
@@ -710,9 +729,12 @@ window.BOTC = window.BOTC || {};
                        esc(a.label) + '</button>';
               }).join('') +
             '</div>') +
-          (p.status === 'offen'
+          /* Auch bei bereits entschiedenen Abfragen sichtbar — so lässt sich
+             ein zweiter Abend dazunehmen oder einer wieder lösen. */
+          (p.status !== 'abgesagt'
             ? '<button type="button" class="btn btn--ghost btn--small" data-act="festlegen" ' +
-              'data-option="' + esc(o.id) + '">Diesen Termin festlegen</button>'
+              'data-option="' + esc(o.id) + '">' +
+              (istFest ? 'Doch nicht' : 'Diesen Termin festlegen') + '</button>'
             : '') +
         '</div>' +
       '</div>';
@@ -1099,17 +1121,31 @@ window.BOTC = window.BOTC || {};
     p.optionen.forEach(function (x) { if (x.id === optionId) o = x; });
     if (!o) return;
 
+    var loesen = !!o.festgelegt;
     var l = lage(p, optionId);
-    var frage = 'Termin festlegen auf ' + fmtDatum(o.beginnt_am) +
-                (o.label ? ' (' + o.label + ')' : '') + '?\n\n' + l.text;
-    if (l.stufe !== 'gruen') frage += '\n\nAchtung: So reicht es noch nicht.';
+    var frage;
+
+    if (loesen) {
+      frage = fmtDatum(o.beginnt_am) + ' doch nicht stattfinden lassen?';
+    } else {
+      var schonFest = festeTermine(p).length;
+      frage = 'Termin festlegen auf ' + fmtDatum(o.beginnt_am) +
+              (o.label ? ' (' + o.label + ')' : '') + '?\n\n' + l.text;
+      if (l.stufe !== 'gruen') frage += '\n\nAchtung: So reicht es noch nicht.';
+      if (schonFest) {
+        frage += '\n\nEs steht bereits ' + (schonFest === 1 ? 'ein Termin' : schonFest + ' Termine') +
+                 ' fest. Dieser kommt dazu.';
+      }
+    }
 
     if (!confirm(frage)) return;
 
     var status = document.getElementById('termine-status');
-    if (status) status.textContent = 'Wird festgelegt …';
+    if (status) status.textContent = loesen ? 'Wird gelöst …' : 'Wird festgelegt …';
 
-    req('/api/polls/' + encodeURIComponent(p.id) + '/decide', { body: { option_id: optionId } })
+    req('/api/polls/' + encodeURIComponent(p.id) + '/decide', {
+      body: { option_id: optionId, festgelegt: !loesen }
+    })
       .then(function (neu) {
         sicht.poll = neu;
         zeichneDetail();
@@ -1138,8 +1174,10 @@ window.BOTC = window.BOTC || {};
       .then(function (neu) {
         sicht.poll = neu;
 
-        /* Datum-Überschrift und Ortszeile am festgelegten Block auffrischen */
-        var block = wurzel().querySelector('.tblock--fest');
+        /* Den Block zu GENAU diesem Termin auffrischen — es können mehrere
+           festgelegt sein, da wäre der erste der falsche. */
+        var feld = wurzel().querySelector('[data-feld="ort"][data-option="' + optionId + '"]');
+        var block = feld ? feld.closest('.tblock') : null;
         var o = null;
         neu.optionen.forEach(function (x) { if (x.id === optionId) o = x; });
         if (block && o) {
