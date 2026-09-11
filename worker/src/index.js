@@ -233,6 +233,24 @@ async function postDecide(request, env, id) {
   return json(await ladePoll(env, id), request, env);
 }
 
+/* Der Ort steht beim Anlegen oft noch nicht fest — „wir sehen dann, bei wem".
+   Deshalb laesst er sich nachtragen, auch wenn der Termin schon steht. */
+async function postOrt(request, env, id) {
+  const body = await request.json().catch(() => null);
+  const optionId = text(body && body.option_id, 40);
+  const label    = text(body && body.label, MAX_LABEL);
+
+  const option = await env.DB
+    .prepare('SELECT id FROM poll_options WHERE id = ? AND poll_id = ?')
+    .bind(optionId, id).first();
+  if (!option) return fehler('Diesen Terminvorschlag gibt es hier nicht.', request, env, 404);
+
+  await env.DB.prepare('UPDATE poll_options SET label = ? WHERE id = ?')
+    .bind(label, optionId).run();
+
+  return json(await ladePoll(env, id), request, env);
+}
+
 async function postCancel(request, env, id) {
   const body = await request.json().catch(() => ({}));
   const grund = text(body && body.grund, MAX_NOTIZ);
@@ -328,7 +346,7 @@ export default {
       if (pfad === '/api/polls'   && request.method === 'GET') return getPolls(request, env);
       if (pfad === '/api/polls'   && request.method === 'POST') return postPolls(request, env);
 
-      const m = pfad.match(/^\/api\/polls\/([a-z0-9]{4,12})(\/(vote|decide|cancel))?$/);
+      const m = pfad.match(/^\/api\/polls\/([a-z0-9]{4,12})(\/(vote|decide|cancel|ort))?$/);
       if (m) {
         const id = m[1], aktion = m[3];
         if (!aktion && request.method === 'GET') {
@@ -340,6 +358,7 @@ export default {
           if (aktion === 'vote')   return postVote(request, env, id);
           if (aktion === 'decide') return postDecide(request, env, id);
           if (aktion === 'cancel') return postCancel(request, env, id);
+          if (aktion === 'ort')    return postOrt(request, env, id);
         }
       }
 

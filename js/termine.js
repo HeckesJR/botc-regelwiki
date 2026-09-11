@@ -47,6 +47,7 @@ window.BOTC = window.BOTC || {};
   ];
 
   var nameTimer = null;
+  var ortTimer = null;
   var lokal = ladeLokal();
   var sicht = { modus: 'liste', pollId: '', poll: null, liste: null, laedt: false, fehler: '' };
   var entwurf = null;   /* offenes Formular beim Anlegen */
@@ -673,6 +674,15 @@ window.BOTC = window.BOTC || {};
           (l.verteilung ? '<span class="tblock__verteilung">' + esc(l.verteilung) + '</span>' : '') +
         '</p>' +
 
+        /* Beim Anlegen weiß oft noch niemand, wo man sich trifft. Sobald der
+           Termin steht, lässt sich der Ort hier nachtragen — er landet dann
+           auch im Banner, im Kalendereintrag und im WhatsApp-Text. */
+        (istFest && p.status === 'entschieden'
+          ? '<label class="field ortfeld"><span class="field__label">Ort</span>' +
+            '<input type="text" data-feld="ort" data-option="' + esc(o.id) + '" ' +
+            'value="' + esc(o.label) + '" placeholder="Wo trefft ihr euch?"></label>'
+          : '') +
+
         (l.namenJa.length
           ? '<p class="tblock__namen"><strong>Dabei:</strong> ' + esc(l.namenJa.join(', ')) + '</p>' : '') +
         (l.namenVielleicht.length
@@ -867,6 +877,14 @@ window.BOTC = window.BOTC || {};
         else if (f === 'titel' || f === 'von' || f === 'frist') entwurf[f] = ev.target.value;
         return;
       }
+      if (f === 'ort') {
+        var optId = ev.target.dataset.option;
+        var wert = ev.target.value;
+        clearTimeout(ortTimer);
+        ortTimer = setTimeout(function () { speichereOrt(optId, wert); }, 800);
+        return;
+      }
+
       if (f === 'name') {
         lokal.name = ev.target.value;
         sichereLokal();
@@ -1093,6 +1111,30 @@ window.BOTC = window.BOTC || {};
         var s = document.getElementById('termine-status');
         if (s) s.textContent = e.message;
       });
+  }
+
+  /* Ohne Neuzeichnen — sonst springt der Cursor beim Tippen aus dem Feld. */
+  function speichereOrt(optionId, label) {
+    var p = sicht.poll;
+    if (!p || !optionId) return;
+
+    var status = document.getElementById('termine-status');
+    if (status) status.textContent = 'Ort wird gespeichert …';
+
+    req('/api/polls/' + encodeURIComponent(p.id) + '/ort', {
+      body: { option_id: optionId, label: label }
+    }).then(function (neu) {
+      sicht.poll = neu;
+      ladeBanner();   /* der Ort steht auch im Banner */
+      var s = document.getElementById('termine-status');
+      if (s) {
+        s.textContent = 'Ort gespeichert.';
+        setTimeout(function () { if (s.textContent === 'Ort gespeichert.') s.textContent = ''; }, 2500);
+      }
+    }).catch(function (e) {
+      var s = document.getElementById('termine-status');
+      if (s) s.textContent = e.message;
+    });
   }
 
   function absagen() {

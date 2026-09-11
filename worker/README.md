@@ -117,6 +117,7 @@ jeder mit dem Link sehen, wer wann kann.
 | `POST /api/polls/:id/vote` | eigene Rolle und Antworten speichern |
 | `POST /api/polls/:id/decide` | Termin festlegen |
 | `POST /api/polls/:id/cancel` | absagen |
+| `POST /api/polls/:id/ort` | Ort eines Terminvorschlags nachtragen |
 
 CORS ist fest auf `https://heckesjr.github.io` gesetzt, nicht auf `*`. Beim
 Entwickeln ist zusätzlich `http://localhost:8231` erlaubt.

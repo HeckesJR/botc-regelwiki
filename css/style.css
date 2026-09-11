@@ -1668,3 +1668,6 @@ body.is-locked { overflow: hidden; }
 }
 
 .notiz-klein { margin: .2rem 0 0; font-size: .86rem; font-style: italic; color: var(--ink-faint); }
+
+/* Ort nachtragen, wenn der Termin schon steht */
+.ortfeld { margin: .6rem 0 .2rem; max-width: 22rem; }
