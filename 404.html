@@ -2,7 +2,10 @@
 <html lang="de">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- viewport-fit=cover ist Pflicht, damit env(safe-area-inset-*) ueberhaupt
+     einen Wert liefert. Ohne das bleiben alle safe-area-Angaben 0, und die
+     Seite rutscht im Vollbild unter die Statusleiste. -->
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Seite nicht gefunden — Blood on the Clocktower Regelwiki</title>
 <meta name="color-scheme" content="light">
 <meta name="robots" content="noindex, nofollow, noarchive">
