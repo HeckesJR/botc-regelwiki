@@ -1643,3 +1643,28 @@ body.is-locked { overflow: hidden; }
 @media (display-mode: standalone) {
   .tabs { padding-top: calc(.5rem + env(safe-area-inset-top)); }
 }
+
+/* Schnellbefüllung: einen ganzen Monat auf einmal eintragen */
+.schnell {
+  margin: .3rem 0 1.2rem;
+  padding: .7rem .8rem;
+  border: 1.5px dashed var(--parchment-shade);
+  border-radius: var(--radius);
+  background: rgba(168,137,76,.07);
+}
+.schnell__reihe {
+  display: flex; gap: .5rem; flex-wrap: wrap; margin: .3rem 0 .6rem;
+}
+.schnell__reihe select { flex: 1 1 7rem; width: auto; }
+.schnell__reihe input[type="time"] { flex: 0 1 7rem; width: auto; }
+
+/* Sieben gleich breite Spalten statt Umbruch auf 5+2 */
+.wochentage {
+  display: grid; grid-template-columns: repeat(7, 1fr);
+  gap: .3rem; margin-bottom: .7rem;
+}
+.wochentage .chip {
+  min-width: 0; text-align: center; padding: .3rem .15rem; font-size: .9rem;
+}
+
+.notiz-klein { margin: .2rem 0 0; font-size: .86rem; font-style: italic; color: var(--ink-faint); }

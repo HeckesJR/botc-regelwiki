@@ -33,6 +33,19 @@ window.BOTC = window.BOTC || {};
     { id: 'nein',       label: 'Nein' }
   ];
 
+  /* Muss zum Limit im Worker passen. Ein Monat kann 5 Freitage UND
+     5 Samstage haben, 8 waren dafür zu knapp. */
+  var MAX_OPTIONEN = 12;
+
+  var MONATE = ['Januar', 'Februar', 'März', 'April', 'Mai', 'Juni',
+                'Juli', 'August', 'September', 'Oktober', 'November', 'Dezember'];
+
+  /* getDay(): 0 = Sonntag. Angezeigt wird aber ab Montag. */
+  var WOCHENTAGE = [
+    { n: 1, k: 'Mo' }, { n: 2, k: 'Di' }, { n: 3, k: 'Mi' }, { n: 4, k: 'Do' },
+    { n: 5, k: 'Fr' }, { n: 6, k: 'Sa' }, { n: 0, k: 'So' }
+  ];
+
   var nameTimer = null;
   var lokal = ladeLokal();
   var sicht = { modus: 'liste', pollId: '', poll: null, liste: null, laedt: false, fehler: '' };
@@ -563,9 +576,40 @@ window.BOTC = window.BOTC || {};
         'placeholder="z. B. Runde im Oktober"></label>' +
       '<label class="field"><span class="field__label">Dein Name</span>' +
         '<input type="text" data-feld="von" value="' + esc(e.von) + '" placeholder="Wer fragt?"></label>' +
+      /* Spart das Abtippen von zehn Freitagen und Samstagen */
+      '<div class="schnell">' +
+        '<span class="field__label">Ganzen Monat eintragen</span>' +
+        '<div class="schnell__reihe">' +
+          '<select data-feld="monat" aria-label="Monat">' +
+            MONATE.map(function (m, i) {
+              return '<option value="' + i + '"' + (i === e.monat ? ' selected' : '') + '>' +
+                     esc(m) + '</option>';
+            }).join('') +
+          '</select>' +
+          '<select data-feld="jahr" aria-label="Jahr">' +
+            [0, 1].map(function (v) {
+              var j = new Date().getFullYear() + v;
+              return '<option value="' + j + '"' + (j === e.jahr ? ' selected' : '') + '>' +
+                     j + '</option>';
+            }).join('') +
+          '</select>' +
+          '<input type="time" data-feld="schnellzeit" value="' + esc(e.schnellzeit) + '" aria-label="Uhrzeit">' +
+        '</div>' +
+        '<div class="chipset wochentage">' +
+          WOCHENTAGE.map(function (t) {
+            var an = e.tage.indexOf(t.n) !== -1;
+            return '<button type="button" class="chip' + (an ? ' is-active' : '') +
+                   '" data-tag="' + t.n + '" aria-pressed="' + an + '">' + t.k + '</button>';
+          }).join('') +
+        '</div>' +
+        '<button type="button" class="btn btn--small" data-act="monat-fuellen">Termine eintragen</button>' +
+      '</div>' +
+
       '<span class="field__label">Terminvorschläge</span>' +
       '<div class="tvorschlaege">' + zeilen + '</div>' +
-      '<button type="button" class="btn btn--ghost btn--small" data-act="mehr">+ Vorschlag</button>' +
+      (e.optionen.length < MAX_OPTIONEN
+        ? '<button type="button" class="btn btn--ghost btn--small" data-act="mehr">+ Vorschlag</button>'
+        : '<p class="notiz-klein">Mehr als ' + MAX_OPTIONEN + ' Vorschläge gehen nicht.</p>') +
       '<label class="field"><span class="field__label">Antworten bis (optional)</span>' +
         '<input type="date" data-feld="frist" value="' + esc(e.frist) + '"></label>' +
       '<div class="termine-aktionen">' +
@@ -724,10 +768,68 @@ window.BOTC = window.BOTC || {};
   }
 
   function leererEntwurf() {
+    var jetzt = new Date();
     return {
       titel: '', von: lokal.name || '', frist: '',
-      optionen: [{ datum: '', zeit: '19:00', label: '' }]
+      optionen: [{ datum: '', zeit: '18:00', label: '' }],
+      /* Für die Schnellbefüllung: voreingestellt der laufende Monat,
+         Freitag und Samstag um 18 Uhr. */
+      monat: jetzt.getMonth(),
+      jahr: jetzt.getFullYear(),
+      schnellzeit: '18:00',
+      tage: [5, 6]
     };
+  }
+
+  /* Alle passenden Tage eines Monats. Vergangene Tage fallen raus — einen
+     Termin vorzuschlagen, der schon vorbei ist, hilft niemandem. */
+  function monatsTermine(jahr, monat, tage, zeit) {
+    var out = [];
+    var heute = new Date();
+    heute.setHours(0, 0, 0, 0);
+
+    var d = new Date(jahr, monat, 1);
+    while (d.getMonth() === monat) {
+      if (tage.indexOf(d.getDay()) !== -1 && d >= heute) {
+        out.push({
+          datum: d.getFullYear() + '-' + zwei(d.getMonth() + 1) + '-' + zwei(d.getDate()),
+          zeit: zeit,
+          label: ''
+        });
+      }
+      d.setDate(d.getDate() + 1);
+    }
+    return out;
+  }
+
+  function monatFuellen() {
+    var e = entwurf;
+    if (!e.tage.length) {
+      sicht.fehler = 'Mindestens einen Wochentag auswählen.';
+      return zeichneAnlegen();
+    }
+
+    var neu = monatsTermine(e.jahr, e.monat, e.tage, e.schnellzeit);
+
+    if (!neu.length) {
+      sicht.fehler = 'In ' + MONATE[e.monat] + ' ' + e.jahr +
+                     ' liegt kein solcher Tag mehr in der Zukunft.';
+      return zeichneAnlegen();
+    }
+
+    /* Schon getippte Termine nicht stillschweigend wegwerfen */
+    var befuellt = e.optionen.filter(function (o) { return o.datum; });
+    if (befuellt.length && !confirm('Die ' + befuellt.length +
+        ' bereits eingetragenen Termine werden ersetzt. Weiter?')) return;
+
+    var gekappt = neu.length > MAX_OPTIONEN;
+    e.optionen = neu.slice(0, MAX_OPTIONEN);
+    e.titel = e.titel || 'Runde im ' + MONATE[e.monat];
+
+    sicht.fehler = gekappt
+      ? 'Es passen höchstens ' + MAX_OPTIONEN + ' Vorschläge — die späteren wurden weggelassen.'
+      : '';
+    zeichneAnlegen();
   }
 
   /* ---------------------------------------------- Verdrahtung */
@@ -760,6 +862,8 @@ window.BOTC = window.BOTC || {};
       if (sicht.modus === 'anlegen' && entwurf) {
         var i = ev.target.dataset.i;
         if (i != null && entwurf.optionen[i]) entwurf.optionen[i][f] = ev.target.value;
+        else if (f === 'monat' || f === 'jahr') entwurf[f] = Number(ev.target.value);
+        else if (f === 'schnellzeit') entwurf.schnellzeit = ev.target.value;
         else if (f === 'titel' || f === 'von' || f === 'frist') entwurf[f] = ev.target.value;
         return;
       }
@@ -776,8 +880,18 @@ window.BOTC = window.BOTC || {};
     });
 
     r.addEventListener('click', function (ev) {
-      var btn = ev.target.closest('[data-act], [data-poll], [data-rolle], [data-antwort]');
+      var btn = ev.target.closest('[data-act], [data-poll], [data-rolle], [data-antwort], [data-tag]');
       if (!btn) return;
+
+      /* Wochentag für die Schnellbefüllung an- oder abschalten */
+      if (btn.dataset.tag != null && entwurf) {
+        var t = Number(btn.dataset.tag);
+        var i = entwurf.tage.indexOf(t);
+        if (i === -1) entwurf.tage.push(t); else entwurf.tage.splice(i, 1);
+        btn.classList.toggle('is-active');
+        btn.setAttribute('aria-pressed', String(entwurf.tage.indexOf(t) !== -1));
+        return;
+      }
 
       if (btn.dataset.poll) {
         BOTC.gotoTab('termine', btn.dataset.poll);
@@ -814,8 +928,12 @@ window.BOTC = window.BOTC || {};
           zeichneAnlegen();
           break;
 
+        case 'monat-fuellen':
+          monatFuellen();
+          break;
+
         case 'mehr':
-          if (entwurf.optionen.length < 8) {
+          if (entwurf.optionen.length < MAX_OPTIONEN) {
             var letzte = entwurf.optionen[entwurf.optionen.length - 1];
             entwurf.optionen.push({ datum: '', zeit: letzte ? letzte.zeit : '19:00', label: '' });
             zeichneAnlegen();

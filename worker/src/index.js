@@ -13,7 +13,8 @@
 const ROLLEN   = ['spielleiter', 'spieler', 'spieler_notfalls'];
 const ANTWORTEN = ['ja', 'vielleicht', 'nein'];
 
-const MAX_OPTIONEN   = 8;
+/* Ein Monat kann 5 Freitage UND 5 Samstage haben — 8 waren zu knapp. */
+const MAX_OPTIONEN   = 12;
 const MAX_NAME       = 40;
 const MAX_TITEL      = 80;
 const MAX_NOTIZ      = 500;

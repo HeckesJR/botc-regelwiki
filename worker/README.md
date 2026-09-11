@@ -112,7 +112,7 @@ jeder mit dem Link sehen, wer wann kann.
 | `GET /api/check` | Gruppenwort prüfen (für die Eingabemaske) |
 | `GET /api/current` | neueste offene Abfrage + nächster fester Termin (fürs Banner) |
 | `GET /api/polls` | die letzten 30 Abfragen |
-| `POST /api/polls` | Abfrage anlegen |
+| `POST /api/polls` | Abfrage anlegen (höchstens 12 Terminvorschläge) |
 | `GET /api/polls/:id` | eine Abfrage mit Terminen, Teilnehmern, Stimmen |
 | `POST /api/polls/:id/vote` | eigene Rolle und Antworten speichern |
 | `POST /api/polls/:id/decide` | Termin festlegen |

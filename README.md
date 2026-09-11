@@ -208,10 +208,20 @@ schlimmer als gar keine. Ein Skriptwechsel wirft Bluffs raus, die es im neuen Sk
 Alles wird beim Tippen automatisch im `localStorage` gesichert — es gibt keinen Speichern-Knopf,
 und nichts verlässt das Gerät.
 
-**Termine** — Terminabfragen für die Runde. Jeder kann eine starten, mit bis zu acht
+**Termine** — Terminabfragen für die Runde. Jeder kann eine starten, mit bis zu zwölf
 Vorschlägen. Beim Zusagen gibt man an, ob man **leitet**, **mitspielt** oder **notfalls leiten
 könnte** — die dritte Option ist der eigentliche Hebel, weil sich niemand freiwillig als
 Spielleiter meldet, aber viele einspringen würden.
+
+**Ganzen Monat eintragen:** Monat, Jahr, Uhrzeit und Wochentage wählen (voreingestellt Freitag
+und Samstag, 18 Uhr), dann trägt die Seite alle passenden Tage des Monats ein. Vergangene Tage
+fallen raus. Der Titel wird als „Runde im \<Monat\>" vorbelegt, alles bleibt danach einzeln
+änderbar.
+
+> Das Limit von zwölf ist kein Zufall: Ein Monat kann **fünf Freitage und fünf Samstage** haben,
+> Oktober 2026 zum Beispiel. Mit acht wäre die Hälfte weggefallen. Der Wert steht als
+> `MAX_OPTIONEN` sowohl in `js/termine.js` als auch in `worker/src/index.js` — beide müssen
+> zusammenpassen.
 
 Daraus rechnet die Seite je Termin, ob der Abend überhaupt zustande kommt:
 
