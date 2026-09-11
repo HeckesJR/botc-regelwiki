@@ -125,6 +125,13 @@ window.BOTC = window.BOTC || {};
     return s;
   }
 
+  /* „25.10." — ohne Wochentag und Jahr, fürs Banner */
+  function fmtKurz(iso) {
+    var d = new Date(iso.length <= 10 ? iso + 'T00:00' : iso);
+    if (isNaN(d.getTime())) return iso;
+    return zwei(d.getDate()) + '.' + zwei(d.getMonth() + 1) + '.';
+  }
+
   /* ---------------------------------------------- Die Ampel
 
      Der Kern des Ganzen. Blood on the Clocktower braucht mindestens
@@ -233,44 +240,54 @@ window.BOTC = window.BOTC || {};
     });
   }
 
+  /* Wie viele Zeilen das Banner höchstens zeigt. Mehr würde am Handy den
+     halben Bildschirm fressen; der Rest steht als Zähler darunter. */
+  var BANNER_MAX = 5;
+
+  function bannerZeileTermin(t) {
+    return '<button type="button" class="banner__zeile banner__zeile--fest" ' +
+      'data-banner="' + esc(t.id) + '">' +
+      UHR_SVG +
+      '<span class="banner__text"><strong>Runde:</strong> ' +
+        esc(fmtDatum(t.beginnt_am)) +
+        (t.label ? ' · ' + esc(t.label) : '') +
+        ' — ' + t.zusagen + (t.zusagen === 1 ? ' Zusage' : ' Zusagen') +
+      '</span>' +
+      '<span class="banner__mehr">Ansehen</span>' +
+    '</button>';
+  }
+
+  function bannerZeileUmfrage(u) {
+    return '<button type="button" class="banner__zeile" data-banner="' + esc(u.id) + '">' +
+      UHR_SVG +
+      /* Bewusst knapp gehalten — im Banner zählt jede Zeile Höhe */
+      '<span class="banner__text"><strong>' + esc(u.titel) + ':</strong> ' +
+        u.anzahl_optionen + (u.anzahl_optionen === 1 ? ' Vorschlag' : ' Vorschläge') + ' · ' +
+        u.anzahl_teilnehmer + (u.anzahl_teilnehmer === 1 ? ' Stimme' : ' Stimmen') +
+        (u.frist ? ' · bis ' + esc(fmtKurz(u.frist)) : '') +
+      '</span>' +
+      '<span class="banner__mehr">Abstimmen</span>' +
+    '</button>';
+  }
+
   function zeichneBanner(d) {
     var el = bannerEl();
     if (!el) return;
 
-    var zeilen = [];
+    /* Ältere Antworten kennen nur die Einzelfelder */
+    var termine  = d.termine  || (d.termin  ? [d.termin]  : []);
+    var umfragen = d.umfragen || (d.umfrage ? [d.umfrage] : []);
 
-    if (d.termin) {
-      zeilen.push(
-        '<button type="button" class="banner__zeile banner__zeile--fest" ' +
-          'data-banner="' + esc(d.termin.id) + '">' +
-          UHR_SVG +
-          '<span class="banner__text"><strong>Nächste Runde:</strong> ' +
-            esc(fmtDatum(d.termin.beginnt_am)) +
-            (d.termin.label ? ' · ' + esc(d.termin.label) : '') +
-            ' — ' + d.termin.zusagen + (d.termin.zusagen === 1 ? ' Zusage' : ' Zusagen') +
-            (d.termin.weitere
-              ? ' · ' + d.termin.weitere +
-                (d.termin.weitere === 1 ? ' weiterer Abend steht' : ' weitere Abende stehen')
-              : '') +
-          '</span>' +
-          '<span class="banner__mehr">Ansehen</span>' +
-        '</button>');
-    }
+    /* Feststehende Abende zuerst — das ist die Information. Danach die
+       laufenden Abfragen, das ist der Aufruf. */
+    var alle = termine.map(function (t) { return bannerZeileTermin(t); })
+      .concat(umfragen.map(function (u) { return bannerZeileUmfrage(u); }));
 
-    if (d.umfrage) {
-      var u = d.umfrage;
-      zeilen.push(
-        '<button type="button" class="banner__zeile" data-banner="' + esc(u.id) + '">' +
-          UHR_SVG +
-          '<span class="banner__text"><strong>Terminabfrage läuft:</strong> ' +
-            esc(u.titel) + ' · ' + u.anzahl_optionen +
-            (u.anzahl_optionen === 1 ? ' Vorschlag' : ' Vorschläge') + ' · ' +
-            u.anzahl_teilnehmer +
-            (u.anzahl_teilnehmer === 1 ? ' hat abgestimmt' : ' haben abgestimmt') +
-            (u.frist ? ' · bis ' + esc(fmtDatum(u.frist)) : '') +
-          '</span>' +
-          '<span class="banner__mehr">Abstimmen</span>' +
-        '</button>');
+    var zeilen = alle.slice(0, BANNER_MAX);
+    var rest = alle.length - zeilen.length;
+    if (rest > 0) {
+      zeilen.push('<button type="button" class="banner__rest" data-banner="">' +
+        'und ' + rest + (rest === 1 ? ' weitere' : ' weitere') + ' — alle ansehen</button>');
     }
 
     el.innerHTML = zeilen.join('');

@@ -334,52 +334,42 @@ async function postCancel(request, env, id) {
 /* Für das Banner auf der Startseite: die neueste offene Abfrage und der
    nächste feststehende Termin. Bewusst eine einzige schlanke Antwort,
    damit die Startseite nicht drei Anfragen braucht. */
+/* Alles, was das Startseiten-Banner braucht, in EINER Antwort: jeder
+   anstehende feststehende Abend und jede laufende Abfrage. Zwei Abfragen
+   genuegen dafuer — deshalb ist das auch bei mehreren Eintraegen guenstig. */
 async function getCurrent(request, env) {
-  const offen = await env.DB.prepare(
-    "SELECT id, titel, frist FROM polls WHERE status = 'offen' ORDER BY erstellt_am DESC LIMIT 1"
-  ).first();
-
-  let umfrage = null;
-  if (offen) {
-    const [optionen, teilnehmer] = await Promise.all([
-      env.DB.prepare('SELECT COUNT(*) AS n FROM poll_options WHERE poll_id = ?').bind(offen.id).first(),
-      env.DB.prepare('SELECT COUNT(*) AS n FROM participants WHERE poll_id = ?').bind(offen.id).first()
-    ]);
-    umfrage = {
-      id: offen.id, titel: offen.titel, frist: offen.frist,
-      anzahl_optionen: optionen.n, anzahl_teilnehmer: teilnehmer.n
-    };
-  }
-
-  /* Der naechste anstehende festgelegte Termin, ueber alle Abfragen hinweg.
-     Stehen mehrere fest, zaehlt fuers Banner der zeitlich naechste. */
   const heute = new Date().toISOString().slice(0, 10);
-  const fest = await env.DB.prepare(
-    'SELECT p.id, p.titel, o.id AS option_id, o.beginnt_am, o.label FROM polls p ' +
-    'JOIN poll_options o ON o.poll_id = p.id AND o.festgelegt = 1 ' +
-    "WHERE p.status = 'entschieden' AND substr(o.beginnt_am, 1, 10) >= ? " +
-    'ORDER BY o.beginnt_am LIMIT 1'
-  ).bind(heute).first();
 
-  let zusagen = 0;
-  let weitere = 0;
-  if (fest) {
-    const [z, w] = await Promise.all([
-      env.DB.prepare(
-        "SELECT COUNT(*) AS n FROM votes WHERE option_id = ? AND antwort = 'ja'"
-      ).bind(fest.option_id).first(),
-      /* Stehen noch mehr Abende an? Das Banner nennt nur die Zahl. */
-      env.DB.prepare(
-        'SELECT COUNT(*) AS n FROM polls p JOIN poll_options o ON o.poll_id = p.id ' +
-        "AND o.festgelegt = 1 WHERE p.status = 'entschieden' " +
-        'AND substr(o.beginnt_am, 1, 10) >= ? AND o.id != ?'
-      ).bind(heute, fest.option_id).first()
-    ]);
-    zusagen = z ? z.n : 0;
-    weitere = w ? w.n : 0;
-  }
+  const [feste, offene] = await Promise.all([
+    env.DB.prepare(
+      'SELECT p.id, p.titel, o.id AS option_id, o.beginnt_am, o.label, ' +
+      "(SELECT COUNT(*) FROM votes v WHERE v.option_id = o.id AND v.antwort = 'ja') AS zusagen " +
+      'FROM polls p JOIN poll_options o ON o.poll_id = p.id AND o.festgelegt = 1 ' +
+      "WHERE p.status = 'entschieden' AND substr(o.beginnt_am, 1, 10) >= ? " +
+      'ORDER BY o.beginnt_am LIMIT 12'
+    ).bind(heute).all(),
 
-  return json({ umfrage, termin: fest ? { ...fest, zusagen, weitere } : null }, request, env);
+    env.DB.prepare(
+      'SELECT p.id, p.titel, p.frist, ' +
+      '(SELECT COUNT(*) FROM poll_options o WHERE o.poll_id = p.id) AS anzahl_optionen, ' +
+      '(SELECT COUNT(*) FROM participants t WHERE t.poll_id = p.id) AS anzahl_teilnehmer ' +
+      "FROM polls p WHERE p.status = 'offen' " +
+      /* Was zuerst beantwortet werden muss, steht oben */
+      "ORDER BY COALESCE(p.frist, '9999-99-99'), p.erstellt_am DESC LIMIT 12"
+    ).all()
+  ]);
+
+  const termine  = feste.results  || [];
+  const umfragen = offene.results || [];
+
+  return json({
+    termine,
+    umfragen,
+    /* Einzelfelder wie frueher — haelt eine noch im Speicher haengende
+       Seitenfassung am Leben, die nur den naechsten Eintrag kennt. */
+    termin:  termine[0]  || null,
+    umfrage: umfragen[0] || null
+  }, request, env);
 }
 
 async function getPolls(request, env) {

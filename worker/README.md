@@ -110,7 +110,7 @@ jeder mit dem Link sehen, wer wann kann.
 | Weg | Zweck |
 |---|---|
 | `GET /api/check` | Gruppenwort prüfen (für die Eingabemaske) |
-| `GET /api/current` | neueste offene Abfrage + nächster fester Termin (fürs Banner) |
+| `GET /api/current` | alle laufenden Abfragen + alle anstehenden festen Termine (fürs Banner) |
 | `GET /api/polls` | die letzten 30 Abfragen |
 | `POST /api/polls` | Abfrage anlegen (höchstens 12 Terminvorschläge) |
 | `GET /api/polls/:id` | eine Abfrage mit Terminen, Teilnehmern, Stimmen |
