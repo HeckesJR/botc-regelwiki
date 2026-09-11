@@ -233,20 +233,36 @@ async function postDecide(request, env, id) {
   return json(await ladePoll(env, id), request, env);
 }
 
-/* Der Ort steht beim Anlegen oft noch nicht fest — „wir sehen dann, bei wem".
-   Deshalb laesst er sich nachtragen, auch wenn der Termin schon steht. */
-async function postOrt(request, env, id) {
+/* Ort und Uhrzeit stehen beim Anlegen oft noch nicht fest — „wir sehen dann,
+   bei wem" und „vielleicht doch eine Stunde spaeter". Beides laesst sich
+   nachtragen, auch wenn der Termin schon feststeht.
+
+   Das DATUM bleibt bewusst unveraenderlich: Darauf haben alle abgestimmt.
+   Wer den Tag verschieben will, sagt ab und fragt neu. */
+async function postOption(request, env, id) {
   const body = await request.json().catch(() => null);
   const optionId = text(body && body.option_id, 40);
-  const label    = text(body && body.label, MAX_LABEL);
 
   const option = await env.DB
-    .prepare('SELECT id FROM poll_options WHERE id = ? AND poll_id = ?')
+    .prepare('SELECT id, beginnt_am FROM poll_options WHERE id = ? AND poll_id = ?')
     .bind(optionId, id).first();
   if (!option) return fehler('Diesen Terminvorschlag gibt es hier nicht.', request, env, 404);
 
-  await env.DB.prepare('UPDATE poll_options SET label = ? WHERE id = ?')
-    .bind(label, optionId).run();
+  if (body && typeof body.label === 'string') {
+    await env.DB.prepare('UPDATE poll_options SET label = ? WHERE id = ?')
+      .bind(text(body.label, MAX_LABEL), optionId).run();
+  }
+
+  if (body && typeof body.zeit === 'string') {
+    const zeit = text(body.zeit, 5);
+    if (!/^\d{2}:\d{2}$/.test(zeit)) {
+      return fehler('Uhrzeit muss als HH:MM angegeben werden.', request, env);
+    }
+    /* Der Tag bleibt, nur die Uhrzeit wird ersetzt */
+    const tag = String(option.beginnt_am).slice(0, 10);
+    await env.DB.prepare('UPDATE poll_options SET beginnt_am = ? WHERE id = ?')
+      .bind(tag + 'T' + zeit, optionId).run();
+  }
 
   return json(await ladePoll(env, id), request, env);
 }
@@ -346,7 +362,7 @@ export default {
       if (pfad === '/api/polls'   && request.method === 'GET') return getPolls(request, env);
       if (pfad === '/api/polls'   && request.method === 'POST') return postPolls(request, env);
 
-      const m = pfad.match(/^\/api\/polls\/([a-z0-9]{4,12})(\/(vote|decide|cancel|ort))?$/);
+      const m = pfad.match(/^\/api\/polls\/([a-z0-9]{4,12})(\/(vote|decide|cancel|option|ort))?$/);
       if (m) {
         const id = m[1], aktion = m[3];
         if (!aktion && request.method === 'GET') {
@@ -358,7 +374,9 @@ export default {
           if (aktion === 'vote')   return postVote(request, env, id);
           if (aktion === 'decide') return postDecide(request, env, id);
           if (aktion === 'cancel') return postCancel(request, env, id);
-          if (aktion === 'ort')    return postOrt(request, env, id);
+          /* 'ort' ist der alte Name derselben Sache — bleibt, damit eine
+             noch im Speicher haengende Seitenfassung weiter funktioniert. */
+          if (aktion === 'option' || aktion === 'ort') return postOption(request, env, id);
         }
       }
 

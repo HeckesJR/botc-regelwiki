@@ -678,9 +678,16 @@ window.BOTC = window.BOTC || {};
            Termin steht, lässt sich der Ort hier nachtragen — er landet dann
            auch im Banner, im Kalendereintrag und im WhatsApp-Text. */
         (istFest && p.status === 'entschieden'
-          ? '<label class="field ortfeld"><span class="field__label">Ort</span>' +
-            '<input type="text" data-feld="ort" data-option="' + esc(o.id) + '" ' +
-            'value="' + esc(o.label) + '" placeholder="Wo trefft ihr euch?"></label>'
+          ? '<div class="nachtragen">' +
+              '<label class="field"><span class="field__label">Uhrzeit</span>' +
+                '<input type="time" data-feld="zeit-fest" data-option="' + esc(o.id) + '" ' +
+                'value="' + esc(String(o.beginnt_am).slice(11) || '18:00') + '"></label>' +
+              '<label class="field field--grow"><span class="field__label">Ort</span>' +
+                '<input type="text" data-feld="ort" data-option="' + esc(o.id) + '" ' +
+                'value="' + esc(o.label) + '" placeholder="Wo trefft ihr euch?"></label>' +
+              '<p class="notiz-klein">Das Datum bleibt — darauf haben alle abgestimmt. ' +
+                'Für einen anderen Tag absagen und neu fragen.</p>' +
+            '</div>'
           : '') +
 
         (l.namenJa.length
@@ -877,11 +884,12 @@ window.BOTC = window.BOTC || {};
         else if (f === 'titel' || f === 'von' || f === 'frist') entwurf[f] = ev.target.value;
         return;
       }
-      if (f === 'ort') {
+      if (f === 'ort' || f === 'zeit-fest') {
         var optId = ev.target.dataset.option;
         var wert = ev.target.value;
+        var feld = f === 'ort' ? 'label' : 'zeit';
         clearTimeout(ortTimer);
-        ortTimer = setTimeout(function () { speichereOrt(optId, wert); }, 800);
+        ortTimer = setTimeout(function () { speichereOption(optId, feld, wert); }, 800);
         return;
       }
 
@@ -1113,28 +1121,51 @@ window.BOTC = window.BOTC || {};
       });
   }
 
-  /* Ohne Neuzeichnen — sonst springt der Cursor beim Tippen aus dem Feld. */
-  function speichereOrt(optionId, label) {
+  /* Ohne Neuzeichnen — sonst springt der Cursor beim Tippen aus dem Feld.
+     Die Überschrift des Blocks wird von Hand nachgezogen. */
+  function speichereOption(optionId, feld, wert) {
     var p = sicht.poll;
     if (!p || !optionId) return;
 
-    var status = document.getElementById('termine-status');
-    if (status) status.textContent = 'Ort wird gespeichert …';
+    var koerper = { option_id: optionId };
+    koerper[feld] = wert;
 
-    req('/api/polls/' + encodeURIComponent(p.id) + '/ort', {
-      body: { option_id: optionId, label: label }
-    }).then(function (neu) {
-      sicht.poll = neu;
-      ladeBanner();   /* der Ort steht auch im Banner */
-      var s = document.getElementById('termine-status');
-      if (s) {
-        s.textContent = 'Ort gespeichert.';
-        setTimeout(function () { if (s.textContent === 'Ort gespeichert.') s.textContent = ''; }, 2500);
-      }
-    }).catch(function (e) {
-      var s = document.getElementById('termine-status');
-      if (s) s.textContent = e.message;
-    });
+    var was = feld === 'zeit' ? 'Uhrzeit' : 'Ort';
+    var status = document.getElementById('termine-status');
+    if (status) status.textContent = was + ' wird gespeichert …';
+
+    req('/api/polls/' + encodeURIComponent(p.id) + '/option', { body: koerper })
+      .then(function (neu) {
+        sicht.poll = neu;
+
+        /* Datum-Überschrift und Ortszeile am festgelegten Block auffrischen */
+        var block = wurzel().querySelector('.tblock--fest');
+        var o = null;
+        neu.optionen.forEach(function (x) { if (x.id === optionId) o = x; });
+        if (block && o) {
+          var d = block.querySelector('.tblock__datum');
+          if (d) d.textContent = fmtDatum(o.beginnt_am);
+          var ortEl = block.querySelector('.tblock__ort');
+          if (o.label && !ortEl) {
+            d.insertAdjacentHTML('afterend', '<span class="tblock__ort">' + esc(o.label) + '</span>');
+          } else if (ortEl) {
+            if (o.label) ortEl.textContent = o.label; else ortEl.remove();
+          }
+        }
+
+        ladeBanner();   /* Ort und Uhrzeit stehen auch im Banner */
+
+        var s = document.getElementById('termine-status');
+        if (s) {
+          s.textContent = was + ' gespeichert.';
+          setTimeout(function () {
+            if (s.textContent === was + ' gespeichert.') s.textContent = '';
+          }, 2500);
+        }
+      }).catch(function (e) {
+        var s = document.getElementById('termine-status');
+        if (s) s.textContent = e.message;
+      });
   }
 
   function absagen() {

@@ -133,11 +133,10 @@ img { max-width: 100%; height: auto; }
 
 /* ============================================================ Tabs */
 
-/* Die Leiste ist deckend, sonst scheint beim Scrollen der Text durch. Ein
-   Verlauf innerhalb der Leiste funktioniert nicht: am Handy brechen die Tabs
-   auf mehrere Zeilen um, die Leiste wird höher, und der Verlauf sitzt dann
-   mitten in den Tabs statt darunter. Der weiche Auslauf liegt deshalb als
-   ::after unter der Leiste — der bleibt gleich hoch, egal wie viele Zeilen. */
+/* Die Leiste ist vollständig deckend, sonst scheint beim Scrollen der Text
+   durch. Jeder Verlauf an dieser Kante — ob im Hintergrund der Leiste oder
+   als ::after darunter — wird am Handy als Fehler gelesen, weil in einem
+   halbdurchsichtigen Streifen eben Text steht. Harte Kante, fertig. */
 .tabs {
   position: sticky;
   top: 0;
@@ -148,16 +147,10 @@ img { max-width: 100%; height: auto; }
   background-size: 600px 600px;
 }
 
-.tabs::after {
-  content: "";
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 100%;
-  height: .8rem;
-  pointer-events: none;
-  background: linear-gradient(to bottom, var(--parchment), rgba(239,228,204,0));
-}
+/* Hier stand ein weicher Auslauf nach unten — ein 13 px hoher Verlauf von
+   deckend nach durchsichtig. Am Schreibtisch sah das gut aus, am Handy
+   scheint darin der Text durch und wirkt wie ein Fehler. Die Bordeaux-Linie
+   unten an .tabs__inner ist der sauberere Abschluss. */
 
 .tabs__inner {
   max-width: var(--sheet-max);
@@ -168,10 +161,6 @@ img { max-width: 100%; height: auto; }
   justify-content: center;
   border-bottom: 2px solid var(--bordeaux);
   padding-bottom: 0;
-  /* über dem ::after, sonst verdeckt der Auslauf die 2px, um die die
-     Tabs per translateY nach unten ragen */
-  position: relative;
-  z-index: 1;
 }
 
 .tab {
@@ -1669,5 +1658,13 @@ body.is-locked { overflow: hidden; }
 
 .notiz-klein { margin: .2rem 0 0; font-size: .86rem; font-style: italic; color: var(--ink-faint); }
 
-/* Ort nachtragen, wenn der Termin schon steht */
-.ortfeld { margin: .6rem 0 .2rem; max-width: 22rem; }
+/* Uhrzeit und Ort nachtragen, wenn der Termin schon steht */
+.nachtragen {
+  display: flex; gap: .6rem; flex-wrap: wrap; align-items: flex-end;
+  margin: .7rem 0 .3rem; padding: .6rem;
+  border: 1px dashed var(--parchment-shade); border-radius: var(--radius);
+  background: rgba(255,252,244,.45);
+}
+.nachtragen .field { flex: 0 1 8rem; }
+.nachtragen .field--grow { flex: 1 1 12rem; }
+.nachtragen .notiz-klein { flex: 1 1 100%; margin: 0; }
