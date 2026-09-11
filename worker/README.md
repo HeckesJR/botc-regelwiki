@@ -21,12 +21,19 @@ Handy ──── GitHub Pages ──►  Seite, Regeln, Icons     (unveränder
 Du brauchst ein kostenloses Cloudflare-Konto. Alle Befehle **im Ordner `worker/`**,
 und wie immer unter Windows PowerShell **einzeln** — `&&` funktioniert dort nicht.
 
+> **`npx.cmd` statt `npx` unter Windows PowerShell.** Sonst kommt:
+> *„Die Datei npx.ps1 kann nicht geladen werden, da die Ausführung von Skripts auf
+> diesem System deaktiviert ist."*
+> Windows PowerShell 5.1 steht standardmäßig auf `Restricted` und blockiert damit
+> jedes `.ps1`-Skript. `.cmd`-Dateien sind davon nicht betroffen. In der klassischen
+> Eingabeaufforderung (`cmd`) tritt das Problem gar nicht auf.
+
 ```
-npx wrangler login
+npx.cmd wrangler login
 ```
 
 ```
-npx wrangler d1 create botc-termine
+npx.cmd wrangler d1 create botc-termine
 ```
 
 Der letzte Befehl gibt eine `database_id` aus. Die muss in `wrangler.toml` bei
@@ -35,19 +42,19 @@ Der letzte Befehl gibt eine `database_id` aus. Die muss in `wrangler.toml` bei
 Dann die Tabellen anlegen:
 
 ```
-npx wrangler d1 execute botc-termine --remote --file=schema.sql
+npx.cmd wrangler d1 execute botc-termine --remote --file=schema.sql
 ```
 
 Das Gruppenwort setzen — es wird abgefragt und **nicht** in einer Datei gespeichert:
 
 ```
-npx wrangler secret put GRUPPENWORT
+npx.cmd wrangler secret put GRUPPENWORT
 ```
 
 Und hochladen:
 
 ```
-npx wrangler deploy
+npx.cmd wrangler deploy
 ```
 
 Am Ende steht die Adresse des Dienstes da, etwa
@@ -64,11 +71,11 @@ Am Ende steht die Adresse des Dienstes da, etwa
 `wrangler dev --local` legt eine SQLite-Datei auf der Platte an und braucht kein Konto:
 
 ```
-npx wrangler d1 execute botc-termine --local --file=schema.sql
+npx.cmd wrangler d1 execute botc-termine --local --file=schema.sql
 ```
 
 ```
-npx wrangler dev --local --port 8787
+npx.cmd wrangler dev --local --port 8787
 ```
 
 Das Gruppenwort kommt dabei aus `.dev.vars` (per `.gitignore` ausgeschlossen):
@@ -87,7 +94,7 @@ GRUPPENWORT = "DEIN-WORT-HIER"
 Nur wenn sich **dieser Ordner** ändert:
 
 ```
-npx wrangler deploy
+npx.cmd wrangler deploy
 ```
 
 Änderungen an der Seite selbst gehen weiterhin ganz normal über `git push`. Die
