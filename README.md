@@ -190,7 +190,7 @@ Was ihn zumacht:
 | Auslöser | Warum |
 |---|---|
 | Auge antippen | von Hand |
-| 20 Sekunden ohne Eingabe | Handy liegt offen auf dem Tisch |
+| Zeit ohne Eingabe | Handy liegt offen auf dem Tisch — `SECRET_TIMEOUT` in `js/notes.js`, derzeit 10 Sekunden |
 | anderer Tab im Wiki | `MutationObserver` auf `#panel-notizen[hidden]` |
 | Handy gesperrt, App gewechselt | `visibilitychange` |
 | Seite neu geladen | der offene Zustand wird nie gespeichert |

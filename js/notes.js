@@ -28,7 +28,7 @@ window.BOTC = window.BOTC || {};
      weil die eigentliche Gefahr das offen liegengelassene Handy ist. */
   var secretOpen = false;
   var secretTimer = null;
-  var SECRET_TIMEOUT = 20000;
+  var SECRET_TIMEOUT = 10000;
 
   /* ---------------------------------------------- Zustand */
 
@@ -200,7 +200,8 @@ window.BOTC = window.BOTC || {};
 
         (secretOpen
           ? '<div class="secret__body" id="secret-body">' +
-              '<p class="secret__hint">Schließt sich nach 20 Sekunden von selbst. ' +
+              '<p class="secret__hint">Schließt sich nach ' + Math.round(SECRET_TIMEOUT / 1000) +
+                ' Sekunden von selbst. ' +
                 'Schützt vor Blicken über die Schulter — nicht davor, dass jemand ' +
                 'das Handy in die Hand nimmt.</p>' +
               '<div class="secret__row">' +
