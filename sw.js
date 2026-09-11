@@ -40,6 +40,7 @@ var SHELL = [
   'js/generator.js',
   'js/scripts.js',
   'js/notes.js',
+  'js/termine.js',
   'js/pdf-export.js',
   'js/app.js',
   'vendor/jspdf.umd.min.js',

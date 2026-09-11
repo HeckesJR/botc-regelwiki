@@ -75,10 +75,18 @@
 
   /* ---------------------------------------------- Tabs */
 
+  /* Der Teil hinter dem Schrägstrich ist der Unterweg, etwa #termine/a7f3k9.
+     Nur der Termine-Tab benutzt ihn zurzeit — damit ein aus WhatsApp
+     kopierter Link direkt die richtige Abfrage öffnet. */
+  function routeFromHash() {
+    var teile = location.hash.slice(1).split('/');
+    return { tab: teile[0] || '', sub: teile.slice(1).join('/') };
+  }
+
   function initTabs() {
     var tabs = Array.prototype.slice.call(document.querySelectorAll('.tab'));
 
-    function activate(name) {
+    function activate(name, sub) {
       tabs.forEach(function (t) {
         var on = t.dataset.tab === name;
         t.classList.toggle('is-active', on);
@@ -89,13 +97,27 @@
         p.classList.toggle('is-active', on);
         p.hidden = !on;
       });
-      if (location.hash.slice(1) !== name) {
-        history.replaceState(null, '', '#' + name);
-      }
+
+      var ziel = '#' + name + (sub ? '/' + sub : '');
+      if (location.hash !== ziel) history.replaceState(null, '', ziel);
+
+      if (name === 'termine' && BOTC.termine) BOTC.termine.show(sub || '');
     }
 
+    /* Damit andere Module dorthin springen können, ohne die Tabs zu kennen */
+    BOTC.gotoTab = activate;
+
     tabs.forEach(function (t) {
-      t.addEventListener('click', function () { activate(t.dataset.tab); });
+      /* Tab-Klick heißt: zurück auf die Übersicht, ohne Unterweg */
+      t.addEventListener('click', function () { activate(t.dataset.tab, ''); });
+    });
+
+    /* Ein eingefügter Link, während die Seite schon offen ist */
+    window.addEventListener('hashchange', function () {
+      var r = routeFromHash();
+      if (r.tab && tabs.some(function (t) { return t.dataset.tab === r.tab; })) {
+        activate(r.tab, r.sub);
+      }
     });
 
     /* Pfeiltasten-Navigation zwischen den Tabs */
@@ -111,9 +133,9 @@
       activate(next.dataset.tab);
     });
 
-    var fromHash = location.hash.slice(1);
-    if (fromHash && tabs.some(function (t) { return t.dataset.tab === fromHash; })) {
-      activate(fromHash);
+    var start = routeFromHash();
+    if (start.tab && tabs.some(function (t) { return t.dataset.tab === start.tab; })) {
+      activate(start.tab, start.sub);
     }
   }
 
@@ -899,6 +921,9 @@
         BOTC.renderGlossary(state.glossary, $('#glossary-root'), gs.value);
       }, 120);
     });
+
+    /* Vor initTabs(), damit ein Start auf #termine/<id> schon greift */
+    BOTC.termine.init();
 
     initTabs();
     initCharacterTab();
