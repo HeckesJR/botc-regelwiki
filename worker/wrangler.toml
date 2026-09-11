@@ -1,0 +1,20 @@
+name = "botc-termine"
+main = "src/index.js"
+compatibility_date = "2026-09-01"
+
+# Die D1-Datenbank. database_id wird von
+#   npx wrangler d1 create botc-termine
+# ausgegeben und muss hier eingetragen werden.
+[[d1_databases]]
+binding = "DB"
+database_name = "botc-termine"
+database_id = "HIER_EINTRAGEN"
+
+[vars]
+# Von wo aus die Seite den Dienst ansprechen darf. Bewusst nicht "*".
+# Für lokales Testen wird zusätzlich http://localhost:8231 erlaubt, siehe index.js.
+ALLOWED_ORIGIN = "https://heckesjr.github.io"
+
+# Das Gruppenwort ist KEIN var, sondern ein Geheimnis:
+#   npx wrangler secret put GRUPPENWORT
+# Lokal steht es in .dev.vars — die Datei ist per .gitignore ausgeschlossen.

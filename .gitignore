@@ -14,3 +14,9 @@ Desktop.ini
 *.local
 scratch/
 tmp/
+
+# Cloudflare Worker
+worker/.dev.vars
+worker/node_modules/
+worker/.wrangler/
+.wrangler/
