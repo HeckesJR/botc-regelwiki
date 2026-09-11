@@ -1632,3 +1632,14 @@ body.is-locked { overflow: hidden; }
 .tblock__fuss .antwortwahl { margin-top: 0; }
 
 .tblock__meine { font-size: .9rem; font-style: italic; color: var(--ink-faint); }
+
+.mein-hinweis {
+  margin: .6rem 0 0; font-size: .86rem; font-style: italic; color: var(--ink-faint);
+}
+
+/* Im Vollbild auf dem Homescreen reicht die Seite unter die Statusleiste.
+   Ohne diese Polsterung klebt die Tableiste zwar oben, aber der Inhalt
+   scrollt in den Streifen darüber und ist neben der Uhr zu sehen. */
+@media (display-mode: standalone) {
+  .tabs { padding-top: calc(.5rem + env(safe-area-inset-top)); }
+}

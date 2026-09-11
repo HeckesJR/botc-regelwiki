@@ -33,6 +33,7 @@ window.BOTC = window.BOTC || {};
     { id: 'nein',       label: 'Nein' }
   ];
 
+  var nameTimer = null;
   var lokal = ladeLokal();
   var sicht = { modus: 'liste', pollId: '', poll: null, liste: null, laedt: false, fehler: '' };
   var entwurf = null;   /* offenes Formular beim Anlegen */
@@ -167,9 +168,12 @@ window.BOTC = window.BOTC || {};
       l.stufe = 'warn';
       l.text = spieler + ' Spieler — mehr als ' + BOTC.MAX_PLAYERS +
                ' gehen nicht. Zwei Runden oder Reisende einsetzen.';
+    } else if (ja.length === 0) {
+      l.stufe = 'rot';
+      l.text = 'Noch keine Zusagen.';
     } else if (!hatLeitung) {
       l.stufe = ja.length >= BOTC.MIN_PLAYERS ? 'gelb' : 'rot';
-      l.text = ja.length + ' Zusagen, aber niemand leitet.' +
+      l.text = ja.length + (ja.length === 1 ? ' Zusage' : ' Zusagen') + ', aber niemand leitet.' +
                (ja.length >= BOTC.MIN_PLAYERS ? ' Es fehlt nur der Spielleiter.' : '');
     } else if (spieler < BOTC.MIN_PLAYERS) {
       l.stufe = 'rot';
@@ -605,6 +609,7 @@ window.BOTC = window.BOTC || {};
                    (r.id === meineRolle) + '">' + esc(r.lang) + '</button>';
           }).join('') +
         '</div>' +
+        '<p class="mein-hinweis">Jeder Tipp wird sofort gespeichert — du musst nichts abschicken.</p>' +
       '</div>';
 
     var termine = p.optionen.map(function (o) {
@@ -655,7 +660,7 @@ window.BOTC = window.BOTC || {};
     zeichne(kopf + meins + '<div class="tbloecke">' + termine + '</div>' +
       '<div class="termine-aktionen">' +
         (p.status !== 'abgesagt'
-          ? '<button type="button" class="btn btn--primary" data-act="speichern">Antwort speichern</button>'
+          ? '<button type="button" class="btn btn--primary" data-act="speichern">Jetzt speichern</button>'
           : '') +
         '<button type="button" class="btn" data-act="whatsapp">Text für WhatsApp</button>' +
         (p.status === 'entschieden'
@@ -758,7 +763,16 @@ window.BOTC = window.BOTC || {};
         else if (f === 'titel' || f === 'von' || f === 'frist') entwurf[f] = ev.target.value;
         return;
       }
-      if (f === 'name') { lokal.name = ev.target.value; sichereLokal(); }
+      if (f === 'name') {
+        lokal.name = ev.target.value;
+        sichereLokal();
+        /* Nicht bei jedem Buchstaben zum Server — aber wer den Namen
+           nachträgt, soll seine schon getippten Antworten nicht verlieren. */
+        clearTimeout(nameTimer);
+        nameTimer = setTimeout(function () {
+          if (sicht.modus === 'detail' && ev.target.value.trim()) speichern({ leise: true });
+        }, 900);
+      }
     });
 
     r.addEventListener('click', function (ev) {
@@ -776,6 +790,7 @@ window.BOTC = window.BOTC || {};
           c.classList.toggle('is-active', on);
           c.setAttribute('aria-pressed', String(on));
         });
+        speichern({ leise: true });
         return;
       }
 
@@ -783,6 +798,7 @@ window.BOTC = window.BOTC || {};
         btn.parentNode.querySelectorAll('.seg__btn').forEach(function (b) {
           b.classList.toggle('is-active', b === btn);
         });
+        speichern({ leise: true });
         return;
       }
 
@@ -884,6 +900,12 @@ window.BOTC = window.BOTC || {};
 
       var panel = document.getElementById('panel-termine');
       if (!panel || panel.hidden) return;
+
+      /* Wer gerade tippt, soll nicht mitten im Wort neu gezeichnet bekommen */
+      var aktiv = document.activeElement;
+      if (aktiv && panel.contains(aktiv) &&
+          (aktiv.tagName === 'INPUT' || aktiv.tagName === 'TEXTAREA')) return;
+
       if (sicht.modus === 'detail' && sicht.pollId) ladeDetail(true);
       else if (sicht.modus === 'liste') ladeListe(true);
     }
@@ -980,17 +1002,26 @@ window.BOTC = window.BOTC || {};
       });
   }
 
-  function speichern() {
+  /* Jeder Tipp auf eine Antwort speichert sofort. Vorher zaehlte nur, was
+     man anschliessend ueber "Antwort speichern" abgeschickt hatte — wer
+     zwischendurch die Seite verliess, fand seine Auswahl beim Zurueckkommen
+     wieder leer vor, weil dann der Serverstand neu gezeichnet wird.
+
+     leise = ohne Neuzeichnen der Liste. Beim Tippen soll nichts springen;
+     die Auswahl steht ja schon richtig da. */
+  function speichern(opt) {
+    opt = opt || {};
     var p = sicht.poll;
-    if (!p) return;
+    if (!p || p.status === 'abgesagt') return;
 
     var nameFeld = wurzel().querySelector('[data-feld="name"]');
     var name = nameFeld ? nameFeld.value.trim() : '';
     var status = document.getElementById('termine-status');
+    var melde = function (s) { if (status) status.textContent = s; };
 
     if (!name) {
-      if (status) status.textContent = 'Bitte trag deinen Namen ein.';
-      if (nameFeld) nameFeld.focus();
+      melde('Bitte trag deinen Namen ein — dann wird deine Antwort gespeichert.');
+      if (!opt.leise && nameFeld) nameFeld.focus();
       return;
     }
 
@@ -1002,7 +1033,7 @@ window.BOTC = window.BOTC || {};
       antworten[b.dataset.option] = b.dataset.antwort;
     });
 
-    if (status) status.textContent = 'Wird gespeichert …';
+    melde('Wird gespeichert …');
 
     req('/api/polls/' + encodeURIComponent(p.id) + '/vote', { body: {
       voter_id: lokal.voterId, name: name, rolle: rolle, antworten: antworten
@@ -1010,16 +1041,59 @@ window.BOTC = window.BOTC || {};
       lokal.name = name;
       sichereLokal();
       sicht.poll = neu;
-      zeichneDetail();
-      ladeBanner();   /* Zusagenzahl im Banner zieht mit */
+
+      if (opt.leise) {
+        /* Nur die Lagemeldungen auffrischen, Eingabefeld und Auswahl bleiben
+           stehen — sonst verliert man beim Tippen den Cursor. */
+        aktualisiereLagen();
+      } else {
+        zeichneDetail();
+      }
+      ladeBanner();
+
       var s = document.getElementById('termine-status');
       if (s) {
         s.textContent = 'Gespeichert.';
-        setTimeout(function () { if (s.textContent === 'Gespeichert.') s.textContent = ''; }, 3000);
+        setTimeout(function () { if (s.textContent === 'Gespeichert.') s.textContent = ''; }, 2500);
       }
     }).catch(function (err) {
       var s = document.getElementById('termine-status');
       if (s) s.textContent = err.message;
+    });
+  }
+
+  /* Ampel, Namen und Verteilung je Termin neu schreiben, ohne die Knoepfe
+     anzufassen. */
+  function aktualisiereLagen() {
+    var p = sicht.poll;
+    if (!p) return;
+
+    wurzel().querySelectorAll('.tblock').forEach(function (block, i) {
+      var o = p.optionen[i];
+      if (!o) return;
+      var l = lage(p, o.id);
+
+      block.dataset.stufe = l.stufe;
+
+      var lageEl = block.querySelector('.tblock__lage');
+      if (lageEl) {
+        lageEl.innerHTML = esc(l.text) +
+          (l.verteilung ? '<span class="tblock__verteilung">' + esc(l.verteilung) + '</span>' : '');
+      }
+
+      block.querySelectorAll('.tblock__namen').forEach(function (n) { n.remove(); });
+      var davor = block.querySelector('.tblock__fuss');
+      var einfuegen = function (html) {
+        if (davor) davor.insertAdjacentHTML('beforebegin', html);
+      };
+      if (l.namenJa.length) {
+        einfuegen('<p class="tblock__namen"><strong>Dabei:</strong> ' +
+                  esc(l.namenJa.join(', ')) + '</p>');
+      }
+      if (l.namenVielleicht.length) {
+        einfuegen('<p class="tblock__namen tblock__namen--vielleicht"><strong>Vielleicht:</strong> ' +
+                  esc(l.namenVielleicht.join(', ')) + '</p>');
+      }
     });
   }
 
