@@ -313,10 +313,13 @@ export default {
       return fehler('Auf dem Server ist kein Gruppenwort hinterlegt.', request, env, 500);
     }
 
-    const zugang = await pruefeZugang(request, env);
-    if (!zugang.ok) return fehler(zugang.nachricht, request, env, zugang.status);
-
     try {
+      /* Muss MIT in den try-Block: die Zugangsprüfung fragt die Datenbank,
+         und ein Fehler dort würde sonst als roher Stacktrace samt Dateipfaden
+         beim Nutzer landen. */
+      const zugang = await pruefeZugang(request, env);
+      if (!zugang.ok) return fehler(zugang.nachricht, request, env, zugang.status);
+
       /* Nur zum Prüfen des Gruppenworts in der Eingabemaske */
       if (pfad === '/api/check') return json({ ok: true }, request, env);
 
