@@ -141,10 +141,20 @@ img { max-width: 100%; height: auto; }
   position: sticky;
   top: 0;
   z-index: 40;
-  padding: .5rem 1rem 0;
+
+  /* Die Polsterung für die Statusleiste steht bewusst OHNE
+     @media (display-mode: standalone). Dort hing sie vorher, und die Abfrage
+     greift auf iOS nicht verlässlich — dann reichte der Inhalt in den
+     Streifen über der Leiste und war neben der Uhr zu sehen.
+     env(safe-area-inset-top) ist außerhalb des Vollbilds 0, die Zeile
+     schadet also nirgends. */
+  padding: calc(.5rem + env(safe-area-inset-top)) 1rem 0;
+
+  /* Nur Farbe, keine gekachelte SVG-Textur: Safari müsste sie bei jedem
+     Scroll-Bild neu zeichnen, und in diesem Moment blitzt der Inhalt
+     darunter durch. Auf einer 150 px hohen Leiste war sie ohnehin kaum
+     zu erkennen. */
   background-color: var(--parchment);
-  background-image: url("../assets/textures/parchment.svg");
-  background-size: 600px 600px;
 }
 
 /* Hier stand ein weicher Auslauf nach unten — ein 13 px hoher Verlauf von
@@ -1322,6 +1332,7 @@ body.is-locked { overflow: hidden; }
 
 @media (display-mode: standalone) {
   .site-header { padding-top: calc(1.25rem + env(safe-area-inset-top)); }
+  /* oben steht die Polsterung ungeschuetzt an .tabs, hier nur die Seiten */
   .tabs { padding-left: calc(1rem + env(safe-area-inset-left));
           padding-right: calc(1rem + env(safe-area-inset-right)); }
   main { padding-left: calc(1rem + env(safe-area-inset-left));
@@ -1629,10 +1640,6 @@ body.is-locked { overflow: hidden; }
 /* Im Vollbild auf dem Homescreen reicht die Seite unter die Statusleiste.
    Ohne diese Polsterung klebt die Tableiste zwar oben, aber der Inhalt
    scrollt in den Streifen darüber und ist neben der Uhr zu sehen. */
-@media (display-mode: standalone) {
-  .tabs { padding-top: calc(.5rem + env(safe-area-inset-top)); }
-}
-
 /* Schnellbefüllung: einen ganzen Monat auf einmal eintragen */
 .schnell {
   margin: .3rem 0 1.2rem;
