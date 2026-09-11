@@ -149,6 +149,26 @@ keine Konten und keine Passwörter außer dem gemeinsamen Gruppenwort.
 
 ---
 
+## Festlegen, Absagen, Kalender
+
+**Festlegen darf jeder**, nicht nur wer die Abfrage gestartet hat. Sonst steht
+die Runde still, wenn ausgerechnet der krank wird. Vor dem Festlegen kommt eine
+Rückfrage mit der Lage im Klartext, bei gelb oder rot zusätzlich
+„Achtung: So reicht es noch nicht."
+
+**Absagen** geht für laufende Abfragen und für feststehende Termine. Der Grund
+landet im WhatsApp-Text. Danach ist die Abfrage schreibgeschützt: Der Dienst
+weist Stimmen mit 409 ab, und die Oberfläche zeigt statt der Antwort-Knöpfe nur
+noch „Deine Antwort war: …".
+
+**Kalendereintrag** als `.ics`, sobald ein Termin feststeht. Ohne Zeitzone — bei
+einem Treffen vor Ort gilt der Termin in der Ortszeit des Geräts. Dauer
+pauschal vier Stunden (`ABEND_STUNDEN` in `js/termine.js`). Zeilen sind nach
+RFC 5545 auf 75 Oktetts gefaltet, gezählt in Bytes, damit Umlaute nicht mitten
+im Buchstaben zerreißen.
+
+---
+
 ## Das Banner auf der Startseite
 
 `GET /api/current` liefert in **einer** Antwort beides: die neueste offene

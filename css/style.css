@@ -1563,3 +1563,19 @@ body.is-locked { overflow: hidden; }
 }
 
 @media print { .banner { display: none !important; } }
+
+/* Der festgelegte Termin hebt sich ab, die anderen bleiben sichtbar —
+   man will ja nachvollziehen können, warum es dieser geworden ist. */
+.tblock--fest {
+  border-width: 2px;
+  border-left-width: 5px;
+  box-shadow: 0 2px 10px rgba(70,45,20,.16);
+}
+
+.tblock__fuss {
+  display: flex; align-items: center; gap: .7rem;
+  flex-wrap: wrap; margin-top: .7rem;
+}
+.tblock__fuss .antwortwahl { margin-top: 0; }
+
+.tblock__meine { font-size: .9rem; font-style: italic; color: var(--ink-faint); }

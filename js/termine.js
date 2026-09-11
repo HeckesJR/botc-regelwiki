@@ -287,7 +287,9 @@ window.BOTC = window.BOTC || {};
       zeilen.push('„' + poll.titel + '"');
       if (poll.notiz) zeilen.push(poll.notiz);
       zeilen.push('');
-      zeilen.push('Neuer Versuch: ' + seitenLink(poll.id));
+      /* Auf die Übersicht, nicht auf die abgesagte Abfrage — dort kann man
+         gleich eine neue starten. */
+      zeilen.push('Neue Abfrage starten: ' + location.origin + location.pathname + '#termine');
 
     } else {
       zeilen.push('🕰 Neue Terminabfrage für Blood on the Clocktower');
@@ -352,6 +354,122 @@ window.BOTC = window.BOTC || {};
     } else {
       melde('Text unten markieren und kopieren.');
     }
+  }
+
+  /* ---------------------------------------------- Kalendereintrag
+
+     Eine .ics-Datei, die jeder Handykalender versteht. Ohne Zeitzone —
+     das ist bei einem Treffen vor Ort genau richtig, der Termin gilt in
+     der Ortszeit des Geräts. */
+
+  var ABEND_STUNDEN = 4;   /* So lange dauert eine Runde ungefähr */
+
+  function icsEscape(s) {
+    return String(s == null ? '' : s)
+      .replace(/\\/g, '\\\\').replace(/;/g, '\\;')
+      .replace(/,/g, '\\,').replace(/\r?\n/g, '\\n');
+  }
+
+  function icsStempel() {
+    return new Date().toISOString().replace(/[-:]/g, '').replace(/\.\d{3}/, '');
+  }
+
+  /* RFC 5545 erlaubt höchstens 75 Oktetts je Zeile; längere werden umbrochen
+     und mit einem Leerzeichen fortgesetzt. Gezählt wird in Bytes, nicht in
+     Zeichen — sonst zerreißt es Umlaute mitten im Buchstaben. */
+  function icsFalte(zeile) {
+    var enc = new TextEncoder();
+    if (enc.encode(zeile).length <= 75) return zeile;
+
+    var teile = [], puffer = '', bytes = 0, grenze = 75;
+
+    for (var i = 0; i < zeile.length; i++) {
+      /* Ersatzpaare (z. B. Emoji) dürfen nicht getrennt werden */
+      var zeichen = zeile[i];
+      var code = zeile.charCodeAt(i);
+      if (code >= 0xD800 && code <= 0xDBFF && i + 1 < zeile.length) {
+        zeichen += zeile[i + 1];
+        i++;
+      }
+      var n = enc.encode(zeichen).length;
+      if (bytes + n > grenze) {
+        teile.push(puffer);
+        puffer = ' ' + zeichen;      /* Fortsetzung beginnt mit Leerzeichen */
+        bytes = 1 + n;
+        grenze = 75;
+      } else {
+        puffer += zeichen;
+        bytes += n;
+      }
+    }
+    if (puffer) teile.push(puffer);
+    return teile.join('\r\n');
+  }
+
+  function icsDatei(poll) {
+    var fest = null;
+    poll.optionen.forEach(function (o) { if (o.id === poll.entschieden_option) fest = o; });
+    if (!fest) return null;
+
+    var ganztag = fest.beginnt_am.length <= 10;
+    var start, ende;
+
+    if (ganztag) {
+      start = 'DTSTART;VALUE=DATE:' + fest.beginnt_am.replace(/-/g, '');
+      var naechster = new Date(fest.beginnt_am + 'T00:00');
+      naechster.setDate(naechster.getDate() + 1);
+      ende = 'DTEND;VALUE=DATE:' + naechster.toISOString().slice(0, 10).replace(/-/g, '');
+    } else {
+      var d = new Date(fest.beginnt_am);
+      var roh = function (x) {
+        return x.getFullYear() + zwei(x.getMonth() + 1) + zwei(x.getDate()) + 'T' +
+               zwei(x.getHours()) + zwei(x.getMinutes()) + '00';
+      };
+      var bis = new Date(d.getTime() + ABEND_STUNDEN * 3600 * 1000);
+      start = 'DTSTART:' + roh(d);
+      ende  = 'DTEND:'   + roh(bis);
+    }
+
+    var l = lage(poll, fest.id);
+    var beschreibung = poll.titel +
+      (l.namenJa.length ? '\nDabei: ' + l.namenJa.join(', ') : '') +
+      (l.leiter.length ? '\n' + l.leiter[0].name + ' leitet.' : '') +
+      '\n' + seitenLink(poll.id);
+
+    /* Zeilenenden müssen CRLF sein, sonst mäkeln manche Kalender */
+    return [
+      'BEGIN:VCALENDAR',
+      'VERSION:2.0',
+      'PRODID:-//BotC Regelwiki//DE',
+      'CALSCALE:GREGORIAN',
+      'BEGIN:VEVENT',
+      'UID:' + poll.id + '@botc-regelwiki',
+      'DTSTAMP:' + icsStempel(),
+      start,
+      ende,
+      'SUMMARY:' + icsEscape('Blood on the Clocktower'),
+      'DESCRIPTION:' + icsEscape(beschreibung),
+      fest.label ? 'LOCATION:' + icsEscape(fest.label) : null,
+      'END:VEVENT',
+      'END:VCALENDAR'
+    ].filter(Boolean).map(icsFalte).join('\r\n') + '\r\n';
+  }
+
+  function ladeIcsHerunter(poll) {
+    var text = icsDatei(poll);
+    if (!text) return;
+    var fest = null;
+    poll.optionen.forEach(function (o) { if (o.id === poll.entschieden_option) fest = o; });
+
+    var blob = new Blob([text], { type: 'text/calendar;charset=utf-8' });
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement('a');
+    a.href = url;
+    a.download = 'botc-' + fest.beginnt_am.slice(0, 10) + '.ics';
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    setTimeout(function () { URL.revokeObjectURL(url); }, 1000);
   }
 
   /* ---------------------------------------------- Ansichten */
@@ -491,11 +609,14 @@ window.BOTC = window.BOTC || {};
     var termine = p.optionen.map(function (o) {
       var l = lage(p, o.id);
       var meine = meineAntworten[o.id] || '';
+      var istFest = p.entschieden_option === o.id;
 
-      return '<div class="tblock" data-stufe="' + l.stufe + '">' +
+      return '<div class="tblock' + (istFest ? ' tblock--fest' : '') +
+             '" data-stufe="' + l.stufe + '">' +
         '<div class="tblock__kopf">' +
           '<strong class="tblock__datum">' + esc(fmtDatum(o.beginnt_am)) + '</strong>' +
           (o.label ? '<span class="tblock__ort">' + esc(o.label) + '</span>' : '') +
+          (istFest ? '<span class="pill pill--fest">Festgelegt</span>' : '') +
         '</div>' +
 
         '<p class="tblock__lage">' + esc(l.text) +
@@ -508,21 +629,42 @@ window.BOTC = window.BOTC || {};
           ? '<p class="tblock__namen tblock__namen--vielleicht"><strong>Vielleicht:</strong> ' +
             esc(l.namenVielleicht.join(', ')) + '</p>' : '') +
 
-        '<div class="seg antwortwahl">' +
-          ANTWORTEN.map(function (a) {
-            return '<button type="button" class="seg__btn' + (a.id === meine ? ' is-active' : '') +
-                   '" data-antwort="' + a.id + '" data-option="' + esc(o.id) + '">' +
-                   esc(a.label) + '</button>';
-          }).join('') +
+        '<div class="tblock__fuss">' +
+          /* Bei abgesagten Abfragen gibt es nichts mehr zu antworten — die
+             Knöpfe wären klickbar, ohne dass man speichern könnte. */
+          (p.status === 'abgesagt'
+            ? (meine ? '<span class="tblock__meine">Deine Antwort war: ' +
+                       esc((ANTWORTEN.filter(function (a) { return a.id === meine; })[0] || {}).label || meine) +
+                       '</span>' : '')
+            : '<div class="seg antwortwahl">' +
+              ANTWORTEN.map(function (a) {
+                return '<button type="button" class="seg__btn' + (a.id === meine ? ' is-active' : '') +
+                       '" data-antwort="' + a.id + '" data-option="' + esc(o.id) + '">' +
+                       esc(a.label) + '</button>';
+              }).join('') +
+            '</div>') +
+          (p.status === 'offen'
+            ? '<button type="button" class="btn btn--ghost btn--small" data-act="festlegen" ' +
+              'data-option="' + esc(o.id) + '">Diesen Termin festlegen</button>'
+            : '') +
         '</div>' +
       '</div>';
     }).join('');
 
     zeichne(kopf + meins + '<div class="tbloecke">' + termine + '</div>' +
       '<div class="termine-aktionen">' +
-        '<button type="button" class="btn btn--primary" data-act="speichern">Antwort speichern</button>' +
+        (p.status !== 'abgesagt'
+          ? '<button type="button" class="btn btn--primary" data-act="speichern">Antwort speichern</button>'
+          : '') +
         '<button type="button" class="btn" data-act="whatsapp">Text für WhatsApp</button>' +
+        (p.status === 'entschieden'
+          ? '<button type="button" class="btn" data-act="ics">In den Kalender</button>'
+          : '') +
         '<button type="button" class="btn btn--ghost btn--small" data-act="neuladen">Stand aktualisieren</button>' +
+        (p.status !== 'abgesagt'
+          ? '<button type="button" class="btn btn--ghost btn--small" data-act="absagen">' +
+            (p.status === 'entschieden' ? 'Runde absagen' : 'Abfrage abbrechen') + '</button>'
+          : '') +
         '<span class="termine-status" id="termine-status"></span>' +
       '</div>');
   }
@@ -683,6 +825,18 @@ window.BOTC = window.BOTC || {};
         case 'whatsapp':
           if (sicht.poll) zeigeTextZumKopieren(whatsappText(sicht.poll));
           break;
+
+        case 'ics':
+          if (sicht.poll) ladeIcsHerunter(sicht.poll);
+          break;
+
+        case 'festlegen':
+          festlegen(btn.dataset.option);
+          break;
+
+        case 'absagen':
+          absagen();
+          break;
       }
     });
 
@@ -764,6 +918,65 @@ window.BOTC = window.BOTC || {};
       sicht.fehler = err.message;
       zeichneAnlegen();
     });
+  }
+
+  /* Festlegen darf jeder, nicht nur wer die Abfrage gestartet hat — sonst
+     steht die Runde still, wenn ausgerechnet der krank wird. Dafür eine
+     Rückfrage mit der Lage im Klartext, damit niemand versehentlich einen
+     Termin festnagelt, an dem es hinten und vorne nicht reicht. */
+  function festlegen(optionId) {
+    var p = sicht.poll;
+    if (!p || !optionId) return;
+
+    var o = null;
+    p.optionen.forEach(function (x) { if (x.id === optionId) o = x; });
+    if (!o) return;
+
+    var l = lage(p, optionId);
+    var frage = 'Termin festlegen auf ' + fmtDatum(o.beginnt_am) +
+                (o.label ? ' (' + o.label + ')' : '') + '?\n\n' + l.text;
+    if (l.stufe !== 'gruen') frage += '\n\nAchtung: So reicht es noch nicht.';
+
+    if (!confirm(frage)) return;
+
+    var status = document.getElementById('termine-status');
+    if (status) status.textContent = 'Wird festgelegt …';
+
+    req('/api/polls/' + encodeURIComponent(p.id) + '/decide', { body: { option_id: optionId } })
+      .then(function (neu) {
+        sicht.poll = neu;
+        zeichneDetail();
+        ladeBanner();
+      })
+      .catch(function (e) {
+        var s = document.getElementById('termine-status');
+        if (s) s.textContent = e.message;
+      });
+  }
+
+  function absagen() {
+    var p = sicht.poll;
+    if (!p) return;
+
+    var was = p.status === 'entschieden' ? 'Die Runde wirklich absagen?'
+                                         : 'Die Abfrage wirklich abbrechen?';
+    if (!confirm(was + '\n\nDas lässt sich nicht rückgängig machen.')) return;
+
+    var grund = prompt('Kurz der Grund? (steht dann im WhatsApp-Text)', '') || '';
+
+    var status = document.getElementById('termine-status');
+    if (status) status.textContent = 'Wird abgesagt …';
+
+    req('/api/polls/' + encodeURIComponent(p.id) + '/cancel', { body: { grund: grund } })
+      .then(function (neu) {
+        sicht.poll = neu;
+        zeichneDetail();
+        ladeBanner();
+      })
+      .catch(function (e) {
+        var s = document.getElementById('termine-status');
+        if (s) s.textContent = e.message;
+      });
   }
 
   function speichern() {
