@@ -466,7 +466,8 @@ tbody tr[data-tone="evil"] th, tbody tr[data-tone="evil"] td { color: var(--evil
   text-transform: uppercase;
   color: var(--ink-faint);
 }
-input[type="search"], input[type="number"], select {
+input[type="search"], input[type="number"], input[type="date"], input[type="time"],
+input[type="password"], select {
   font-family: var(--font-body);
   /* 16px Mindestgröße: kleiner zoomt iOS beim Antippen automatisch hinein */
   font-size: max(1rem, 16px);
@@ -1451,15 +1452,67 @@ body.is-locked { overflow: hidden; }
 .pill--ab    { color: var(--ink-faint); }
 
 /* Formular zum Anlegen */
-.tvorschlaege { display: grid; gap: .5rem; margin: .3rem 0 .8rem; }
+.tvorschlaege { display: grid; gap: .6rem; margin: .3rem 0 .8rem; }
+
+/* Jeder Vorschlag ist ein eigener Block — bei vier Terminen untereinander
+   sieht man sonst nicht, welches ✕ zu welchem Datum gehört. */
 .tvorschlag {
   display: grid; gap: .4rem;
   grid-template-columns: minmax(8rem, 1fr) minmax(5rem, auto) minmax(7rem, 1fr) auto;
   align-items: center;
+  padding: .5rem;
+  border: 1px solid var(--parchment-shade);
+  border-radius: var(--radius);
+  background: rgba(255,252,244,.4);
 }
+
+/* Das Datum ist die Hauptsache, der Ort Beiwerk, das Entfernen die Ausnahme.
+   Genau in dieser Reihenfolge bekommen sie Platz und Gewicht. */
 @media (max-width: 560px) {
-  .tvorschlag { grid-template-columns: 1fr 1fr; }
-  .tvorschlag [data-feld="label"] { grid-column: 1 / -1; }
+  .tvorschlag {
+    grid-template-columns: 1fr 7.5rem;
+    grid-template-areas:
+      "datum zeit"
+      "ort   weg";
+    gap: .45rem .5rem;
+  }
+  .tvorschlag [data-feld="datum"] { grid-area: datum; }
+  .tvorschlag [data-feld="zeit"]  { grid-area: zeit; }
+  .tvorschlag [data-feld="label"] { grid-area: ort; }
+  .tvorschlag [data-act="weg"],
+  .tvorschlag > span              { grid-area: weg; }
+
+  .tvorschlag [data-feld="datum"],
+  .tvorschlag [data-feld="zeit"] {
+    font-size: 1.08rem;
+    font-weight: 600;
+    padding: .6rem .55rem;
+    text-align: center;
+  }
+
+  .tvorschlag [data-feld="label"] {
+    font-size: max(.9rem, 16px);   /* 16px bleibt Pflicht, sonst zoomt iOS hinein */
+    padding: .35rem .6rem;
+    opacity: .85;
+  }
+
+  /* Klein, blass und in der Ecke — überschreibt bewusst die 44-px-Regel für
+     Tippziele. Wer hier draufkommt, verliert einen Terminvorschlag. */
+  .tvorschlag .iconbtn--del {
+    justify-self: end;
+    width: 2.2rem; min-width: 2.2rem;
+    height: 2.2rem; min-height: 2.2rem;
+    padding: 0;
+    background: transparent;
+    border-color: transparent;
+    opacity: .55;
+  }
+  .tvorschlag .iconbtn--del:hover,
+  .tvorschlag .iconbtn--del:focus-visible {
+    opacity: 1;
+    border-color: var(--evil);
+    background: rgba(255,252,244,.7);
+  }
 }
 
 .mein-block {
