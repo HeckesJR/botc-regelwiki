@@ -301,7 +301,7 @@ window.BOTC = window.BOTC || {};
         zeilen.push('• ' + fmtDatum(o.beginnt_am) + (o.label ? ' (' + o.label + ')' : ''));
       });
       zeilen.push('');
-      zeilen.push('Bitte eintragen — auch ob ihr leiten könnt:');
+      zeilen.push('Bitte eintragen, ob ihr mitspielen könnt:');
       zeilen.push(seitenLink(poll.id));
       zeilen.push('');
       zeilen.push('Stand: ' + poll.teilnehmer.length +
