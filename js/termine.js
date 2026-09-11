@@ -12,11 +12,12 @@ window.BOTC = window.BOTC || {};
 (function (BOTC) {
   'use strict';
 
-  /* Beim Entwickeln läuft der Dienst nebenan, im Betrieb bei Cloudflare.
-     Die Adresse unten wird nach dem ersten `wrangler deploy` eingetragen. */
+  /* Beim Entwickeln läuft der Dienst nebenan (wrangler dev --local),
+     im Betrieb bei Cloudflare. Ändert sich die Adresse, muss sie hier
+     angepasst und die Seite neu gepusht werden. */
   var API = (location.hostname === 'localhost' || location.hostname === '127.0.0.1')
     ? 'http://127.0.0.1:8787'
-    : 'https://botc-termine.HIER-EINTRAGEN.workers.dev';
+    : 'https://botc-termine.janheckwolf.workers.dev';
 
   var KEY = 'botc-regelwiki:termine:v1';
 

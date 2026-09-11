@@ -40,7 +40,8 @@ botc-regelwiki/
 │   ├── scripts.js       eigene, editionsübergreifende Skripte
 │   ├── notes.js         Spielnotizen (Sitzordnung, Verdacht, Status)
 │   ├── pdf-export.js    PDF-Export im Pergament-Design
-│   └── sw-register.js   meldet den Service Worker an, zeigt die Update-Leiste
+│   ├── sw-register.js   meldet den Service Worker an, zeigt die Update-Leiste
+│   └── termine.js       Terminabfragen, Ampel, Banner, WhatsApp-Text
 ├── data/
 │   ├── grundregeln_de.json
 │   ├── glossar_de.json
@@ -57,6 +58,7 @@ botc-regelwiki/
 ├── _icon-sources.txt                        Quell-URLs der offiziellen Icons
 ├── manifest.webmanifest                     macht die Seite auf dem Handy installierbar
 ├── sw.js                                    Service Worker für den Offline-Betrieb
+├── worker/                                  Cloudflare Worker + D1 für die Termine
 └── _devserve.ps1                            nur zum lokalen Testen
 ```
 
@@ -122,7 +124,7 @@ Morgendämmerung mit ihren Positionen) und `setups` (die kuratierten Vorlagen).
 
 ---
 
-## Die sechs Tabs
+## Die sieben Tabs
 
 **Grundregeln** — Fließtext mit Initialen, Spieleranzahl-Tabelle, Handzeichen, Nominierung &
 Exekution, betrunken/vergiftet, Wahnsinn, Gesinnung. Darunter das Glossar mit 79 Begriffen,
@@ -205,6 +207,39 @@ schlimmer als gar keine. Ein Skriptwechsel wirft Bluffs raus, die es im neuen Sk
 
 Alles wird beim Tippen automatisch im `localStorage` gesichert — es gibt keinen Speichern-Knopf,
 und nichts verlässt das Gerät.
+
+**Termine** — Terminabfragen für die Runde. Jeder kann eine starten, mit bis zu acht
+Vorschlägen. Beim Zusagen gibt man an, ob man **leitet**, **mitspielt** oder **notfalls leiten
+könnte** — die dritte Option ist der eigentliche Hebel, weil sich niemand freiwillig als
+Spielleiter meldet, aber viele einspringen würden.
+
+Daraus rechnet die Seite je Termin, ob der Abend überhaupt zustande kommt:
+
+```
+Spielleiter da?  = mind. 1 Zusage mit Rolle "Spielleiter" oder "kann notfalls leiten"
+Spielerzahl      = Zusagen − 1        (wer leitet, spielt nicht mit)
+spielbar         = Spielerzahl ≥ 5  UND  Spielleiter da
+```
+
+> **Daraus folgt: Es braucht mindestens sechs Zusagen, nicht fünf.** Genau das verschweigt eine
+> normale Terminumfrage — die meldet „5 Zusagen ✓", und am Abend fehlt ein Spieler.
+
+Grün nennt zusätzlich die Verteilung aus `baseDistribution()`, gelb warnt vor fehlender Leitung,
+rot sagt, wie viele fehlen. Dazu: Termin festlegen (darf jeder, nicht nur wer die Abfrage
+gestartet hat), absagen mit Grund, `.ics` für den Handykalender, ein fertiger Text zum Einfügen
+in WhatsApp und ein Banner über den Tabs, das auf jeder Seite den Stand zeigt.
+
+> **Dies ist der einzige Bereich, dessen Daten das Gerät verlassen.** Vornamen, gewählte Rolle
+> und Verfügbarkeiten liegen in einer D1-Datenbank bei Cloudflare — sie müssen geteilt werden,
+> sonst wäre es keine gemeinsame Umfrage. **Spielnotizen, Bluffs und eigene Skripte bleiben
+> davon unberührt** und liegen weiterhin ausschließlich im `localStorage` des jeweiligen Geräts.
+>
+> Der Zugang hängt an einem gemeinsamen Gruppenwort, das auch fürs **Lesen** nötig ist — sonst
+> könnte jeder mit dem Link sehen, wer wann kann. Wer das Wort hat, kann allerdings auch fremde
+> Stimmen ändern. Für einen Freundeskreis ist das in Ordnung, für eine offene Gruppe nicht.
+
+Der Dienst dahinter liegt in [`worker/`](worker/README.md) — Einrichtung, Schnittstelle und
+Datenmodell stehen dort.
 
 ---
 

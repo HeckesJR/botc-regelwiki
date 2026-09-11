@@ -2,13 +2,17 @@ name = "botc-termine"
 main = "src/index.js"
 compatibility_date = "2026-09-01"
 
-# Die D1-Datenbank. database_id wird von
-#   npx wrangler d1 create botc-termine
-# ausgegeben und muss hier eingetragen werden.
+# Ohne diese Zeile bekommt JEDE hochgeladene Version eine eigene oeffentliche
+# Adresse (<hash>-botc-termine.<name>.workers.dev). Alles haengt zwar am
+# Gruppenwort, aber gebraucht werden diese Adressen nicht.
+preview_urls = false
+
+# Die D1-Datenbank. Die ID ist kein Geheimnis — ohne Kontozugang wertlos.
+# Angelegt mit: npx.cmd wrangler d1 create botc-termine
 [[d1_databases]]
 binding = "DB"
 database_name = "botc-termine"
-database_id = "HIER_EINTRAGEN"
+database_id = "83ebb9c1-4bef-40c3-83e3-cb7ee67192b5"
 
 [vars]
 # Von wo aus die Seite den Dienst ansprechen darf. Bewusst nicht "*".
@@ -16,5 +20,5 @@ database_id = "HIER_EINTRAGEN"
 ALLOWED_ORIGIN = "https://heckesjr.github.io"
 
 # Das Gruppenwort ist KEIN var, sondern ein Geheimnis:
-#   npx wrangler secret put GRUPPENWORT
+#   npx.cmd wrangler secret put GRUPPENWORT
 # Lokal steht es in .dev.vars — die Datei ist per .gitignore ausgeschlossen.
