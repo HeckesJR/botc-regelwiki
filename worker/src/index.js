@@ -198,11 +198,33 @@ async function postVote(request, env, id) {
 
   const antworten = (body.antworten && typeof body.antworten === 'object') ? body.antworten : {};
 
+  /* Wer ist das? Die Zufallskennung steckt im localStorage und ist damit an
+     EIN Geraet gebunden. Stimmt dieselbe Person vom Laptop nochmal ab, gaebe
+     das eine zweite Zeile — und die Ampel rechnete mit einem Spieler zu viel.
+
+     Deshalb gilt innerhalb einer Abfrage: gleicher Name = dieselbe Person.
+     Der Preis ist, dass zwei echte Jans sich gegenseitig ueberschreiben; in
+     einer Runde von einem Dutzend Freunden sind Vornamen aber eindeutig, und
+     die Oberflaeche sagt das auch dazu. */
+  const nachName = await env.DB.prepare(
+    'SELECT voter_id FROM participants WHERE poll_id = ? AND lower(name) = lower(?)'
+  ).bind(id, name).first();
+
+  /* Kein Namenstreffer? Dann gehoert die Zeile womoeglich schon mir und ich
+     benenne mich nur um. */
+  const nachKennung = nachName ? null : await env.DB.prepare(
+    'SELECT voter_id FROM participants WHERE poll_id = ? AND voter_id = ?'
+  ).bind(id, voterId).first();
+
+  const kennung = (nachName && nachName.voter_id) ||
+                  (nachKennung && nachKennung.voter_id) ||
+                  voterId;
+
   const anweisungen = [
     env.DB.prepare(
       'INSERT INTO participants (poll_id, voter_id, name, rolle, geaendert) VALUES (?, ?, ?, ?, ?) ' +
       'ON CONFLICT(poll_id, voter_id) DO UPDATE SET name = ?, rolle = ?, geaendert = ?'
-    ).bind(id, voterId, name, rolle, jetzt(), name, rolle, jetzt())
+    ).bind(id, kennung, name, rolle, jetzt(), name, rolle, jetzt())
   ];
 
   for (const [optionId, antwort] of Object.entries(antworten)) {
@@ -211,11 +233,16 @@ async function postVote(request, env, id) {
     anweisungen.push(env.DB.prepare(
       'INSERT INTO votes (poll_id, option_id, voter_id, antwort) VALUES (?, ?, ?, ?) ' +
       'ON CONFLICT(option_id, voter_id) DO UPDATE SET antwort = ?'
-    ).bind(id, optionId, voterId, antwort, antwort));
+    ).bind(id, optionId, kennung, antwort, antwort));
   }
 
   await env.DB.batch(anweisungen);
-  return json(await ladePoll(env, id), request, env);
+
+  const poll2 = await ladePoll(env, id);
+  /* Damit das Geraet weiss, welche Zeile seine ist — sie kann von einem
+     anderen Geraet stammen. */
+  poll2.meine_kennung = kennung;
+  return json(poll2, request, env);
 }
 
 /* Schaltet einen Terminvorschlag fest oder wieder los. Mehrere gleichzeitig

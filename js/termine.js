@@ -643,11 +643,20 @@ window.BOTC = window.BOTC || {};
     if (!p) return;
 
     var ich = null;
+    /* Erst über die Gerätekennung, dann über den Namen. Der zweite Weg ist
+       nötig, wenn man vom Laptop kommt und die Zeile vom Handy stammt — der
+       Dienst führt beide unter derselben Zeile zusammen. */
     p.teilnehmer.forEach(function (t) { if (t.voter_id === lokal.voterId) ich = t; });
+    if (!ich && lokal.name) {
+      var meiner = lokal.name.trim().toLowerCase();
+      p.teilnehmer.forEach(function (t) {
+        if (!ich && String(t.name).trim().toLowerCase() === meiner) ich = t;
+      });
+    }
     var meineRolle = (ich && ich.rolle) || 'spieler';
     var meineAntworten = {};
     p.stimmen.forEach(function (s) {
-      if (s.voter_id === lokal.voterId) meineAntworten[s.option_id] = s.antwort;
+      if (ich && s.voter_id === ich.voter_id) meineAntworten[s.option_id] = s.antwort;
     });
 
     var kopf =
@@ -673,7 +682,9 @@ window.BOTC = window.BOTC || {};
                    (r.id === meineRolle) + '">' + esc(r.lang) + '</button>';
           }).join('') +
         '</div>' +
-        '<p class="mein-hinweis">Jeder Tipp wird sofort gespeichert — du musst nichts abschicken.</p>' +
+        '<p class="mein-hinweis">Jeder Tipp wird sofort gespeichert — du musst nichts abschicken. ' +
+          'Mit demselben Namen von einem anderen Gerät änderst du dieselbe Stimme, ' +
+          'statt zweimal zu zählen.</p>' +
       '</div>';
 
     var termine = p.optionen.map(function (o) {
