@@ -74,8 +74,11 @@ npx wrangler dev --local --port 8787
 Das Gruppenwort kommt dabei aus `.dev.vars` (per `.gitignore` ausgeschlossen):
 
 ```
-GRUPPENWORT = "ravenswood-test"
+GRUPPENWORT = "DEIN-WORT-HIER"
 ```
+
+> **Nie ein echtes Gruppenwort in eine Datei schreiben, die im Repo landet.**
+> Das Repo ist öffentlich. `.dev.vars` ist ausgeschlossen, `README.md` nicht.
 
 ---
 
