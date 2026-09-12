@@ -1690,3 +1690,22 @@ body.is-locked { overflow: hidden; }
   font-family: var(--font-body); font-size: .88rem; font-style: italic;
 }
 .banner__rest:hover { background: rgba(255,252,244,.6); color: var(--ink); }
+
+/* Vorgemerkt = Gold, steht fest = Blau. Vorschläge, über die nicht mehr
+   abgestimmt wird, treten zurück statt zu verschwinden — man will ja sehen,
+   warum es diese Termine geworden sind. */
+.pill--vor { color: var(--gold); }
+
+/* Die Randfarbe gehoert der Ampel — sie sagt, ob der Abend traegt. Der
+   Zustand steht im Abzeichen. Zwei Kanaele, die sich nicht ins Gehege
+   kommen; sonst gewinnt mal das eine, mal das andere. */
+.tblock--raus { opacity: .5; }
+.tblock--raus .tblock__datum { text-decoration: line-through; }
+
+.banner__zeile--fest:not(.banner__zeile--final) {
+  border-color: var(--gold);
+  background: rgba(168,137,76,.12);
+}
+.banner__zeile--fest:not(.banner__zeile--final):hover { background: rgba(168,137,76,.2); }
+.banner__zeile--fest:not(.banner__zeile--final) .banner__icon,
+.banner__zeile--fest:not(.banner__zeile--final) .banner__text strong { color: var(--gold); }

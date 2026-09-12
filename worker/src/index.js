@@ -191,10 +191,27 @@ async function postVote(request, env, id) {
   if (!voterId) return fehler('Fehlende Teilnehmerkennung.', request, env);
   if (!name)    return fehler('Bitte einen Namen angeben.', request, env);
 
-  /* Nur Antworten auf Termine, die es in dieser Abfrage wirklich gibt */
-  const gueltig = await env.DB.prepare('SELECT id FROM poll_options WHERE poll_id = ?')
-    .bind(id).all();
-  const erlaubteIds = new Set((gueltig.results || []).map(o => o.id));
+  /* Welche Antworten sind ueberhaupt erlaubt? Haengt am Zustand des Termins:
+
+       vorschlag   nur solange noch nichts vorgemerkt ist
+       vorgemerkt  frei waehlbar
+       final       NUR "nein" — die Gaesteliste steht, man kann sich
+                   ausschliesslich noch abmelden
+
+     Die Oberflaeche bietet Unerlaubtes gar nicht erst an; hier wird es
+     stillschweigend verworfen, damit ein veralteter Stand im Browser keine
+     Stimme unterschiebt. */
+  const alleOptionen = await env.DB
+    .prepare('SELECT id, zustand FROM poll_options WHERE poll_id = ?').bind(id).all();
+  const optionen = alleOptionen.results || [];
+  const planungLaeuft = optionen.some(o => o.zustand !== 'vorschlag');
+
+  const erlaubt = new Map();
+  optionen.forEach(o => {
+    if (o.zustand === 'final') erlaubt.set(o.id, ['nein']);
+    else if (o.zustand === 'vorgemerkt') erlaubt.set(o.id, ANTWORTEN);
+    else if (!planungLaeuft) erlaubt.set(o.id, ANTWORTEN);
+  });
 
   const antworten = (body.antworten && typeof body.antworten === 'object') ? body.antworten : {};
 
@@ -228,8 +245,8 @@ async function postVote(request, env, id) {
   ];
 
   for (const [optionId, antwort] of Object.entries(antworten)) {
-    if (!erlaubteIds.has(optionId)) continue;
-    if (ANTWORTEN.indexOf(antwort) === -1) continue;
+    const moeglich = erlaubt.get(optionId);
+    if (!moeglich || moeglich.indexOf(antwort) === -1) continue;
     anweisungen.push(env.DB.prepare(
       'INSERT INTO votes (poll_id, option_id, voter_id, antwort) VALUES (?, ?, ?, ?) ' +
       'ON CONFLICT(option_id, voter_id) DO UPDATE SET antwort = ?'
@@ -245,38 +262,51 @@ async function postVote(request, env, id) {
   return json(poll2, request, env);
 }
 
-/* Schaltet einen Terminvorschlag fest oder wieder los. Mehrere gleichzeitig
+const ZUSTAENDE = ['vorschlag', 'vorgemerkt', 'final'];
+
+/* Setzt den Zustand eines Terminvorschlags. Mehrere vorgemerkte gleichzeitig
    sind ausdruecklich erlaubt — manchmal spielt die Runde an zwei Abenden.
-   Ohne festgelegt-Feld im Koerper wird umgeschaltet. */
+
+   Sobald der erste Termin vorgemerkt ist, ist die Abstimmung ueber die
+   uebrigen Vorschlaege zu: gewaehlt wird dann nur noch zwischen den
+   vorgemerkten. Wird der letzte wieder geloest, geht die Abfrage zurueck
+   auf offen. */
 async function postDecide(request, env, id) {
   const body = await request.json().catch(() => null);
   const optionId = text(body && body.option_id, 40);
 
   const option = await env.DB
-    .prepare('SELECT id, festgelegt FROM poll_options WHERE id = ? AND poll_id = ?')
+    .prepare('SELECT id, zustand FROM poll_options WHERE id = ? AND poll_id = ?')
     .bind(optionId, id).first();
   if (!option) return fehler('Diesen Terminvorschlag gibt es hier nicht.', request, env, 404);
 
-  const neu = (body && typeof body.festgelegt === 'boolean')
-    ? (body.festgelegt ? 1 : 0)
-    : (option.festgelegt ? 0 : 1);
+  let zustand;
+  if (body && ZUSTAENDE.indexOf(body.zustand) !== -1) {
+    zustand = body.zustand;
+  } else if (body && typeof body.festgelegt === 'boolean') {
+    /* Alter Weg einer noch im Speicher haengenden Seitenfassung */
+    zustand = body.festgelegt ? 'vorgemerkt' : 'vorschlag';
+  } else {
+    zustand = option.zustand === 'vorschlag' ? 'vorgemerkt' : 'vorschlag';
+  }
 
-  await env.DB.prepare('UPDATE poll_options SET festgelegt = ? WHERE id = ?')
-    .bind(neu, optionId).run();
+  await env.DB.prepare('UPDATE poll_options SET zustand = ?, festgelegt = ? WHERE id = ?')
+    .bind(zustand, zustand === 'vorschlag' ? 0 : 1, optionId).run();
 
   await aktualisiereStatus(env, id);
   return json(await ladePoll(env, id), request, env);
 }
 
 /* Status und die alte Einzelspalte nachziehen. entschieden_option zeigt auf
-   den FRUEHESTEN festgelegten Termin — die Spalte wird nicht mehr gebraucht,
-   haelt aber eine noch im Speicher haengende Seitenfassung am Leben. */
+   den FRUEHESTEN vorgemerkten oder finalen Termin — die Spalte wird nicht
+   mehr gebraucht, haelt aber eine aeltere Seitenfassung am Leben. */
 async function aktualisiereStatus(env, id) {
   const poll = await env.DB.prepare('SELECT status FROM polls WHERE id = ?').bind(id).first();
   if (!poll || poll.status === 'abgesagt') return;
 
   const erster = await env.DB.prepare(
-    'SELECT id FROM poll_options WHERE poll_id = ? AND festgelegt = 1 ORDER BY beginnt_am LIMIT 1'
+    "SELECT id FROM poll_options WHERE poll_id = ? AND zustand != 'vorschlag' " +
+    'ORDER BY beginnt_am LIMIT 1'
   ).bind(id).first();
 
   await env.DB.prepare('UPDATE polls SET status = ?, entschieden_option = ? WHERE id = ?')
@@ -342,11 +372,12 @@ async function getCurrent(request, env) {
 
   const [feste, offene] = await Promise.all([
     env.DB.prepare(
-      'SELECT p.id, p.titel, o.id AS option_id, o.beginnt_am, o.label, ' +
+      'SELECT p.id, p.titel, o.id AS option_id, o.beginnt_am, o.label, o.zustand, ' +
       "(SELECT COUNT(*) FROM votes v WHERE v.option_id = o.id AND v.antwort = 'ja') AS zusagen " +
-      'FROM polls p JOIN poll_options o ON o.poll_id = p.id AND o.festgelegt = 1 ' +
+      "FROM polls p JOIN poll_options o ON o.poll_id = p.id AND o.zustand != 'vorschlag' " +
       "WHERE p.status = 'entschieden' AND substr(o.beginnt_am, 1, 10) >= ? " +
-      'ORDER BY o.beginnt_am LIMIT 12'
+      /* Feste Termine vor vorgemerkten, dann nach Datum */
+      "ORDER BY CASE o.zustand WHEN 'final' THEN 0 ELSE 1 END, o.beginnt_am LIMIT 12"
     ).bind(heute).all(),
 
     env.DB.prepare(

@@ -25,9 +25,13 @@ CREATE TABLE IF NOT EXISTS poll_options (
   beginnt_am TEXT    NOT NULL,                  -- "2026-10-17" oder "2026-10-17T19:00"
   label      TEXT    NOT NULL DEFAULT '',       -- optional, z. B. "bei Jan"
   sortierung INTEGER NOT NULL DEFAULT 0,
-  -- 1 = dieser Termin findet statt. Mehrere je Abfrage sind erlaubt:
-  -- manchmal spielt die Runde an zwei Abenden.
-  festgelegt INTEGER NOT NULL DEFAULT 0
+  -- 1 = vorgemerkt ODER final. Wird mitgepflegt, damit eine aeltere
+  -- Seitenfassung weiter funktioniert; massgeblich ist zustand.
+  festgelegt INTEGER NOT NULL DEFAULT 0,
+  -- vorschlag  = steht zur Abstimmung
+  -- vorgemerkt = soll stattfinden, Abstimmung ueber die uebrigen ist zu
+  -- final      = steht fest, keine neuen Zusagen mehr, nur noch absagen
+  zustand    TEXT    NOT NULL DEFAULT 'vorschlag'
 );
 
 -- Wer mitmacht und in welcher Rolle. Die Rolle hängt am Teilnehmer, nicht am
@@ -59,6 +63,7 @@ CREATE TABLE IF NOT EXISTS fehlversuche (
 
 CREATE INDEX IF NOT EXISTS idx_options_poll  ON poll_options(poll_id, sortierung);
 CREATE INDEX IF NOT EXISTS idx_options_fest  ON poll_options(poll_id, festgelegt);
+CREATE INDEX IF NOT EXISTS idx_options_zustand ON poll_options(poll_id, zustand);
 CREATE INDEX IF NOT EXISTS idx_parts_poll    ON participants(poll_id);
 CREATE INDEX IF NOT EXISTS idx_votes_poll    ON votes(poll_id);
 CREATE INDEX IF NOT EXISTS idx_polls_aktuell ON polls(status, erstellt_am DESC);

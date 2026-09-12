@@ -115,7 +115,7 @@ jeder mit dem Link sehen, wer wann kann.
 | `POST /api/polls` | Abfrage anlegen (höchstens 12 Terminvorschläge) |
 | `GET /api/polls/:id` | eine Abfrage mit Terminen, Teilnehmern, Stimmen |
 | `POST /api/polls/:id/vote` | eigene Rolle und Antworten speichern |
-| `POST /api/polls/:id/decide` | Termin festlegen oder wieder lösen (`festgelegt`); mehrere je Abfrage erlaubt |
+| `POST /api/polls/:id/decide` | Zustand setzen (`zustand`: vorschlag / vorgemerkt / final); mehrere vorgemerkte je Abfrage erlaubt |
 | `POST /api/polls/:id/cancel` | absagen |
 | `POST /api/polls/:id/option` | Ort (`label`) und Uhrzeit (`zeit`, HH:MM) nachtragen — `/ort` bleibt als alter Name gültig |
 
@@ -138,12 +138,13 @@ das richtige Wort, sonst wäre die Sperre wirkungslos.
 
 ```
 polls          id · titel · erstellt_von · erstellt_am · frist · status · entschieden_option · notiz
-poll_options   id · poll_id · beginnt_am · label · sortierung · festgelegt
+poll_options   id · poll_id · beginnt_am · label · sortierung · festgelegt · zustand
 participants   poll_id · voter_id · name · rolle · geaendert
 votes          poll_id · option_id · voter_id · antwort
 fehlversuche   kennung · anzahl · bis
 ```
 
+`zustand` ∈ `vorschlag | vorgemerkt | final`
 `rolle` ∈ `spielleiter | spieler | spieler_notfalls`
 `antwort` ∈ `ja | vielleicht | nein`
 `status` ∈ `offen | entschieden | abgesagt`
@@ -154,6 +155,24 @@ jedem Abend — das einzeln pro Termin abzufragen wäre nur lästig.
 `voter_id` ist eine Zufalls-ID aus dem `localStorage` des Geräts. Damit erkennt die
 Seite dich wieder und du änderst deine eigene Stimme, ohne dich anzumelden. Es gibt
 keine Konten und keine Passwörter außer dem gemeinsamen Gruppenwort.
+
+---
+
+## Drei Zustände je Terminvorschlag
+
+| Zustand | Wer kann was |
+|---|---|
+| **vorschlag** | steht zur Abstimmung — aber nur, solange nichts vorgemerkt ist |
+| **vorgemerkt** | soll stattfinden. Ja / Vielleicht / Nein frei wählbar |
+| **final** | steht fest. **Nur noch `nein`** — die Gästeliste ist zu, man kann sich ausschließlich abmelden |
+
+Sobald der erste Termin vorgemerkt ist, endet die Abstimmung über die übrigen Vorschläge.
+Gewählt wird dann nur noch zwischen den vorgemerkten. Wird der letzte wieder gelöst, geht die
+Abfrage zurück auf `offen`.
+
+Die Regeln stehen **im Worker**, nicht nur in der Oberfläche: `postVote()` baut je Termin eine
+Liste erlaubter Antworten und verwirft alles andere stillschweigend. Ein veralteter Stand im
+Browser kann damit keine Stimme unterschieben.
 
 ---
 

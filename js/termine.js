@@ -245,10 +245,12 @@ window.BOTC = window.BOTC || {};
   var BANNER_MAX = 5;
 
   function bannerZeileTermin(t) {
-    return '<button type="button" class="banner__zeile banner__zeile--fest" ' +
-      'data-banner="' + esc(t.id) + '">' +
+    var fest = (t.zustand || 'vorgemerkt') === 'final';
+    return '<button type="button" class="banner__zeile banner__zeile--fest' +
+      (fest ? ' banner__zeile--final' : '') + '" data-banner="' + esc(t.id) + '">' +
       UHR_SVG +
-      '<span class="banner__text"><strong>Runde:</strong> ' +
+      '<span class="banner__text"><strong>' +
+        (fest ? 'Steht fest:' : 'Vorgemerkt:') + '</strong> ' +
         esc(fmtDatum(t.beginnt_am)) +
         (t.label ? ' · ' + esc(t.label) : '') +
         ' — ' + t.zusagen + (t.zusagen === 1 ? ' Zusage' : ' Zusagen') +
@@ -306,8 +308,11 @@ window.BOTC = window.BOTC || {};
     if (poll.status === 'entschieden') {
       var feste = festeTermine(poll);
       var mehrere = feste.length > 1;
+      var alleFinal = feste.every(function (o) { return zustandVon(o) === 'final'; });
 
-      zeilen.push(mehrere ? '🕰 Die Termine stehen!' : '🕰 Der Termin steht!');
+      zeilen.push(alleFinal
+        ? (mehrere ? '🕰 Die Termine stehen!' : '🕰 Der Termin steht!')
+        : (mehrere ? '🕰 Diese Termine sind vorgemerkt' : '🕰 Dieser Termin ist vorgemerkt'));
       zeilen.push('');
       zeilen.push('Blood on the Clocktower');
       zeilen.push('');
@@ -315,7 +320,8 @@ window.BOTC = window.BOTC || {};
       feste.forEach(function (o) {
         var l = lage(poll, o.id);
         zeilen.push((mehrere ? '• ' : '') + fmtDatum(o.beginnt_am) +
-                    (o.label ? ' · ' + o.label : ''));
+                    (o.label ? ' · ' + o.label : '') +
+                    (zustandVon(o) === 'final' ? '  [steht fest]' : '  [vorgemerkt]'));
         if (l.namenJa.length) zeilen.push('   Dabei (' + l.zusagen + '): ' + l.namenJa.join(', '));
         if (l.leiter.length) zeilen.push('   ' + l.leiter[0].name + ' leitet.');
         else if (l.notfalls.length) zeilen.push('   Achtung: noch kein fester Spielleiter!');
@@ -449,11 +455,37 @@ window.BOTC = window.BOTC || {};
     return teile.join('\r\n');
   }
 
-  /* Alle festgelegten Termine einer Abfrage, nach Datum */
+  /* ---------------------------------------------- Zustände
+
+     vorschlag   steht zur Abstimmung
+     vorgemerkt  soll stattfinden; über die übrigen Vorschläge wird nicht
+                 mehr abgestimmt
+     final       steht fest; keine neuen Zusagen mehr, nur noch absagen */
+
+  function zustandVon(o) {
+    /* Ältere Antworten kennen nur den Schalter */
+    return o.zustand || (o.festgelegt ? 'vorgemerkt' : 'vorschlag');
+  }
+
+  /* Alle vorgemerkten und finalen Termine einer Abfrage, nach Datum */
   function festeTermine(poll) {
     return (poll.optionen || [])
-      .filter(function (o) { return !!o.festgelegt; })
+      .filter(function (o) { return zustandVon(o) !== 'vorschlag'; })
       .sort(function (a, b) { return a.beginnt_am < b.beginnt_am ? -1 : 1; });
+  }
+
+  /* Sobald irgendetwas vorgemerkt ist, ist die Abstimmung über die
+     restlichen Vorschläge zu. */
+  function planungLaeuft(poll) {
+    return festeTermine(poll).length > 0;
+  }
+
+  /* Welche Antworten stehen bei diesem Termin zur Auswahl? */
+  function moeglicheAntworten(poll, o) {
+    var z = zustandVon(o);
+    if (z === 'final') return ['nein'];
+    if (z === 'vorgemerkt') return ['ja', 'vielleicht', 'nein'];
+    return planungLaeuft(poll) ? [] : ['ja', 'vielleicht', 'nein'];
   }
 
   /* Ein VEVENT je festgelegtem Termin. Stehen zwei Abende fest, legt eine
@@ -655,6 +687,65 @@ window.BOTC = window.BOTC || {};
     );
   }
 
+  function antwortLabel(id) {
+    var t = ANTWORTEN.filter(function (a) { return a.id === id; })[0];
+    return t ? t.label : id;
+  }
+
+  /* Was man bei diesem Termin antworten darf — und was stattdessen dasteht,
+     wenn nichts mehr geht. */
+  function antwortBereich(p, o, meine, z, abgehakt) {
+    if (p.status === 'abgesagt') {
+      return meine
+        ? '<span class="tblock__meine">Deine Antwort war: ' + esc(antwortLabel(meine)) + '</span>'
+        : '';
+    }
+
+    if (abgehakt) {
+      return '<span class="tblock__meine">Nicht mehr zur Auswahl' +
+             (meine ? ' — du hattest ' + esc(antwortLabel(meine)) + ' gesagt' : '') + '</span>';
+    }
+
+    if (z === 'final') {
+      /* Der Abend steht. Neu zusagen geht nicht mehr, absagen schon —
+         dafür ist der Knopf da. */
+      if (meine === 'ja' || meine === 'vielleicht') {
+        return '<span class="tblock__meine">Du bist dabei.</span>' +
+               '<button type="button" class="btn btn--ghost btn--small" data-act="abmelden" ' +
+               'data-option="' + esc(o.id) + '">Doch absagen</button>';
+      }
+      return '<span class="tblock__meine">' +
+             (meine === 'nein' ? 'Du hast abgesagt.' : 'Du bist nicht dabei.') +
+             ' Zusagen ist nicht mehr möglich.</span>';
+    }
+
+    var erlaubt = moeglicheAntworten(p, o);
+    return '<div class="seg antwortwahl">' +
+      ANTWORTEN.filter(function (a) { return erlaubt.indexOf(a.id) !== -1; })
+        .map(function (a) {
+          return '<button type="button" class="seg__btn' + (a.id === meine ? ' is-active' : '') +
+                 '" data-antwort="' + a.id + '" data-option="' + esc(o.id) + '">' +
+                 esc(a.label) + '</button>';
+        }).join('') +
+      '</div>';
+  }
+
+  /* Vormerken, lösen, final machen. Bewusst auch bei laufender Planung
+     sichtbar, damit ein zweiter Abend dazukommen kann. */
+  function zustandsKnoepfe(p, o, z) {
+    if (p.status === 'abgesagt') return '';
+    var knopf = function (act, ziel, text, klasse) {
+      return '<button type="button" class="btn btn--ghost btn--small' + (klasse || '') +
+             '" data-act="' + act + '" data-ziel="' + ziel + '" ' +
+             'data-option="' + esc(o.id) + '">' + text + '</button>';
+    };
+
+    if (z === 'vorschlag')  return knopf('zustand', 'vorgemerkt', 'Termin vormerken');
+    if (z === 'vorgemerkt') return knopf('zustand', 'final', 'Termin festmachen') +
+                                   knopf('zustand', 'vorschlag', 'Vormerkung aufheben');
+    return knopf('zustand', 'vorgemerkt', 'Wieder öffnen');
+  }
+
   function zeichneDetail() {
     var p = sicht.poll;
     if (!p) return;
@@ -704,17 +795,25 @@ window.BOTC = window.BOTC || {};
           'statt zweimal zu zählen.</p>' +
       '</div>';
 
+    var läuft = planungLaeuft(p);
+
     var termine = p.optionen.map(function (o) {
       var l = lage(p, o.id);
       var meine = meineAntworten[o.id] || '';
-      var istFest = !!o.festgelegt;
+      var z = zustandVon(o);
+      var istFest = z !== 'vorschlag';
+      /* Ein Vorschlag, über den nicht mehr abgestimmt wird */
+      var abgehakt = z === 'vorschlag' && läuft;
 
       return '<div class="tblock' + (istFest ? ' tblock--fest' : '') +
+             (z === 'final' ? ' tblock--final' : '') +
+             (abgehakt ? ' tblock--raus' : '') +
              '" data-stufe="' + l.stufe + '">' +
         '<div class="tblock__kopf">' +
           '<strong class="tblock__datum">' + esc(fmtDatum(o.beginnt_am)) + '</strong>' +
           (o.label ? '<span class="tblock__ort">' + esc(o.label) + '</span>' : '') +
-          (istFest ? '<span class="pill pill--fest">Festgelegt</span>' : '') +
+          (z === 'final'      ? '<span class="pill pill--fest">Steht fest</span>' : '') +
+          (z === 'vorgemerkt' ? '<span class="pill pill--vor">Vorgemerkt</span>' : '') +
         '</div>' +
 
         '<p class="tblock__lage">' + esc(l.text) +
@@ -744,26 +843,8 @@ window.BOTC = window.BOTC || {};
             esc(l.namenVielleicht.join(', ')) + '</p>' : '') +
 
         '<div class="tblock__fuss">' +
-          /* Bei abgesagten Abfragen gibt es nichts mehr zu antworten — die
-             Knöpfe wären klickbar, ohne dass man speichern könnte. */
-          (p.status === 'abgesagt'
-            ? (meine ? '<span class="tblock__meine">Deine Antwort war: ' +
-                       esc((ANTWORTEN.filter(function (a) { return a.id === meine; })[0] || {}).label || meine) +
-                       '</span>' : '')
-            : '<div class="seg antwortwahl">' +
-              ANTWORTEN.map(function (a) {
-                return '<button type="button" class="seg__btn' + (a.id === meine ? ' is-active' : '') +
-                       '" data-antwort="' + a.id + '" data-option="' + esc(o.id) + '">' +
-                       esc(a.label) + '</button>';
-              }).join('') +
-            '</div>') +
-          /* Auch bei bereits entschiedenen Abfragen sichtbar — so lässt sich
-             ein zweiter Abend dazunehmen oder einer wieder lösen. */
-          (p.status !== 'abgesagt'
-            ? '<button type="button" class="btn btn--ghost btn--small" data-act="festlegen" ' +
-              'data-option="' + esc(o.id) + '">' +
-              (istFest ? 'Doch nicht' : 'Diesen Termin festlegen') + '</button>'
-            : '') +
+          antwortBereich(p, o, meine, z, abgehakt) +
+          zustandsKnoepfe(p, o, z) +
         '</div>' +
       '</div>';
     }).join('');
@@ -1041,8 +1122,12 @@ window.BOTC = window.BOTC || {};
           if (sicht.poll) ladeIcsHerunter(sicht.poll);
           break;
 
-        case 'festlegen':
-          festlegen(btn.dataset.option);
+        case 'zustand':
+          setzeZustand(btn.dataset.option, btn.dataset.ziel);
+          break;
+
+        case 'abmelden':
+          abmelden(btn.dataset.option);
           break;
 
         case 'absagen':
@@ -1141,7 +1226,7 @@ window.BOTC = window.BOTC || {};
      steht die Runde still, wenn ausgerechnet der krank wird. Dafür eine
      Rückfrage mit der Lage im Klartext, damit niemand versehentlich einen
      Termin festnagelt, an dem es hinten und vorne nicht reicht. */
-  function festlegen(optionId) {
+  function setzeZustand(optionId, ziel) {
     var p = sicht.poll;
     if (!p || !optionId) return;
 
@@ -1149,30 +1234,47 @@ window.BOTC = window.BOTC || {};
     p.optionen.forEach(function (x) { if (x.id === optionId) o = x; });
     if (!o) return;
 
-    var loesen = !!o.festgelegt;
+    var wann = fmtDatum(o.beginnt_am) + (o.label ? ' (' + o.label + ')' : '');
     var l = lage(p, optionId);
-    var frage;
+    var frage, melde;
 
-    if (loesen) {
-      frage = fmtDatum(o.beginnt_am) + ' doch nicht stattfinden lassen?';
-    } else {
-      var schonFest = festeTermine(p).length;
-      frage = 'Termin festlegen auf ' + fmtDatum(o.beginnt_am) +
-              (o.label ? ' (' + o.label + ')' : '') + '?\n\n' + l.text;
+    if (ziel === 'vorgemerkt' && zustandVon(o) === 'vorschlag') {
+      var schonVor = festeTermine(p).length;
+      frage = wann + ' vormerken?\n\n' + l.text;
       if (l.stufe !== 'gruen') frage += '\n\nAchtung: So reicht es noch nicht.';
-      if (schonFest) {
-        frage += '\n\nEs steht bereits ' + (schonFest === 1 ? 'ein Termin' : schonFest + ' Termine') +
-                 ' fest. Dieser kommt dazu.';
+      frage += schonVor
+        ? '\n\nEs ' + (schonVor === 1 ? 'ist bereits ein Termin' : 'sind bereits ' + schonVor + ' Termine') +
+          ' vorgemerkt. Dieser kommt dazu.'
+        : '\n\nDamit endet die Abstimmung über die übrigen Vorschläge. ' +
+          'Gewählt wird dann nur noch zwischen den vorgemerkten Terminen.';
+      melde = 'Wird vorgemerkt …';
+
+    } else if (ziel === 'final') {
+      frage = wann + ' endgültig festmachen?\n\n' + l.text +
+              '\n\nDanach kann niemand mehr neu zusagen. Wer zugesagt hat, ' +
+              'kann sich nur noch abmelden.';
+      melde = 'Wird festgemacht …';
+
+    } else if (ziel === 'vorgemerkt') {
+      frage = wann + ' wieder öffnen?\n\nDanach kann wieder zu- und abgesagt werden.';
+      melde = 'Wird geöffnet …';
+
+    } else {
+      frage = 'Vormerkung für ' + wann + ' aufheben?';
+      if (festeTermine(p).length === 1) {
+        frage += '\n\nDas war der einzige vorgemerkte Termin — die Abstimmung ' +
+                 'über alle Vorschläge läuft dann wieder.';
       }
+      melde = 'Wird aufgehoben …';
     }
 
     if (!confirm(frage)) return;
 
     var status = document.getElementById('termine-status');
-    if (status) status.textContent = loesen ? 'Wird gelöst …' : 'Wird festgelegt …';
+    if (status) status.textContent = melde;
 
     req('/api/polls/' + encodeURIComponent(p.id) + '/decide', {
-      body: { option_id: optionId, festgelegt: !loesen }
+      body: { option_id: optionId, zustand: ziel }
     })
       .then(function (neu) {
         sicht.poll = neu;
@@ -1232,6 +1334,47 @@ window.BOTC = window.BOTC || {};
         var s = document.getElementById('termine-status');
         if (s) s.textContent = e.message;
       });
+  }
+
+  /* Sich von einem feststehenden Abend abmelden — der einzige Weg, der dort
+     noch offensteht. Bewusst mit Rückfrage: zurück geht es nicht. */
+  function abmelden(optionId) {
+    var p = sicht.poll;
+    if (!p || !optionId) return;
+
+    var o = null;
+    p.optionen.forEach(function (x) { if (x.id === optionId) o = x; });
+    if (!o) return;
+
+    if (!confirm('Für ' + fmtDatum(o.beginnt_am) + ' absagen?\n\n' +
+                 'Der Termin steht schon fest — zusagen kannst du danach nicht mehr.')) return;
+
+    var nameFeld = wurzel().querySelector('[data-feld="name"]');
+    var name = nameFeld ? nameFeld.value.trim() : '';
+    var status = document.getElementById('termine-status');
+    if (!name) {
+      if (status) status.textContent = 'Bitte trag deinen Namen ein.';
+      return;
+    }
+
+    var rolleBtn = wurzel().querySelector('.rollen .chip.is-active');
+    var antworten = {};
+    antworten[optionId] = 'nein';
+
+    if (status) status.textContent = 'Wird abgesagt …';
+
+    req('/api/polls/' + encodeURIComponent(p.id) + '/vote', { body: {
+      voter_id: lokal.voterId, name: name,
+      rolle: rolleBtn ? rolleBtn.dataset.rolle : 'spieler',
+      antworten: antworten
+    }}).then(function (neu) {
+      sicht.poll = neu;
+      zeichneDetail();
+      ladeBanner();
+    }).catch(function (e) {
+      var s = document.getElementById('termine-status');
+      if (s) s.textContent = e.message;
+    });
   }
 
   function absagen() {
